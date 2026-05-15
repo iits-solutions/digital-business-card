@@ -8,10 +8,10 @@ export default function Navbar() {
 
       <Link
         href="/"
-        className="text-2xl font-bold text-white"
+        className="text-3xl font-bold text-white"
       >
 
-        ILinq
+        ILinq.Team
 
       </Link>
 

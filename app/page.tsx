@@ -244,161 +244,265 @@ export default function Home() {
 
       </section>
 
-      {/* PRICING */}
-      <section className="px-6 py-32">
+      {/* Pricing */}
+<section className="py-32 px-6 bg-black">
 
-        <div className="max-w-7xl mx-auto">
+  <div className="max-w-7xl mx-auto">
 
-          <div className="text-center mb-20">
+    {/* Heading */}
+    <div className="text-center mb-20">
 
-            <h2 className="text-5xl font-bold mb-6">
+      <h2 className="text-5xl font-bold mb-6">
 
-              Simple Pricing
+        Simple Pricing
 
-            </h2>
+      </h2>
 
-            <p className="text-gray-400 text-xl">
+      <p className="text-gray-400 text-xl">
 
-              Flexible plans for individuals and businesses.
+        Flexible plans for individuals and businesses.
 
-            </p>
+      </p>
 
-          </div>
+    </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+    {/* Pricing Cards */}
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-8">
 
-            {/* FREE */}
-            <div className="border border-gray-800 rounded-3xl p-10 bg-gray-950">
+      {/* Free */}
+      <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
 
-              <h3 className="text-3xl font-bold mb-4">
+        <h3 className="text-3xl font-bold mb-4">
 
-                Free
+          Free
 
-              </h3>
+        </h3>
 
-              <p className="text-gray-400 mb-8">
+        <p className="text-gray-400 mb-8">
 
-                Perfect for getting started.
+          Perfect for getting started.
 
-              </p>
+        </p>
 
-              <div className="text-5xl font-bold mb-8">
+        <h4 className="text-6xl font-bold mb-8">
 
-                $0
+          $0
 
-              </div>
+        </h4>
 
-              <ul className="space-y-4 text-gray-300 mb-10">
+        <ul className="space-y-4 text-gray-300 mb-10">
 
-                <li>✔ Basic Profile</li>
-                <li>✔ QR Sharing</li>
-                <li>✔ Basic Theme</li>
+          <li>✓ Basic Profile</li>
 
-              </ul>
+          <li>✓ QR Sharing</li>
 
-              <Link
-                href="/signup"
-                className="block text-center w-full border border-gray-700 py-3 rounded-xl hover:border-gray-500 transition"
-              >
+          <li>✓ Basic Theme</li>
 
-                Get Started
+          <li>✓ Limited Analytics</li>
 
-              </Link>
+        </ul>
 
-            </div>
+        <button className="w-full border border-white/10 hover:bg-white hover:text-black transition py-4 rounded-2xl">
 
-            {/* PREMIUM */}
-            <div className="border border-white rounded-3xl p-10 bg-white text-black scale-105">
+          Get Started
 
-              <div className="mb-4 inline-block bg-black text-white px-4 py-1 rounded-full text-sm">
+        </button>
 
-                Most Popular
+      </div>
 
-              </div>
+      {/* Starter */}
+      <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
 
-              <h3 className="text-3xl font-bold mb-4">
+        <h3 className="text-3xl font-bold mb-4">
 
-                Premium
+          Starter
 
-              </h3>
+        </h3>
 
-              <p className="text-gray-600 mb-8">
+        <p className="text-gray-400 mb-8">
 
-                Advanced features for professionals.
+          Best for freelancers.
 
-              </p>
+        </p>
 
-              <div className="text-5xl font-bold mb-8">
+        <h4 className="text-6xl font-bold mb-8">
 
-                $5
-                <span className="text-lg font-normal">
+          $1
 
-                  /month
+          <span className="text-xl text-gray-400">
 
-                </span>
+            /month
 
-              </div>
+          </span>
 
-              <ul className="space-y-4 mb-10">
+        </h4>
 
-                <li>✔ NFC Sharing</li>
-                <li>✔ Premium Themes</li>
-                <li>✔ Analytics</li>
-                <li>✔ Social Links</li>
+        <ul className="space-y-4 text-gray-300 mb-10">
 
-              </ul>
+          <li>✓ NFC Sharing</li>
 
-              <button className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition">
+          <li>✓ WhatsApp Button</li>
 
-                Upgrade Now
+          <li>✓ Save Contact</li>
 
-              </button>
+          <li>✓ More Social Links</li>
 
-            </div>
+        </ul>
 
-            {/* COMPANY */}
-            <div className="border border-gray-800 rounded-3xl p-10 bg-gray-950">
+        <button className="w-full border border-white/10 hover:bg-white hover:text-black transition py-4 rounded-2xl">
 
-              <h3 className="text-3xl font-bold mb-4">
+          Upgrade
 
-                Company
+        </button>
 
-              </h3>
+      </div>
 
-              <p className="text-gray-400 mb-8">
+      {/* Pro */}
+      <div className="bg-white text-black rounded-3xl p-8 scale-105 shadow-2xl">
 
-                Best for teams and businesses.
+        <div className="inline-block bg-black text-white text-sm px-4 py-2 rounded-full mb-6">
 
-              </p>
-
-              <div className="text-5xl font-bold mb-8">
-
-                Custom
-
-              </div>
-
-              <ul className="space-y-4 text-gray-300 mb-10">
-
-                <li>✔ Employee Profiles</li>
-                <li>✔ Company Branding</li>
-                <li>✔ Admin Dashboard</li>
-                <li>✔ Team Management</li>
-
-              </ul>
-
-              <button className="w-full border border-gray-700 py-3 rounded-xl hover:border-gray-500 transition">
-
-                Contact Sales
-
-              </button>
-
-            </div>
-
-          </div>
+          Most Popular
 
         </div>
 
-      </section>
+        <h3 className="text-3xl font-bold mb-4">
+
+          Pro
+
+        </h3>
+
+        <p className="text-gray-600 mb-8">
+
+          Best for professionals.
+
+        </p>
+
+        <h4 className="text-6xl font-bold mb-8">
+
+          $2
+
+          <span className="text-xl text-gray-500">
+
+            /month
+
+          </span>
+
+        </h4>
+
+        <ul className="space-y-4 mb-10">
+
+          <li>✓ Premium Themes</li>
+
+          <li>✓ Advanced Analytics</li>
+
+          <li>✓ Custom Branding</li>
+
+          <li>✓ Lead Tracking</li>
+
+        </ul>
+
+        <button className="w-full bg-black text-white hover:bg-gray-800 transition py-4 rounded-2xl">
+
+          Upgrade Now
+
+        </button>
+
+      </div>
+
+      {/* Premium */}
+      <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
+
+        <h3 className="text-3xl font-bold mb-4">
+
+          Premium
+
+        </h3>
+
+        <p className="text-gray-400 mb-8">
+
+          For creators & agencies.
+
+        </p>
+
+        <h4 className="text-6xl font-bold mb-8">
+
+          $5
+
+          <span className="text-xl text-gray-400">
+
+            /month
+
+          </span>
+
+        </h4>
+
+        <ul className="space-y-4 text-gray-300 mb-10">
+
+          <li>✓ NFC Tap Analytics</li>
+
+          <li>✓ Multiple Profiles</li>
+
+          <li>✓ Priority Support</li>
+
+          <li>✓ AI Features Later</li>
+
+        </ul>
+
+        <button className="w-full border border-white/10 hover:bg-white hover:text-black transition py-4 rounded-2xl">
+
+          Go Premium
+
+        </button>
+
+      </div>
+
+      {/* Company */}
+      <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
+
+        <h3 className="text-3xl font-bold mb-4">
+
+          Company
+
+        </h3>
+
+        <p className="text-gray-400 mb-8">
+
+          Best for teams and businesses.
+
+        </p>
+
+        <h4 className="text-5xl font-bold mb-8">
+
+          Custom
+
+        </h4>
+
+        <ul className="space-y-4 text-gray-300 mb-10">
+
+          <li>✓ Employee Profiles</li>
+
+          <li>✓ Team Dashboard</li>
+
+          <li>✓ Company Branding</li>
+
+          <li>✓ Admin Panel</li>
+
+        </ul>
+
+        <button className="w-full border border-white/10 hover:bg-white hover:text-black transition py-4 rounded-2xl">
+
+          Contact Sales
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
       {/* FOOTER */}
       <footer className="border-t border-gray-800 bg-black px-6 py-16">
@@ -407,9 +511,9 @@ export default function Home() {
 
           <div>
 
-            <h3 className="text-3xl font-bold mb-4">
+            <h3 className="text-2xl font-bold mb-4">
 
-              ILinq
+              ILinq.Team
 
             </h3>
 
