@@ -245,7 +245,10 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-<section className="py-32 px-6 bg-black">
+<section
+  id="pricing"
+  className="py-32 px-6 bg-black"
+>
 
   <div className="max-w-7xl mx-auto">
 
