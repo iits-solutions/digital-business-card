@@ -58,7 +58,6 @@ ORG:${profile.company || ""}
 TITLE:${profile.jobTitle || ""}
 TEL:${profile.phone || ""}
 EMAIL:${profile.user.email}
-URL:${profile.website || ""}
 END:VCARD
 `;
 
@@ -193,20 +192,35 @@ END:VCARD
 
             </div>
 
-            {/* Website */}
+            {/* Phone */}
             <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
 
               <p className="text-gray-400 mb-3">
 
-                Website
+                Phone
 
               </p>
 
-              <p className="text-xl font-medium">
+              {profile.phone ? (
 
-                {profile.website || "Not added"}
+                <a
+                  href={`tel:${profile.phone}`}
+                  className="text-xl font-medium hover:text-blue-400 transition"
+                >
 
-              </p>
+                  {profile.phone}
+
+                </a>
+
+              ) : (
+
+                <p className="text-xl font-medium">
+
+                  Not added
+
+                </p>
+
+              )}
 
             </div>
 
@@ -231,7 +245,9 @@ END:VCARD
                   target="_blank"
                   className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl transition"
                 >
+
                   LinkedIn
+
                 </a>
 
               )}
@@ -244,7 +260,9 @@ END:VCARD
                   target="_blank"
                   className="bg-gray-700 hover:bg-gray-800 px-6 py-3 rounded-2xl transition"
                 >
+
                   GitHub
+
                 </a>
 
               )}
@@ -257,7 +275,9 @@ END:VCARD
                   target="_blank"
                   className="bg-sky-500 hover:bg-sky-600 px-6 py-3 rounded-2xl transition"
                 >
+
                   Twitter/X
+
                 </a>
 
               )}
@@ -270,7 +290,9 @@ END:VCARD
                   target="_blank"
                   className="bg-pink-600 hover:bg-pink-700 px-6 py-3 rounded-2xl transition"
                 >
+
                   Instagram
+
                 </a>
 
               )}
@@ -283,7 +305,9 @@ END:VCARD
                   target="_blank"
                   className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-2xl transition"
                 >
+
                   YouTube
+
                 </a>
 
               )}
@@ -292,11 +316,13 @@ END:VCARD
               {profile.whatsapp && (
 
                 <a
-                  href={`https://wa.me/${profile.whatsapp}`}
+                  href={`https://wa.me/${profile.whatsapp.replace(/\D/g, "")}`}
                   target="_blank"
                   className="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-2xl transition"
                 >
+
                   WhatsApp
+
                 </a>
 
               )}
@@ -309,43 +335,18 @@ END:VCARD
 
       </section>
 
-      {/* Mobile Sticky Actions */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#081028] border-t border-white/10 p-4 flex justify-center gap-3 md:hidden z-50">
+      {/* Mobile Save Contact */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-black/80 backdrop-blur md:hidden">
 
-        {/* Save Contact */}
         <a
           href={`data:text/vcard;charset=utf-8,${encodeURIComponent(vCard)}`}
           download={`${profile.fullName}.vcf`}
-          className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-2xl text-sm font-medium transition"
+          className="block text-center bg-blue-600 hover:bg-blue-700 py-4 rounded-2xl font-medium transition"
         >
+
           Save Contact
+
         </a>
-
-        {/* WhatsApp */}
-        {profile.whatsapp && (
-
-          <a
-            href={`https://wa.me/${profile.whatsapp}`}
-            target="_blank"
-            className="bg-green-600 hover:bg-green-700 px-5 py-3 rounded-2xl text-sm font-medium transition"
-          >
-            WhatsApp
-          </a>
-
-        )}
-
-        {/* LinkedIn */}
-        {profile.linkedin && (
-
-          <a
-            href={profile.linkedin}
-            target="_blank"
-            className="bg-blue-500 hover:bg-blue-600 px-5 py-3 rounded-2xl text-sm font-medium transition"
-          >
-            LinkedIn
-          </a>
-
-        )}
 
       </div>
 

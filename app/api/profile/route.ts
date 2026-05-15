@@ -65,6 +65,9 @@ export async function GET() {
       jobTitle:
         user.profile.jobTitle || "",
 
+      phone:
+        user.profile.phone || "",
+
       email:
         user.email || "",
 
@@ -86,7 +89,7 @@ export async function GET() {
       whatsapp:
         user.profile.whatsapp || "",
 
-      });
+    });
 
   } catch (error) {
 
@@ -126,6 +129,7 @@ export async function PUT(
 
       fullName,
       username,
+      phone,
       bio,
       image,
       company,
@@ -172,6 +176,8 @@ export async function PUT(
         fullName,
 
         username,
+
+        phone,
 
         bio,
 

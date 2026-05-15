@@ -1,140 +1,28 @@
 "use client";
 
-import { useEffect, useState, ChangeEvent } from "react";
-
-import { supabase } from "@/lib/supabase";
+import { useEffect, useState } from "react";
 
 export default function ProfilePage() {
 
-  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState<any>({
+    fullName: "",
+    username: "",
+    company: "",
+    jobTitle: "",
+    phone: "",
+    bio: "",
+    image: "",
+    linkedin: "",
+    github: "",
+    twitter: "",
+    instagram: "",
+    youtube: "",
+    whatsapp: "",
+  });
 
-  const [uploading, setUploading] =
+  const [loading, setLoading] =
     useState(false);
 
-  const [profile, setProfile] = useState({
-
-  fullName: "",
-  username: "",
-  bio: "",
-  image: "",
-  company: "",
-  jobTitle: "",
-
-  linkedin: "",
-  github: "",
-  twitter: "",
-  instagram: "",
-  youtube: "",
-  whatsapp: "",
-
-});
-
-  // Upload Image
-  const handleImageUpload = async (
-    e: ChangeEvent<HTMLInputElement>
-  ) => {
-
-    try {
-
-      setUploading(true);
-
-      const file = e.target.files?.[0];
-
-      if (!file) return;
-
-      const fileName =
-        `${Date.now()}-${file.name}`;
-
-      const { error } =
-        await supabase.storage
-          .from("profiles")
-          .upload(fileName, file);
-
-      if (error) {
-
-          console.log(error);
-
-          alert(error.message);
-
-          return;
-      }
-
-      const {
-        data: publicUrlData,
-      } = supabase.storage
-        .from("profiles")
-        .getPublicUrl(fileName);
-
-      setProfile({
-
-        ...profile,
-
-        image:
-          publicUrlData.publicUrl,
-
-      });
-
-      alert("Image uploaded!");
-
-    } catch (error) {
-
-      console.log(error);
-
-      alert("Something went wrong");
-
-    } finally {
-
-      setUploading(false);
-
-    }
-  };
-
-  // Save Profile
-  const saveProfile = async () => {
-
-    try {
-
-      const response = await fetch(
-        "/api/profile",
-        {
-
-          method: "PUT",
-
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-
-          body:
-            JSON.stringify(profile),
-
-        }
-      );
-
-      if (response.ok) {
-
-        alert(
-          "Profile updated successfully!"
-        );
-
-      } else {
-
-        alert(
-          "Failed to update profile"
-        );
-
-      }
-
-    } catch (error) {
-
-      console.log(error);
-
-      alert("Something went wrong");
-
-    }
-  };
-
-  // Fetch Profile
   useEffect(() => {
 
     const fetchProfile = async () => {
@@ -149,95 +37,134 @@ export default function ProfilePage() {
 
         setProfile({
 
-  fullName:
-    data.fullName || "",
+          fullName:
+            data.fullName || "",
 
-  username:
-    data.username || "",
+          username:
+            data.username || "",
 
-  bio:
-    data.bio || "",
+          company:
+            data.company || "",
 
-  image:
-    data.image || "",
+          jobTitle:
+            data.jobTitle || "",
 
-  company:
-    data.company || "",
+          phone:
+            data.phone || "",
 
-  jobTitle:
-    data.jobTitle || "",
-    linkedin:
-  data.linkedin || "",
+          bio:
+            data.bio || "",
 
-github:
-  data.github || "",
+          image:
+            data.image || "",
 
-twitter:
-  data.twitter || "",
+          linkedin:
+            data.linkedin || "",
 
-instagram:
-  data.instagram || "",
+          github:
+            data.github || "",
 
-youtube:
-  data.youtube || "",
+          twitter:
+            data.twitter || "",
 
-whatsapp:
-  data.whatsapp || "",
+          instagram:
+            data.instagram || "",
 
-});
+          youtube:
+            data.youtube || "",
+
+          whatsapp:
+            data.whatsapp || "",
+
+        });
 
       } catch (error) {
 
         console.log(error);
 
-      } finally {
-
-        setLoading(false);
-
       }
+
     };
 
     fetchProfile();
 
   }, []);
 
-  // Loading
-  if (loading) {
+  const handleSave = async () => {
 
-    return (
+    try {
 
-      <main className="min-h-screen bg-[#0f172a] text-white p-10">
+      setLoading(true);
 
-        Loading...
+      const response =
+        await fetch("/api/profile", {
 
-      </main>
-    );
-  }
+          method: "PUT",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify(profile),
+
+        });
+
+      const data =
+        await response.json();
+
+      if (data.success) {
+
+        alert("Profile updated");
+
+      } else {
+
+        alert("Something went wrong");
+
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+      alert("Error saving profile");
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
 
   return (
 
-    <main className="min-h-screen bg-[#0f172a] text-white p-10">
+    <main className="min-h-screen bg-black text-white p-10">
 
       {/* Header */}
       <div className="mb-10">
 
-        <h1 className="text-4xl font-bold mb-3">
+        <h1 className="text-5xl font-bold mb-3">
+
           My Profile
+
         </h1>
 
         <p className="text-gray-400">
+
           Manage your digital business profile
+
         </p>
 
       </div>
 
-      {/* Profile Image */}
-      <div className="mb-10">
+      {/* Form Card */}
+      <div className="bg-[#081028] border border-white/10 rounded-3xl p-10 max-w-6xl">
 
-        <div className="flex items-center gap-6">
+        {/* Image */}
+        <div className="flex items-center gap-6 mb-10">
 
-          {/* Preview */}
-          <div className="w-32 h-32 rounded-3xl overflow-hidden bg-[#111827] border border-white/10">
+          <div className="w-24 h-24 rounded-3xl overflow-hidden bg-[#111827]">
 
             {profile.image ? (
 
@@ -259,44 +186,24 @@ whatsapp:
 
           </div>
 
-          {/* Upload */}
-          <div>
+          <button className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl transition">
 
-            <label className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl cursor-pointer transition inline-block">
+            Upload Image
 
-              {
-                uploading
-                  ? "Uploading..."
-                  : "Upload Image"
-              }
-
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={
-                  handleImageUpload
-                }
-              />
-
-            </label>
-
-          </div>
+          </button>
 
         </div>
 
-      </div>
-
-      {/* Profile Form */}
-      <div className="bg-[#111827] border border-white/10 rounded-3xl p-10 max-w-5xl">
-
+        {/* Full Name + Username */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
           {/* Full Name */}
           <div>
 
             <label className="block mb-3 text-gray-300">
+
               Full Name
+
             </label>
 
             <input
@@ -304,12 +211,9 @@ whatsapp:
               value={profile.fullName}
               onChange={(e) =>
                 setProfile({
-
                   ...profile,
-
                   fullName:
                     e.target.value,
-
                 })
               }
               className="w-full bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
@@ -321,7 +225,9 @@ whatsapp:
           <div>
 
             <label className="block mb-3 text-gray-300">
+
               Username
+
             </label>
 
             <input
@@ -329,12 +235,9 @@ whatsapp:
               value={profile.username}
               onChange={(e) =>
                 setProfile({
-
                   ...profile,
-
                   username:
                     e.target.value,
-
                 })
               }
               className="w-full bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
@@ -343,189 +246,220 @@ whatsapp:
           </div>
 
         </div>
-{/* Company + Job Title */}
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
 
-  {/* Company */}
-  <div>
+        {/* Company + Job Title + Phone */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
 
-    <label className="block mb-3 text-gray-300">
-      Company
-    </label>
+          {/* Company */}
+          <div>
 
-    <input
-      type="text"
-      value={profile.company}
-      onChange={(e) =>
-        setProfile({
+            <label className="block mb-3 text-gray-300">
 
-          ...profile,
+              Company
 
-          company:
-            e.target.value,
+            </label>
 
-        })
-      }
-      className="w-full bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
-    />
+            <input
+              type="text"
+              value={profile.company}
+              onChange={(e) =>
+                setProfile({
+                  ...profile,
+                  company:
+                    e.target.value,
+                })
+              }
+              className="w-full bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
+            />
 
-  </div>
+          </div>
 
-  {/* Job Title */}
-  <div>
+          {/* Job Title */}
+          <div>
 
-    <label className="block mb-3 text-gray-300">
-      Job Title
-    </label>
+            <label className="block mb-3 text-gray-300">
 
-    <input
-      type="text"
-      value={profile.jobTitle}
-      onChange={(e) =>
-        setProfile({
+              Job Title
 
-          ...profile,
+            </label>
 
-          jobTitle:
-            e.target.value,
+            <input
+              type="text"
+              value={profile.jobTitle}
+              onChange={(e) =>
+                setProfile({
+                  ...profile,
+                  jobTitle:
+                    e.target.value,
+                })
+              }
+              className="w-full bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
+            />
 
-        })
-      }
-      className="w-full bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
-    />
+          </div>
 
-  </div>
+          {/* Phone Number */}
+          <div>
 
-</div>
+            <label className="block mb-3 text-gray-300">
+
+              Phone Number
+
+            </label>
+
+            <input
+              type="text"
+              value={profile.phone}
+              onChange={(e) =>
+                setProfile({
+                  ...profile,
+                  phone:
+                    e.target.value,
+                })
+              }
+              className="w-full bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
+              placeholder="+92 300 1234567"
+            />
+
+          </div>
+
+        </div>
+
         {/* About */}
         <div className="mt-8">
 
           <label className="block mb-3 text-gray-300">
+
             About Me
+
           </label>
 
           <textarea
-            rows={5}
             value={profile.bio}
             onChange={(e) =>
               setProfile({
-
                 ...profile,
-
                 bio:
                   e.target.value,
-
               })
             }
+            rows={5}
             className="w-full bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
-          ></textarea>
+          />
 
         </div>
-{/* Social Links */}
-<div className="mt-10">
 
-  <h2 className="text-2xl font-bold mb-6">
-    Social Links
-  </h2>
+        {/* Social Links */}
+        <div className="mt-10">
 
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <h2 className="text-2xl font-bold mb-6">
 
-    {/* LinkedIn */}
-    <input
-      type="text"
-      placeholder="LinkedIn URL"
-      value={profile.linkedin}
-      onChange={(e) =>
-        setProfile({
-          ...profile,
-          linkedin: e.target.value,
-        })
-      }
-      className="w-full bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
-    />
+            Social Links
 
-    {/* GitHub */}
-    <input
-      type="text"
-      placeholder="GitHub URL"
-      value={profile.github}
-      onChange={(e) =>
-        setProfile({
-          ...profile,
-          github: e.target.value,
-        })
-      }
-      className="w-full bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
-    />
+          </h2>
 
-    {/* Twitter */}
-    <input
-      type="text"
-      placeholder="Twitter/X URL"
-      value={profile.twitter}
-      onChange={(e) =>
-        setProfile({
-          ...profile,
-          twitter: e.target.value,
-        })
-      }
-      className="w-full bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
-    />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-    {/* Instagram */}
-    <input
-      type="text"
-      placeholder="Instagram URL"
-      value={profile.instagram}
-      onChange={(e) =>
-        setProfile({
-          ...profile,
-          instagram: e.target.value,
-        })
-      }
-      className="w-full bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
-    />
+            <input
+              type="text"
+              placeholder="LinkedIn"
+              value={profile.linkedin}
+              onChange={(e) =>
+                setProfile({
+                  ...profile,
+                  linkedin:
+                    e.target.value,
+                })
+              }
+              className="bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none"
+            />
 
-    {/* YouTube */}
-    <input
-      type="text"
-      placeholder="YouTube URL"
-      value={profile.youtube}
-      onChange={(e) =>
-        setProfile({
-          ...profile,
-          youtube: e.target.value,
-        })
-      }
-      className="w-full bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
-    />
+            <input
+              type="text"
+              placeholder="GitHub"
+              value={profile.github}
+              onChange={(e) =>
+                setProfile({
+                  ...profile,
+                  github:
+                    e.target.value,
+                })
+              }
+              className="bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none"
+            />
 
-    {/* WhatsApp */}
-    <input
-      type="text"
-      placeholder="WhatsApp Number"
-      value={profile.whatsapp}
-      onChange={(e) =>
-        setProfile({
-          ...profile,
-          whatsapp: e.target.value,
-        })
-      }
-      className="w-full bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
-    />
+            <input
+              type="text"
+              placeholder="Twitter"
+              value={profile.twitter}
+              onChange={(e) =>
+                setProfile({
+                  ...profile,
+                  twitter:
+                    e.target.value,
+                })
+              }
+              className="bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none"
+            />
 
-  </div>
+            <input
+              type="text"
+              placeholder="Instagram"
+              value={profile.instagram}
+              onChange={(e) =>
+                setProfile({
+                  ...profile,
+                  instagram:
+                    e.target.value,
+                })
+              }
+              className="bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none"
+            />
 
-</div>
+            <input
+              type="text"
+              placeholder="YouTube"
+              value={profile.youtube}
+              onChange={(e) =>
+                setProfile({
+                  ...profile,
+                  youtube:
+                    e.target.value,
+                })
+              }
+              className="bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none"
+            />
+
+            <input
+              type="text"
+              placeholder="WhatsApp Number"
+              value={profile.whatsapp}
+              onChange={(e) =>
+                setProfile({
+                  ...profile,
+                  whatsapp:
+                    e.target.value,
+                })
+              }
+              className="bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 outline-none"
+            />
+
+          </div>
+
+        </div>
+
         {/* Save Button */}
         <div className="mt-10">
 
           <button
-            onClick={saveProfile}
-            className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-2xl font-medium transition"
+            onClick={handleSave}
+            disabled={loading}
+            className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-2xl transition"
           >
 
-            Save Profile
+            {loading
+              ? "Saving..."
+              : "Save Profile"}
 
           </button>
 
