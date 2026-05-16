@@ -10,7 +10,8 @@ export async function GET() {
 
   try {
 
-    const session = await getServerSession(authOptions);
+    const session =
+      await getServerSession(authOptions);
 
     if (!session?.user?.email) {
 
@@ -21,22 +22,23 @@ export async function GET() {
 
     }
 
-    const user = await prisma.user.findUnique({
+    const user =
+      await prisma.user.findUnique({
 
-      where: {
-        email: session.user.email,
-      },
+        where: {
+          email: session.user.email,
+        },
 
-      include: {
-        analytics: true,
-      },
+        include: {
+          analytics: true,
+        },
 
-    });
+      });
 
-    if (!user?.analytics) {
+    if (!user) {
 
       return NextResponse.json(
-        { error: "Analytics not found" },
+        { error: "User not found" },
         { status: 404 }
       );
 
@@ -44,10 +46,23 @@ export async function GET() {
 
     return NextResponse.json({
 
-      profileViews: user.analytics.profileViews,
-      qrScans: user.analytics.qrScans,
-      nfcTaps: user.analytics.nfcTaps,
-      leads: user.analytics.leads,
+      profileViews:
+        user.analytics?.profileViews || 0,
+
+      qrScans:
+        user.analytics?.qrScans || 0,
+
+      nfcTaps:
+        user.analytics?.nfcTaps || 0,
+
+      leads:
+        user.analytics?.leads || 0,
+
+      plan:
+        user.plan || "FREE",
+
+      subscriptionStatus:
+        user.subscriptionStatus || null,
 
     });
 
@@ -61,4 +76,5 @@ export async function GET() {
     );
 
   }
+
 }
