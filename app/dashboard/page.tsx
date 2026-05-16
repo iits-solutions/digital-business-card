@@ -63,6 +63,7 @@ export default function DashboardPage() {
         console.log(error);
 
       }
+
     };
 
     fetchAnalytics();
@@ -109,7 +110,7 @@ export default function DashboardPage() {
     <main className="min-h-screen bg-black text-white p-8">
 
       {/* Header */}
-      <div className="flex justify-between items-center mb-10">
+      <div className="flex flex-col md:flex-row justify-between md:items-center gap-6 mb-10">
 
         <div>
 
@@ -150,18 +151,35 @@ export default function DashboardPage() {
       </div>
 
       {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6 mb-10">
+
+        {/* Current Plan */}
+        <div className="bg-gradient-to-br from-blue-600 to-cyan-500 rounded-3xl p-8">
+
+          <h2 className="text-white/80 text-lg mb-4">
+
+            Current Plan
+
+          </h2>
+
+          <p className="text-4xl font-bold">
+
+            FREE
+
+          </p>
+
+        </div>
 
         {/* Profile Views */}
         <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
 
-          <h2 className="text-gray-400 text-xl mb-4">
+          <h2 className="text-gray-400 text-lg mb-4">
 
             Profile Views
 
           </h2>
 
-          <p className="text-5xl font-bold">
+          <p className="text-4xl font-bold">
 
             {analytics.profileViews}
 
@@ -172,13 +190,13 @@ export default function DashboardPage() {
         {/* QR Scans */}
         <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
 
-          <h2 className="text-gray-400 text-xl mb-4">
+          <h2 className="text-gray-400 text-lg mb-4">
 
             QR Scans
 
           </h2>
 
-          <p className="text-5xl font-bold">
+          <p className="text-4xl font-bold">
 
             {analytics.qrScans}
 
@@ -189,13 +207,13 @@ export default function DashboardPage() {
         {/* NFC Taps */}
         <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
 
-          <h2 className="text-gray-400 text-xl mb-4">
+          <h2 className="text-gray-400 text-lg mb-4">
 
             NFC Taps
 
           </h2>
 
-          <p className="text-5xl font-bold">
+          <p className="text-4xl font-bold">
 
             {analytics.nfcTaps}
 
@@ -206,13 +224,13 @@ export default function DashboardPage() {
         {/* Leads */}
         <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
 
-          <h2 className="text-gray-400 text-xl mb-4">
+          <h2 className="text-gray-400 text-lg mb-4">
 
             Leads
 
           </h2>
 
-          <p className="text-5xl font-bold">
+          <p className="text-4xl font-bold">
 
             {analytics.leads}
 

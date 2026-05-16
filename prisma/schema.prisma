@@ -22,6 +22,12 @@ model User {
 
   analytics Analytics?
 
+  plan               String   @default("FREE")
+
+  subscriptionStatus String? 
+
+  stripeCustomerId   String?
+
   accounts  Account[]
 
   sessions  Session[]

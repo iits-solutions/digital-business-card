@@ -484,89 +484,160 @@ export default function Home() {
 
 </section>
 
-      {/* FOOTER */}
-      <footer className="border-t border-gray-800 bg-black px-6 py-16">
+     {/* FOOTER */}
+<footer className="border-t border-gray-800 bg-black px-6 py-16">
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+  <div className="max-w-7xl mx-auto">
 
-          <div>
+    {/* Footer Grid */}
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-12 justify-items-center text-center">
 
-            <h3 className="text-2xl font-bold mb-4">
+      {/* Brand */}
+      <div>
 
-              ILinq.Team
+        <h3 className="text-2xl font-bold mb-4">
 
-            </h3>
+          ilinq.team
 
-            <p className="text-gray-400">
+        </h3>
 
-              Smart digital business cards powered by NFC and QR technology.
+        <p className="text-gray-400 text-sm leading-relaxed max-w-[220px]">
 
-            </p>
+          Smart digital business cards powered by NFC and QR technology.
 
-          </div>
+        </p>
 
-          <div>
+      </div>
 
-            <h4 className="text-xl font-semibold mb-4">
+      {/* Product */}
+      <div>
 
-              Product
+        <h4 className="text-lg font-semibold mb-4">
 
-            </h4>
+          Product
 
-            <ul className="space-y-3 text-gray-400">
+        </h4>
 
-              <li><a href="#features">Features</a></li>
-              <li><a href="#">Pricing</a></li>
-              <li><a href="#">Themes</a></li>
+        <ul className="space-y-2 text-gray-400 text-sm">
 
-            </ul>
+          <li>
+            <a
+              href="#features"
+              className="hover:text-white transition"
+            >
+              Features
+            </a>
+          </li>
 
-          </div>
+          <li>
+            <a
+              href="#pricing"
+              className="hover:text-white transition"
+            >
+              Pricing
+            </a>
+          </li>
 
-          <div>
+          <li>
+            <a
+              href="#"
+              className="hover:text-white transition"
+            >
+              Themes
+            </a>
+          </li>
 
-            <h4 className="text-xl font-semibold mb-4">
+        </ul>
 
-              Company
+      </div>
 
-            </h4>
+      {/* Company */}
+      <div>
 
-            <ul className="space-y-3 text-gray-400">
+        <h4 className="text-lg font-semibold mb-4">
 
-              <li><a href="#">About</a></li>
-              <li><a href="#">Contact</a></li>
-              <li><a href="#">Support</a></li>
+          Company
 
-            </ul>
+        </h4>
 
-          </div>
+        <ul className="space-y-2 text-gray-400 text-sm">
 
-          <div>
+          <li>
+            <a
+              href="#"
+              className="hover:text-white transition"
+            >
+              About
+            </a>
+          </li>
 
-            <h4 className="text-xl font-semibold mb-4">
+          <li>
+            <a
+              href="#"
+              className="hover:text-white transition"
+            >
+              Contact
+            </a>
+          </li>
 
-              Legal
+          <li>
+            <a
+              href="#"
+              className="hover:text-white transition"
+            >
+              Support
+            </a>
+          </li>
 
-            </h4>
+        </ul>
 
-            <ul className="space-y-3 text-gray-400">
+      </div>
 
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Terms of Service</a></li>
+      {/* Legal */}
+      <div>
 
-            </ul>
+        <h4 className="text-lg font-semibold mb-4">
 
-          </div>
+          Legal
 
-        </div>
+        </h4>
 
-        <div className="border-t border-gray-800 mt-16 pt-8 text-center text-gray-500">
+        <ul className="space-y-2 text-gray-400 text-sm">
 
-          © 2025 ILinq. All rights reserved.
+          <li>
+            <a
+              href="#"
+              className="hover:text-white transition"
+            >
+              Privacy Policy
+            </a>
+          </li>
 
-        </div>
+          <li>
+            <a
+              href="#"
+              className="hover:text-white transition"
+            >
+              Terms of Service
+            </a>
+          </li>
 
-      </footer>
+        </ul>
+
+      </div>
+
+    </div>
+
+    {/* Bottom */}
+    <div className="border-t border-gray-800 mt-14 pt-6 text-center text-gray-500 text-sm">
+
+      © 2025 ilinq.team — All rights reserved.
+
+    </div>
+
+  </div>
+
+</footer>
 
     </main>
   );
