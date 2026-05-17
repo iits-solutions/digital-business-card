@@ -42,19 +42,37 @@ export default async function LeadsPage() {
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <div className="mb-10">
+        <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
-          <h1 className="text-5xl font-bold mb-4">
+          <div>
 
-            Lead Management
+            <h1 className="text-5xl font-bold mb-4">
 
-          </h1>
+              Lead Management
 
-          <p className="text-gray-400 text-lg">
+            </h1>
 
-            Manage and track your captured business leads.
+            <p className="text-gray-400 text-lg">
 
-          </p>
+              Manage and track your captured business leads.
+
+            </p>
+
+          </div>
+
+          {/* Export Button */}
+          <div>
+
+            <a
+              href="/api/leads/export"
+              className="inline-block bg-blue-600 hover:bg-blue-700 transition px-6 py-3 rounded-2xl font-semibold"
+            >
+
+              Export CSV
+
+            </a>
+
+          </div>
 
         </div>
 
@@ -128,7 +146,7 @@ export default async function LeadsPage() {
 
                     <tr
                       key={lead.id}
-                      className="border-t border-white/10"
+                      className="border-t border-white/10 hover:bg-white/5 transition"
                     >
 
                       <td className="p-5">
