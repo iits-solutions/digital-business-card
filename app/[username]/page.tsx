@@ -1,15 +1,15 @@
-"use client";
-
-import { useState } from "react";
-
 import { prisma } from "@/lib/prisma";
 
 import { notFound } from "next/navigation";
 
+import LeadCaptureForm from "@/components/LeadCaptureForm";
+
 interface Props {
+
   params: Promise<{
     username: string;
   }>;
+
 }
 
 export default async function PublicProfilePage({
@@ -33,7 +33,9 @@ export default async function PublicProfilePage({
     });
 
   if (!profile) {
+
     notFound();
+
   }
 
   // Increment Profile Views
@@ -235,7 +237,7 @@ END:VCARD
 
             <h2 className="text-3xl font-bold mb-8">
 
-              Connect With Me
+              Social Links
 
             </h2>
 
@@ -329,7 +331,7 @@ END:VCARD
 
           </div>
 
-          {/* Lead Capture Form */}
+          {/* Lead Capture */}
           <LeadCaptureForm username={username} />
 
         </div>
@@ -352,197 +354,5 @@ END:VCARD
       </div>
 
     </main>
-  );
-}
-
-/* Lead Capture Component */
-function LeadCaptureForm({
-  username,
-}: {
-  username: string;
-}) {
-
-  const [leadData, setLeadData] =
-    useState({
-
-      name: "",
-      email: "",
-      phone: "",
-      company: "",
-
-    });
-
-  const [loading, setLoading] =
-    useState(false);
-
-  const [message, setMessage] =
-    useState("");
-
-  const handleLeadSubmit = async (
-    e: React.FormEvent
-  ) => {
-
-    e.preventDefault();
-
-    try {
-
-      setLoading(true);
-
-      setMessage("");
-
-      const response =
-        await fetch("/api/leads", {
-
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-
-          body: JSON.stringify({
-
-            username,
-
-            ...leadData,
-
-          }),
-
-        });
-
-      const data =
-        await response.json();
-
-      if (data.success) {
-
-        setMessage(
-          "✅ Information submitted successfully!"
-        );
-
-        setLeadData({
-
-          name: "",
-          email: "",
-          phone: "",
-          company: "",
-
-        });
-
-      } else {
-
-        setMessage(
-          "❌ Failed to submit"
-        );
-
-      }
-
-    } catch (error) {
-
-      console.log(error);
-
-      setMessage(
-        "❌ Something went wrong"
-      );
-
-    } finally {
-
-      setLoading(false);
-
-    }
-  };
-
-  return (
-
-    <div className="bg-[#081028] border border-white/10 rounded-3xl p-8 mb-20">
-
-      <h2 className="text-3xl font-bold mb-6">
-
-        Connect With Me
-
-      </h2>
-
-      <form
-        onSubmit={handleLeadSubmit}
-        className="space-y-5"
-      >
-
-        <input
-          type="text"
-          placeholder="Your Name"
-          value={leadData.name}
-          onChange={(e) =>
-            setLeadData({
-              ...leadData,
-              name: e.target.value,
-            })
-          }
-          required
-          className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
-        />
-
-        <input
-          type="email"
-          placeholder="Your Email"
-          value={leadData.email}
-          onChange={(e) =>
-            setLeadData({
-              ...leadData,
-              email: e.target.value,
-            })
-          }
-          className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
-        />
-
-        <input
-          type="text"
-          placeholder="Phone Number"
-          value={leadData.phone}
-          onChange={(e) =>
-            setLeadData({
-              ...leadData,
-              phone: e.target.value,
-            })
-          }
-          className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
-        />
-
-        <input
-          type="text"
-          placeholder="Company"
-          value={leadData.company}
-          onChange={(e) =>
-            setLeadData({
-              ...leadData,
-              company: e.target.value,
-            })
-          }
-          className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
-        />
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700 transition px-8 py-4 rounded-2xl font-semibold"
-        >
-
-          {loading
-            ? "Submitting..."
-            : "Submit"}
-
-        </button>
-
-      </form>
-
-      {message && (
-
-        <div className="mt-5 text-lg">
-
-          {message}
-
-        </div>
-
-      )}
-
-    </div>
   );
 }
