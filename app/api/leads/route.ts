@@ -11,6 +11,8 @@ export async function POST(
     const body =
       await request.json();
 
+    console.log("BODY:", body);
+
     const {
       username,
       name,
@@ -19,18 +21,27 @@ export async function POST(
       company,
     } = body;
 
-    const user =
-      await prisma.user.findFirst({
+    // Find profile by username
+    const profile =
+      await prisma.profile.findFirst({
 
         where: {
-          email: {
-            startsWith: username,
+          username: {
+            equals:
+              username.toLowerCase(),
+            mode: "insensitive",
           },
+        },
+
+        include: {
+          user: true,
         },
 
       });
 
-    if (!user) {
+    console.log("PROFILE:", profile);
+
+    if (!profile?.user) {
 
       return NextResponse.json(
         {
@@ -42,16 +53,42 @@ export async function POST(
 
     }
 
-    await prisma.lead.create({
+    // Create lead
+    const lead =
+      await prisma.lead.create({
+
+        data: {
+
+          name,
+          email,
+          phone,
+          company,
+
+          userId:
+            profile.user.id,
+
+        },
+
+      });
+
+    console.log(
+      "LEAD CREATED:",
+      lead
+    );
+
+    // Update analytics safely
+    await prisma.analytics.updateMany({
+
+      where: {
+        userId:
+          profile.user.id,
+      },
 
       data: {
 
-        name,
-        email,
-        phone,
-        company,
-
-        userId: user.id,
+        leads: {
+          increment: 1,
+        },
 
       },
 
@@ -65,11 +102,15 @@ export async function POST(
 
   } catch (error) {
 
-    console.log(error);
+    console.log(
+      "FULL ERROR:",
+      error
+    );
 
     return NextResponse.json(
       {
         success: false,
+        error: String(error),
       },
       { status: 500 }
     );
