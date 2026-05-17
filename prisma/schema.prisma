@@ -31,6 +31,8 @@ model User {
   accounts  Account[]
 
   sessions  Session[]
+  
+  leads Lead[]
 }
 
 model Profile {
@@ -147,4 +149,24 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Lead {
+
+  id        String   @id @default(cuid())
+
+  name      String
+
+  email     String?
+
+  phone     String?
+
+  company   String?
+
+  createdAt DateTime @default(now())
+
+  userId    String
+
+  user      User @relation(fields: [userId], references: [id])
+
 }
