@@ -1,138 +1,204 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 export default function NFCPage() {
+
+  const [supported, setSupported] =
+    useState(false);
+
+  const [writing, setWriting] =
+    useState(false);
+
+  const [message, setMessage] =
+    useState("");
+
+  // Example profile URL
+  const profileUrl =
+    "https://digital-business-card-topaz.vercel.app/imran";
+
+  useEffect(() => {
+
+    if ("NDEFReader" in window) {
+
+      setSupported(true);
+
+    }
+
+  }, []);
+
+  const writeNFC = async () => {
+
+    try {
+
+      setWriting(true);
+      setMessage("");
+
+      // @ts-ignore
+      const ndef = new NDEFReader();
+
+      await ndef.write({
+        records: [
+          {
+            recordType: "url",
+            data: profileUrl,
+          },
+        ],
+      });
+
+      setMessage(
+        "✅ NFC card written successfully!"
+      );
+
+    } catch (error) {
+
+      console.log(error);
+
+      setMessage(
+        "❌ Failed to write NFC tag"
+      );
+
+    } finally {
+
+      setWriting(false);
+
+    }
+  };
+
   return (
-    <main className="min-h-screen bg-[#0f172a] text-white p-10">
 
-      {/* Header */}
-      <div className="mb-10">
+    <main className="min-h-screen bg-black text-white p-8">
 
-        <h1 className="text-4xl font-bold mb-3">
-          NFC Card Management
-        </h1>
+      <div className="max-w-3xl mx-auto">
 
-        <p className="text-gray-400">
-          Manage your smart NFC business cards
-        </p>
+        <div className="mb-10">
 
-      </div>
+          <h1 className="text-5xl font-bold mb-4">
 
-      {/* Main Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
+            NFC Tools
 
-        {/* NFC Card Preview */}
-        <div className="bg-[#111827] border border-white/10 rounded-3xl p-10">
+          </h1>
 
-          <h2 className="text-2xl font-semibold mb-8">
-            NFC Business Card
-          </h2>
+          <p className="text-gray-400 text-lg">
 
-          {/* NFC Card */}
-          <div className="relative h-64 rounded-3xl bg-gradient-to-r from-blue-600 to-cyan-500 p-8 flex flex-col justify-between shadow-2xl">
+            Write your digital profile directly to NFC cards and tags.
 
-            <div className="flex items-center justify-between">
-
-              <h3 className="text-3xl font-bold">
-                ILinq
-              </h3>
-
-              <div className="w-12 h-12 rounded-full border-2 border-white flex items-center justify-center">
-                NFC
-              </div>
-
-            </div>
-
-            <div>
-
-              <h4 className="text-3xl font-semibold">
-                Imran Akram
-              </h4>
-
-              <p className="text-white/80 mt-2">
-                Founder & CEO
-              </p>
-
-            </div>
-
-          </div>
-
-          {/* Status */}
-          <div className="mt-8 flex items-center justify-between bg-[#0f172a] border border-white/10 rounded-2xl px-6 py-5">
-
-            <div>
-
-              <p className="text-gray-400 text-sm">
-                Card Status
-              </p>
-
-              <h4 className="text-xl font-semibold mt-1">
-                Connected
-              </h4>
-
-            </div>
-
-            <div className="w-4 h-4 rounded-full bg-green-500"></div>
-
-          </div>
+          </p>
 
         </div>
 
-        {/* NFC Actions */}
-        <div className="bg-[#111827] border border-white/10 rounded-3xl p-10">
+        {/* NFC Status */}
+        <div className="bg-[#081028] border border-white/10 rounded-3xl p-8 mb-8">
 
-          <h2 className="text-2xl font-semibold mb-8">
-            NFC Actions
+          <h2 className="text-2xl font-bold mb-4">
+
+            NFC Compatibility
+
           </h2>
 
-          <div className="space-y-6">
+          {supported ? (
 
-            <div className="bg-[#0f172a] border border-white/10 rounded-2xl p-6">
+            <p className="text-green-400">
 
-              <h3 className="text-xl font-semibold mb-3">
-                Write Profile to NFC
-              </h3>
+              ✅ Your device supports Web NFC
 
-              <p className="text-gray-400 mb-5">
-                Program your NFC card with your ILinq profile URL.
+            </p>
+
+          ) : (
+
+            <div>
+
+              <p className="text-red-400 mb-3">
+
+                ❌ Web NFC not supported on this device
+
               </p>
 
-              <button className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl transition">
-                Write NFC
-              </button>
+              <p className="text-gray-400">
+
+                Best supported on Android Chrome.
+
+              </p>
 
             </div>
 
-            <div className="bg-[#0f172a] border border-white/10 rounded-2xl p-6">
+          )}
 
-              <h3 className="text-xl font-semibold mb-3">
-                NFC Scan Analytics
-              </h3>
+        </div>
 
-              <p className="text-gray-400 mb-5">
-                View NFC tap performance and engagement data.
-              </p>
+        {/* NFC Writer */}
+        <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
 
-              <button className="bg-white/10 hover:bg-white/20 px-6 py-3 rounded-2xl transition">
-                View Analytics
-              </button>
+          <h2 className="text-3xl font-bold mb-4">
 
-            </div>
+            Write NFC Card
 
-            <div className="bg-[#0f172a] border border-white/10 rounded-2xl p-6">
+          </h2>
 
-              <h3 className="text-xl font-semibold mb-3">
-                Activate New Card
-              </h3>
+          <p className="text-gray-400 mb-6">
 
-              <p className="text-gray-400 mb-5">
-                Connect a new NFC card to your account.
-              </p>
+            Tap the button below and hold your NFC card near your phone.
 
-              <button className="bg-white/10 hover:bg-white/20 px-6 py-3 rounded-2xl transition">
-                Activate Card
-              </button>
+          </p>
 
-            </div>
+          <div className="bg-black border border-white/10 rounded-2xl p-4 mb-6 break-all">
+
+            {profileUrl}
 
           </div>
+
+          <button
+            onClick={writeNFC}
+            disabled={!supported || writing}
+            className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 transition px-8 py-4 rounded-2xl font-semibold text-lg"
+          >
+
+            {writing
+              ? "Writing NFC..."
+              : "Write NFC Card"}
+
+          </button>
+
+          {message && (
+
+            <div className="mt-6 text-lg">
+
+              {message}
+
+            </div>
+
+          )}
+
+        </div>
+
+        {/* Instructions */}
+        <div className="bg-[#081028] border border-white/10 rounded-3xl p-8 mt-8">
+
+          <h2 className="text-2xl font-bold mb-4">
+
+            Instructions
+
+          </h2>
+
+          <ul className="space-y-3 text-gray-300">
+
+            <li>
+              • Use Android Chrome for best NFC support
+            </li>
+
+            <li>
+              • Hold NFC card close to phone during writing
+            </li>
+
+            <li>
+              • NFC cards can later be reused and updated
+            </li>
+
+            <li>
+              • iPhone browser NFC support is limited
+            </li>
+
+          </ul>
 
         </div>
 
