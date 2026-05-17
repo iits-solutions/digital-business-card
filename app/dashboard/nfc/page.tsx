@@ -2,7 +2,12 @@
 
 import { useEffect, useState } from "react";
 
+import { useSession } from "next-auth/react";
+
 export default function NFCPage() {
+
+  const { data: session } =
+    useSession();
 
   const [supported, setSupported] =
     useState(false);
@@ -13,10 +18,10 @@ export default function NFCPage() {
   const [message, setMessage] =
     useState("");
 
-  // Example profile URL
-  const profileUrl =
-    "https://digital-business-card-topaz.vercel.app/imran";
+  const [profileUrl, setProfileUrl] =
+    useState("");
 
+  // Detect NFC Support
   useEffect(() => {
 
     if ("NDEFReader" in window) {
@@ -27,11 +32,30 @@ export default function NFCPage() {
 
   }, []);
 
+  // Generate Dynamic Profile URL
+  useEffect(() => {
+
+    if (session?.user?.email) {
+
+      const username =
+        session.user.email
+          .split("@")[0];
+
+      setProfileUrl(
+        `https://digital-business-card-topaz.vercel.app/${username}`
+      );
+
+    }
+
+  }, [session]);
+
+  // Write NFC
   const writeNFC = async () => {
 
     try {
 
       setWriting(true);
+
       setMessage("");
 
       // @ts-ignore
@@ -71,6 +95,7 @@ export default function NFCPage() {
 
       <div className="max-w-3xl mx-auto">
 
+        {/* Header */}
         <div className="mb-10">
 
           <h1 className="text-5xl font-bold mb-4">
@@ -141,15 +166,21 @@ export default function NFCPage() {
 
           </p>
 
-          <div className="bg-black border border-white/10 rounded-2xl p-4 mb-6 break-all">
+          {/* Profile URL */}
+          <div className="bg-black border border-white/10 rounded-2xl p-4 mb-6 break-all text-sm text-gray-300">
 
-            {profileUrl}
+            {profileUrl || "Loading profile URL..."}
 
           </div>
 
+          {/* Write Button */}
           <button
             onClick={writeNFC}
-            disabled={!supported || writing}
+            disabled={
+              !supported ||
+              writing ||
+              !profileUrl
+            }
             className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 transition px-8 py-4 rounded-2xl font-semibold text-lg"
           >
 
@@ -159,6 +190,7 @@ export default function NFCPage() {
 
           </button>
 
+          {/* Message */}
           {message && (
 
             <div className="mt-6 text-lg">
