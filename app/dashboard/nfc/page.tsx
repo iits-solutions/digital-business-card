@@ -42,7 +42,7 @@ export default function NFCPage() {
           .split("@")[0];
 
       setProfileUrl(
-        `https://digital-business-card-topaz.vercel.app/${username}`
+       `https://digital-business-card-topaz.vercel.app/nfc/${username}`
       );
 
     }
