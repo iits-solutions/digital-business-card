@@ -18,21 +18,24 @@ model User {
 
   createdAt DateTime @default(now())
 
+  // Relations
   profile   Profile?
 
   analytics Analytics?
 
-  plan               String   @default("FREE")
-
-  subscriptionStatus String? 
-
-  stripeCustomerId   String?
-
   accounts  Account[]
 
   sessions  Session[]
-  
-  leads Lead[]
+
+  leads     Lead[]
+
+  // Subscription
+  plan               String   @default("FREE")
+
+  subscriptionStatus String?
+
+  stripeCustomerId   String?
+
 }
 
 model Profile {
@@ -71,7 +74,7 @@ model Profile {
 
   userId      String   @unique
 
-  user        User     @relation(fields: [userId], references: [id])
+  user        User @relation(fields: [userId], references: [id])
 
 }
 
@@ -87,13 +90,34 @@ model Analytics {
 
   leads         Int      @default(0)
 
-  userId        String   @unique
-
-  user          User     @relation(fields: [userId], references: [id])
-
   createdAt     DateTime @default(now())
 
   updatedAt     DateTime @updatedAt
+
+  userId        String   @unique
+
+  user          User @relation(fields: [userId], references: [id])
+
+}
+
+model Lead {
+
+  id        String   @id @default(cuid())
+
+  name      String
+
+  email     String?
+
+  phone     String?
+
+  company   String?
+
+  createdAt DateTime @default(now())
+
+  userId    String
+
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
 }
 
 model Account {
@@ -125,6 +149,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+
 }
 
 model Session {
@@ -138,6 +163,7 @@ model Session {
   expires      DateTime
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
 }
 
 model VerificationToken {
@@ -149,24 +175,5 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-}
-
-model Lead {
-
-  id        String   @id @default(cuid())
-
-  name      String
-
-  email     String?
-
-  phone     String?
-
-  company   String?
-
-  createdAt DateTime @default(now())
-
-  userId    String
-
-  user      User @relation(fields: [userId], references: [id])
 
 }

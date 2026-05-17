@@ -19,7 +19,6 @@ export async function POST(
       company,
     } = body;
 
-    // Find profile owner
     const user =
       await prisma.user.findFirst({
 
@@ -34,41 +33,25 @@ export async function POST(
     if (!user) {
 
       return NextResponse.json(
-        { error: "User not found" },
+        {
+          success: false,
+          error: "User not found",
+        },
         { status: 404 }
       );
 
     }
 
-    // Save lead
-    const lead =
-      await prisma.lead.create({
-
-        data: {
-
-          name,
-          email,
-          phone,
-          company,
-
-          userId: user.id,
-
-        },
-
-      });
-
-    // Update analytics
-    await prisma.analytics.updateMany({
-
-      where: {
-        userId: user.id,
-      },
+    await prisma.lead.create({
 
       data: {
 
-        leads: {
-          increment: 1,
-        },
+        name,
+        email,
+        phone,
+        company,
+
+        userId: user.id,
 
       },
 
@@ -77,7 +60,6 @@ export async function POST(
     return NextResponse.json({
 
       success: true,
-      lead,
 
     });
 
@@ -86,7 +68,9 @@ export async function POST(
     console.log(error);
 
     return NextResponse.json(
-      { error: "Something went wrong" },
+      {
+        success: false,
+      },
       { status: 500 }
     );
 
