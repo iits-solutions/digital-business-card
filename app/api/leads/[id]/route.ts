@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 
 import { redirect } from "next/navigation";
 
-import LeadsTable from "@/app/components/LeadsTable";
+import LeadsTable from "@/components/LeadsTable";
 
 export default async function LeadsPage() {
 
