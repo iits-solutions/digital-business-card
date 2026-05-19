@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 export async function DELETE(
   request: Request,
-  context: {
+  { params }: {
     params: Promise<{
       id: string;
     }>;
@@ -14,7 +14,7 @@ export async function DELETE(
   try {
 
     const { id } =
-      await context.params;
+      await params;
 
     await prisma.lead.delete({
 
@@ -37,6 +37,7 @@ export async function DELETE(
     return NextResponse.json(
       {
         success: false,
+        error: "Failed to delete lead",
       },
       { status: 500 }
     );

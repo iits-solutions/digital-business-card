@@ -72,6 +72,23 @@ export default async function QRPage({
 
   });
 
+  // Create activity log
+  await prisma.activity.create({
+
+    data: {
+
+      type: "QR_SCAN",
+
+      message:
+        `${profile.fullName} QR scanned`,
+
+      userId:
+        profile.userId,
+
+    },
+
+  });
+
   // Redirect to profile
   redirect(`/${profile.username}`);
 

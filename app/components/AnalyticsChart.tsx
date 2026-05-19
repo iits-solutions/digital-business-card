@@ -2,43 +2,61 @@
 
 import {
 
+  ResponsiveContainer,
   LineChart,
   Line,
   XAxis,
   YAxis,
   Tooltip,
   CartesianGrid,
-  ResponsiveContainer,
 
 } from "recharts";
 
-export default function AnalyticsChart({
-  data,
-}: {
+interface Props {
+
   data: {
     name: string;
     leads: number;
   }[];
-}) {
+
+}
+
+export default function AnalyticsChart({
+  data,
+}: Props) {
 
   return (
 
-    <div className="bg-[#081028] border border-white/10 rounded-3xl p-6 mt-10">
+    <div className="bg-[#081028] border border-white/10 rounded-3xl p-6 mt-8">
 
-      <h2 className="text-2xl font-bold mb-6">
+      <h2 className="text-3xl font-bold mb-2">
 
         Leads Growth
 
       </h2>
 
-      <div className="w-full h-[350px] min-h-[350px]">
+      <p className="text-gray-400 mb-8">
+
+        Weekly lead analytics
+
+      </p>
+
+      <div className="w-full h-[400px]">
 
         <ResponsiveContainer
           width="100%"
           height="100%"
         >
 
-          <LineChart data={data}>
+          <LineChart
+            data={data}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 0,
+              bottom: 0,
+            }}
+          >
 
             <CartesianGrid
               strokeDasharray="3 3"
@@ -53,7 +71,6 @@ export default function AnalyticsChart({
             <YAxis
               stroke="#94A3B8"
               allowDecimals={false}
-              domain={[0, "dataMax + 1"]}
             />
 
             <Tooltip
@@ -64,7 +81,6 @@ export default function AnalyticsChart({
                   "1px solid #1E293B",
                 borderRadius:
                   "12px",
-                color: "white",
               }}
             />
 
@@ -74,12 +90,11 @@ export default function AnalyticsChart({
               stroke="#3B82F6"
               strokeWidth={4}
               dot={{
-                r: 5,
+                r: 6,
               }}
               activeDot={{
-                r: 7,
+                r: 8,
               }}
-              connectNulls
             />
 
           </LineChart>
