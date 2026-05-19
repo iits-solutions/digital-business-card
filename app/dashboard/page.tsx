@@ -1,327 +1,162 @@
-"use client";
+import { getServerSession } from "next-auth";
 
-import { signOut, useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
-import Link from "next/link";
+import { authOptions } from "@/lib/auth";
 
-import { useEffect, useState } from "react";
+import { prisma } from "@/lib/prisma";
 
-import {
+import StatsCard from "@/app/components/StatsCard";
 
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
+import AnalyticsChart from "@/app/components/AnalyticsChart";
 
-} from "recharts";
+export default async function DashboardPage() {
 
-export default function DashboardPage() {
+  const session =
+    await getServerSession(authOptions);
 
-  const { data: session } =
-    useSession();
+  if (!session?.user?.email) {
 
-  const [analytics, setAnalytics] =
-    useState({
+    redirect("/login");
 
-      profileViews: 0,
+  }
 
-      qrScans: 0,
+  // Find user with analytics
+  const user =
+    await prisma.user.findUnique({
 
-      nfcTaps: 0,
+      where: {
+        email: session.user.email,
+      },
 
-      leads: 0,
-
-      plan: "FREE",
-
-      subscriptionStatus: null,
+      include: {
+        analytics: true,
+        leads: true,
+      },
 
     });
 
-  useEffect(() => {
+  const analytics =
+    user?.analytics;
 
-    const fetchAnalytics = async () => {
-
-      try {
-
-        const response =
-          await fetch("/api/dashboard");
-
-        const data =
-          await response.json();
-
-        setAnalytics({
-
-          profileViews:
-            data.profileViews || 0,
-
-          qrScans:
-            data.qrScans || 0,
-
-          nfcTaps:
-            data.nfcTaps || 0,
-
-          leads:
-            data.leads || 0,
-
-          plan:
-            data.plan || "FREE",
-
-          subscriptionStatus:
-            data.subscriptionStatus || null,
-
-        });
-
-      } catch (error) {
-
-        console.log(error);
-
-      }
-
-    };
-
-    fetchAnalytics();
-
-  }, []);
-
-  // Demo chart data
-  const chartData = [
-
-    {
-      name: "Mon",
-      views:
-        analytics.profileViews * 0.2,
-    },
-
-    {
-      name: "Tue",
-      views:
-        analytics.profileViews * 0.4,
-    },
-
-    {
-      name: "Wed",
-      views:
-        analytics.profileViews * 0.6,
-    },
-
-    {
-      name: "Thu",
-      views:
-        analytics.profileViews * 0.8,
-    },
-
-    {
-      name: "Fri",
-      views:
-        analytics.profileViews,
-    },
-
+  // REAL Dynamic Chart Data
+  const days = [
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
   ];
+
+  const leadsPerDay: Record<
+    string,
+    number
+  > = {
+
+    Sun: 0,
+    Mon: 0,
+    Tue: 0,
+    Wed: 0,
+    Thu: 0,
+    Fri: 0,
+    Sat: 0,
+
+  };
+
+  // Count leads by weekday
+  user?.leads.forEach((lead) => {
+
+    const day =
+      days[
+        new Date(
+          lead.createdAt
+        ).getDay()
+      ];
+
+    leadsPerDay[day]++;
+
+  });
+
+  // Convert to chart format
+  const chartData =
+    days.map((day) => ({
+
+      name: day,
+
+      leads:
+        leadsPerDay[day] > 0
+          ? leadsPerDay[day]
+          : 0.1,
+
+    }));
 
   return (
 
     <main className="min-h-screen bg-black text-white p-8">
 
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between md:items-center gap-6 mb-10">
+      <div className="max-w-7xl mx-auto">
 
-        <div>
+        {/* Header */}
+        <div className="mb-10">
 
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-5xl font-bold mb-4">
 
-            Dashboard
+            Analytics Dashboard
 
           </h1>
 
-          <p className="text-gray-400 mt-2">
+          <p className="text-gray-400 text-lg">
 
-            Welcome back,{" "}
-            {session?.user?.name}
-
-          </p>
-
-          <p className="text-sm text-gray-500 mt-1">
-
-            {session?.user?.email}
+            Monitor your networking
+            performance and lead generation.
 
           </p>
 
         </div>
 
-        <div className="flex flex-wrap gap-4">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
-          <Link
-            href="/dashboard/nfc"
-            className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-2xl font-semibold transition"
-          >
-
-            NFC Tools
-
-          </Link>
-
-          <button
-            onClick={() =>
-              signOut({
-                callbackUrl: "/login",
-              })
+          <StatsCard
+            title="Profile Views"
+            value={
+              analytics?.profileViews || 0
             }
-            className="bg-red-600 hover:bg-red-700 px-5 py-3 rounded-2xl font-semibold transition"
-          >
+            icon="👀"
+          />
 
-            Logout
+          <StatsCard
+            title="QR Scans"
+            value={
+              analytics?.qrScans || 0
+            }
+            icon="📱"
+          />
 
-          </button>
+          <StatsCard
+            title="NFC Taps"
+            value={
+              analytics?.nfcTaps || 0
+            }
+            icon="📶"
+          />
 
-        </div>
-
-      </div>
-
-      {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6 mb-10">
-
-        {/* Current Plan */}
-        <div className="bg-gradient-to-br from-blue-600 to-cyan-500 rounded-3xl p-6 min-h-[190px]">
-
-          <h2 className="text-white/80 text-lg mb-4">
-
-            Current Plan
-
-          </h2>
-
-          <p className="text-3xl font-bold">
-
-            {analytics.plan}
-
-          </p>
-
-          <p className="text-sm text-white/70 mt-2">
-
-            {analytics.subscriptionStatus || "Free Plan"}
-
-          </p>
+          <StatsCard
+            title="Total Leads"
+            value={
+              user?.leads.length || 0
+            }
+            icon="🤝"
+          />
 
         </div>
 
-        {/* Profile Views */}
-        <div className="bg-[#081028] border border-white/10 rounded-3xl p-6 min-h-[190px]">
-
-          <h2 className="text-gray-400 text-lg mb-4">
-
-            Profile Views
-
-          </h2>
-
-          <p className="text-3xl font-bold">
-
-            {analytics.profileViews}
-
-          </p>
-
-        </div>
-
-        {/* QR Scans */}
-        <div className="bg-[#081028] border border-white/10 rounded-3xl p-6 min-h-[190px]">
-
-          <h2 className="text-gray-400 text-lg mb-4">
-
-            QR Scans
-
-          </h2>
-
-          <p className="text-3xl font-bold">
-
-            {analytics.qrScans}
-
-          </p>
-
-        </div>
-
-        {/* NFC Taps */}
-        <div className="bg-[#081028] border border-white/10 rounded-3xl p-6 min-h-[190px]">
-
-          <h2 className="text-gray-400 text-lg mb-4">
-
-            NFC Taps
-
-          </h2>
-
-          <p className="text-3xl font-bold">
-
-            {analytics.nfcTaps}
-
-          </p>
-
-        </div>
-
-        {/* Leads */}
-        <div className="bg-[#081028] border border-white/10 rounded-3xl p-6 min-h-[190px]">
-
-          <h2 className="text-gray-400 text-lg mb-4">
-
-            Leads
-
-          </h2>
-
-          <p className="text-3xl font-bold">
-
-            {analytics.leads}
-
-          </p>
-
-        </div>
-
-      </div>
-
-      {/* Analytics Chart */}
-      <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
-
-        <div className="mb-8">
-
-          <h2 className="text-3xl font-bold">
-
-            Engagement Analytics
-
-          </h2>
-
-          <p className="text-gray-400 mt-2">
-
-            Profile growth overview
-
-          </p>
-
-        </div>
-
-        <div className="w-full h-[400px]">
-
-          <ResponsiveContainer
-            width="100%"
-            height="100%"
-          >
-
-            <LineChart
-              data={chartData}
-            >
-
-              <XAxis dataKey="name" />
-
-              <YAxis />
-
-              <Tooltip />
-
-              <Line
-                type="monotone"
-                dataKey="views"
-                stroke="#3B82F6"
-                strokeWidth={4}
-              />
-
-            </LineChart>
-
-          </ResponsiveContainer>
-
-        </div>
+        {/* Analytics Chart */}
+        <AnalyticsChart
+          data={chartData}
+        />
 
       </div>
 

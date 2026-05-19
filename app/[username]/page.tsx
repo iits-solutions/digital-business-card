@@ -2,8 +2,6 @@ import { prisma } from "@/lib/prisma";
 
 import { notFound } from "next/navigation";
 
-import LeadCaptureForm from "@/components/LeadCaptureForm";
-
 interface Props {
 
   params: Promise<{
@@ -19,19 +17,22 @@ export default async function PublicProfilePage({
   const { username } =
     await params;
 
+  // Find profile
   const profile =
-    await prisma.profile.findUnique({
+    await prisma.profile.findFirst({
 
       where: {
-        username,
-      },
 
-      include: {
-        user: true,
+        username: {
+          equals: username,
+          mode: "insensitive",
+        },
+
       },
 
     });
 
+  // If profile not found
   if (!profile) {
 
     notFound();
@@ -39,13 +40,13 @@ export default async function PublicProfilePage({
   }
 
   // Increment Profile Views
-  await prisma.analytics.update({
+  await prisma.analytics.upsert({
 
     where: {
       userId: profile.userId,
     },
 
-    data: {
+    update: {
 
       profileViews: {
         increment: 1,
@@ -53,303 +54,128 @@ export default async function PublicProfilePage({
 
     },
 
+    create: {
+
+      userId: profile.userId,
+
+      profileViews: 1,
+
+      qrScans: 0,
+
+      nfcTaps: 0,
+
+      leads: 0,
+
+    },
+
   });
 
-  // vCard
-  const vCard = `
-BEGIN:VCARD
-VERSION:3.0
-FN:${profile.fullName}
-ORG:${profile.company || ""}
-TITLE:${profile.jobTitle || ""}
-TEL:${profile.phone || ""}
-EMAIL:${profile.user.email}
-END:VCARD
-`;
+  // Create activity log
+  await prisma.activity.create({
+
+    data: {
+
+      type: "PROFILE_VIEW",
+
+      message:
+        `${profile.fullName} profile viewed`,
+
+      userId:
+        profile.userId,
+
+    },
+
+  });
 
   return (
 
-    <main className="min-h-screen bg-black text-white pb-32">
+    <main className="min-h-screen bg-black text-white">
 
-      {/* Hero */}
-      <section className="relative">
+      <div className="max-w-4xl mx-auto px-6 py-20">
 
-        {/* Banner */}
-        <div className="h-52 bg-gradient-to-r from-blue-700 to-cyan-500"></div>
+        <div className="bg-[#081028] border border-white/10 rounded-3xl p-10">
 
-        {/* Content */}
-        <div className="max-w-5xl mx-auto px-6">
+          {/* Profile Image */}
+          {profile.image && (
 
-          {/* Avatar */}
-          <div className="-mt-20 mb-6">
+            <img
+              src={profile.image}
+              alt={profile.fullName}
+              className="w-32 h-32 rounded-full object-cover mb-6 border-4 border-blue-500"
+            />
 
-            <div className="w-40 h-40 rounded-3xl overflow-hidden border-4 border-[#081028] bg-[#111827] shadow-2xl">
-
-              {profile.image ? (
-
-                <img
-                  src={profile.image}
-                  alt={profile.fullName}
-                  className="w-full h-full object-cover"
-                />
-
-              ) : (
-
-                <div className="w-full h-full flex items-center justify-center text-gray-500">
-
-                  No Image
-
-                </div>
-
-              )}
-
-            </div>
-
-          </div>
+          )}
 
           {/* Name */}
-          <div className="mb-10">
+          <h1 className="text-5xl font-bold mb-4">
 
-            <h1 className="text-5xl font-bold mb-3">
+            {profile.fullName}
 
-              {profile.fullName}
+          </h1>
 
-            </h1>
+          {/* Job Title */}
+          {profile.jobTitle && (
 
             <p className="text-2xl text-blue-400 mb-2">
 
-              @{profile.username}
+              {profile.jobTitle}
 
             </p>
 
-            {/* Job Title */}
-            {profile.jobTitle && (
+          )}
 
-              <p className="text-xl text-white/90">
+          {/* Company */}
+          {profile.company && (
 
-                {profile.jobTitle}
+            <p className="text-gray-400 text-lg mb-6">
 
-              </p>
-
-            )}
-
-            {/* Company */}
-            {profile.company && (
-
-              <p className="text-lg text-gray-400 mt-2">
-
-                {profile.company}
-
-              </p>
-
-            )}
-
-          </div>
-
-          {/* About */}
-          <div className="bg-[#081028] border border-white/10 rounded-3xl p-8 mb-8">
-
-            <h2 className="text-3xl font-bold mb-6">
-
-              About Me
-
-            </h2>
-
-            <p className="text-gray-300 leading-relaxed text-lg">
-
-              {profile.bio || "No bio added yet."}
+              {profile.company}
 
             </p>
 
-          </div>
+          )}
 
-          {/* Desktop Save Contact */}
-          <div className="hidden md:block mb-10">
+          {/* Bio */}
+          {profile.bio && (
 
-            <a
-              href={`data:text/vcard;charset=utf-8,${encodeURIComponent(vCard)}`}
-              download={`${profile.fullName}.vcf`}
-              className="inline-block bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-2xl transition font-medium"
-            >
+            <p className="text-gray-300 text-lg mb-8">
 
-              Save Contact
+              {profile.bio}
 
-            </a>
+            </p>
 
-          </div>
+          )}
 
           {/* Contact Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+          <div className="space-y-4">
 
-            {/* Email */}
-            <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
+            {profile.phone && (
 
-              <p className="text-gray-400 mb-3">
+              <div className="bg-black/30 rounded-2xl p-4">
 
-                Email
+                📱 {profile.phone}
 
-              </p>
+              </div>
 
-              <p className="text-xl font-medium break-all">
+            )}
 
-                {profile.user.email}
+            {profile.website && (
 
-              </p>
+              <a
+                href={profile.website}
+                target="_blank"
+                className="block bg-black/30 rounded-2xl p-4 hover:bg-black/50 transition"
+              >
 
-            </div>
+                🌐 {profile.website}
 
-            {/* Phone */}
-            <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
+              </a>
 
-              <p className="text-gray-400 mb-3">
-
-                Phone
-
-              </p>
-
-              {profile.phone ? (
-
-                <a
-                  href={`tel:${profile.phone}`}
-                  className="text-xl font-medium hover:text-blue-400 transition"
-                >
-
-                  {profile.phone}
-
-                </a>
-
-              ) : (
-
-                <p className="text-xl font-medium">
-
-                  Not added
-
-                </p>
-
-              )}
-
-            </div>
+            )}
 
           </div>
-
-          {/* Social Links */}
-          <div className="bg-[#081028] border border-white/10 rounded-3xl p-8 mb-10">
-
-            <h2 className="text-3xl font-bold mb-8">
-
-              Social Links
-
-            </h2>
-
-            <div className="flex flex-wrap gap-4">
-
-              {profile.linkedin && (
-
-                <a
-                  href={profile.linkedin}
-                  target="_blank"
-                  className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl transition"
-                >
-
-                  LinkedIn
-
-                </a>
-
-              )}
-
-              {profile.github && (
-
-                <a
-                  href={profile.github}
-                  target="_blank"
-                  className="bg-gray-700 hover:bg-gray-800 px-6 py-3 rounded-2xl transition"
-                >
-
-                  GitHub
-
-                </a>
-
-              )}
-
-              {profile.twitter && (
-
-                <a
-                  href={profile.twitter}
-                  target="_blank"
-                  className="bg-sky-500 hover:bg-sky-600 px-6 py-3 rounded-2xl transition"
-                >
-
-                  Twitter/X
-
-                </a>
-
-              )}
-
-              {profile.instagram && (
-
-                <a
-                  href={profile.instagram}
-                  target="_blank"
-                  className="bg-pink-600 hover:bg-pink-700 px-6 py-3 rounded-2xl transition"
-                >
-
-                  Instagram
-
-                </a>
-
-              )}
-
-              {profile.youtube && (
-
-                <a
-                  href={profile.youtube}
-                  target="_blank"
-                  className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-2xl transition"
-                >
-
-                  YouTube
-
-                </a>
-
-              )}
-
-              {profile.whatsapp && (
-
-                <a
-                  href={`https://wa.me/${profile.whatsapp.replace(/\D/g, "")}`}
-                  target="_blank"
-                  className="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-2xl transition"
-                >
-
-                  WhatsApp
-
-                </a>
-
-              )}
-
-            </div>
-
-          </div>
-
-          {/* Lead Capture */}
-          <LeadCaptureForm username={username} />
 
         </div>
-
-      </section>
-
-      {/* Mobile Save Contact */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-black/80 backdrop-blur md:hidden">
-
-        <a
-          href={`data:text/vcard;charset=utf-8,${encodeURIComponent(vCard)}`}
-          download={`${profile.fullName}.vcf`}
-          className="block text-center bg-blue-600 hover:bg-blue-700 py-4 rounded-2xl font-medium transition"
-        >
-
-          Save Contact
-
-        </a>
 
       </div>
 

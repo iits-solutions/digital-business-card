@@ -29,6 +29,8 @@ model User {
 
   leads     Lead[]
 
+  activities Activity[]
+
   // Subscription
   plan               String   @default("FREE")
 
@@ -175,5 +177,21 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+
+}
+
+model Activity {
+
+  id        String   @id @default(cuid())
+
+  type      String
+
+  message   String
+
+  createdAt DateTime @default(now())
+
+  userId    String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
 }
