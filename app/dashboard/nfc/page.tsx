@@ -32,20 +32,40 @@ export default function NFCPage() {
 
   }, []);
 
-  // Generate Dynamic Profile URL
+  // Fetch REAL profile username
   useEffect(() => {
 
-    if (session?.user?.email) {
+    const fetchProfile = async () => {
 
-      const username =
-        session.user.email
-          .split("@")[0];
+      if (!session?.user?.email) return;
 
-      setProfileUrl(
-       `https://digital-business-card-topaz.vercel.app/nfc/${username}`
-      );
+      try {
 
-    }
+        const response =
+          await fetch(
+            `/api/profile-by-email?email=${session.user.email}`
+          );
+
+        const data =
+          await response.json();
+
+        if (data?.username) {
+
+          setProfileUrl(
+            `http://localhost:3000/nfc/${data.username}`
+          );
+
+        }
+
+      } catch (error) {
+
+        console.log(error);
+
+      }
+
+    };
+
+    fetchProfile();
 
   }, [session]);
 
@@ -87,18 +107,42 @@ export default function NFCPage() {
       setWriting(false);
 
     }
+
+  };
+
+  // Copy URL
+  const copyUrl = async () => {
+
+    try {
+
+      await navigator.clipboard.writeText(
+        profileUrl
+      );
+
+      setMessage(
+        "✅ NFC URL copied!"
+      );
+
+    } catch {
+
+      setMessage(
+        "❌ Failed to copy URL"
+      );
+
+    }
+
   };
 
   return (
 
-    <main className="min-h-screen bg-black text-white p-8">
+    <main className="min-h-screen bg-black text-white p-4 md:p-8">
 
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
 
         {/* Header */}
         <div className="mb-10">
 
-          <h1 className="text-5xl font-bold mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
 
             NFC Tools
 
@@ -173,22 +217,35 @@ export default function NFCPage() {
 
           </div>
 
-          {/* Write Button */}
-          <button
-            onClick={writeNFC}
-            disabled={
-              !supported ||
-              writing ||
-              !profileUrl
-            }
-            className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 transition px-8 py-4 rounded-2xl font-semibold text-lg"
-          >
+          {/* Buttons */}
+          <div className="flex flex-wrap gap-4">
 
-            {writing
-              ? "Writing NFC..."
-              : "Write NFC Card"}
+            <button
+              onClick={writeNFC}
+              disabled={
+                !supported ||
+                writing ||
+                !profileUrl
+              }
+              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 transition px-8 py-4 rounded-2xl font-semibold text-lg"
+            >
 
-          </button>
+              {writing
+                ? "Writing NFC..."
+                : "Write NFC Card"}
+
+            </button>
+
+            <button
+              onClick={copyUrl}
+              className="bg-white/10 hover:bg-white/20 transition px-8 py-4 rounded-2xl font-semibold text-lg"
+            >
+
+              Copy NFC URL
+
+            </button>
+
+          </div>
 
           {/* Message */}
           {message && (
@@ -200,37 +257,6 @@ export default function NFCPage() {
             </div>
 
           )}
-
-        </div>
-
-        {/* Instructions */}
-        <div className="bg-[#081028] border border-white/10 rounded-3xl p-8 mt-8">
-
-          <h2 className="text-2xl font-bold mb-4">
-
-            Instructions
-
-          </h2>
-
-          <ul className="space-y-3 text-gray-300">
-
-            <li>
-              • Use Android Chrome for best NFC support
-            </li>
-
-            <li>
-              • Hold NFC card close to phone during writing
-            </li>
-
-            <li>
-              • NFC cards can later be reused and updated
-            </li>
-
-            <li>
-              • iPhone browser NFC support is limited
-            </li>
-
-          </ul>
 
         </div>
 
