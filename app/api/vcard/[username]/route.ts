@@ -24,6 +24,10 @@ export async function GET(
 
       },
 
+      include: {
+        user: true,
+      },
+
     });
 
   if (!profile) {
@@ -37,16 +41,15 @@ export async function GET(
 
   }
 
-  // Generate VCF File
-  const vcf = `BEGIN:VCARD
+  // MOBILE SAFE VCARD
+  const vcf =
+`BEGIN:VCARD
 VERSION:3.0
-FN:${profile.fullName}
+FN:${profile.fullName || ""}
 ORG:${profile.company || ""}
 TITLE:${profile.jobTitle || ""}
 TEL:${profile.phone || ""}
-EMAIL:
-URL:${profile.website || ""}
-NOTE:${profile.bio || ""}
+EMAIL:${profile.user?.email || ""}
 END:VCARD`;
 
   return new Response(vcf, {
@@ -57,7 +60,7 @@ END:VCARD`;
         "text/vcard",
 
       "Content-Disposition":
-        `attachment; filename="${profile.username}.vcf"`,
+        `attachment; filename="${username}.vcf"`,
 
     },
 
