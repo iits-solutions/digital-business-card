@@ -352,7 +352,7 @@ export default async function PublicProfilePage({
         </div>
 
       </div>
-TEST TEST TEST
+
     </main>
   );
 }
