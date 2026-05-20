@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 
-import { resend } from "@/lib/resend";
-
 export async function POST(
   request: Request
 ) {
@@ -28,11 +26,13 @@ export async function POST(
       await prisma.profile.findFirst({
 
         where: {
+
           username: {
             equals:
               username.toLowerCase(),
             mode: "insensitive",
           },
+
         },
 
         include: {
@@ -41,14 +41,21 @@ export async function POST(
 
       });
 
-    console.log("PROFILE:", profile);
+    console.log(
+      "PROFILE:",
+      profile
+    );
 
     if (!profile?.user) {
 
       return NextResponse.json(
         {
+
           success: false,
-          error: "User not found",
+
+          error:
+            "User not found",
+
         },
         { status: 404 }
       );
@@ -78,60 +85,7 @@ export async function POST(
       lead
     );
 
-    // Send Email Notification
-await resend.emails.send({
-
-  from:
-    "ILinq <onboarding@resend.dev>",
-
-  to:
-    profile.user.email,
-
-  subject:
-    "🎉 New Lead Captured",
-
-  html: `
-
-    <div style="font-family:sans-serif;">
-
-      <h2>
-        New Lead Captured
-      </h2>
-
-      <p>
-        Someone submitted your
-        contact form.
-      </p>
-
-      <hr />
-
-      <p>
-        <strong>Name:</strong>
-        ${name}
-      </p>
-
-      <p>
-        <strong>Email:</strong>
-        ${email}
-      </p>
-
-      <p>
-        <strong>Phone:</strong>
-        ${phone}
-      </p>
-
-      <p>
-        <strong>Company:</strong>
-        ${company}
-      </p>
-
-    </div>
-
-  `,
-
-});
-
-    // Update analytics safely
+    // Update analytics
     await prisma.analytics.updateMany({
 
       where: {
@@ -144,6 +98,23 @@ await resend.emails.send({
         leads: {
           increment: 1,
         },
+
+      },
+
+    });
+
+    // Create activity log
+    await prisma.activity.create({
+
+      data: {
+
+        type: "NEW_LEAD",
+
+        message:
+          `${name} submitted lead form`,
+
+        userId:
+          profile.user.id,
 
       },
 
@@ -164,11 +135,16 @@ await resend.emails.send({
 
     return NextResponse.json(
       {
+
         success: false,
-        error: String(error),
+
+        error:
+          String(error),
+
       },
       { status: 500 }
     );
 
   }
+
 }
