@@ -51,9 +51,13 @@ export default function NFCPage() {
 
         if (data?.username) {
 
-          setProfileUrl(
-          `https://ilinq.team/${username}`
-        );
+          const username =
+  session.user.email
+    .split("@")[0];
+
+setProfileUrl(
+  `https://ilinq.team/${username}`
+);
 
         }
 
