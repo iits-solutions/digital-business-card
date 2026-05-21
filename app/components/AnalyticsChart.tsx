@@ -41,12 +41,12 @@ export default function AnalyticsChart({
 
       </p>
 
-      <div className="w-full h-[400px]">
+      <div className="w-full h-[320px]">
 
         <ResponsiveContainer
-          width="100%"
-          height="100%"
-        >
+  width="100%"
+  height={300}
+>
 
           <LineChart
             data={data}

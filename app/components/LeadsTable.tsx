@@ -14,6 +14,8 @@ interface Lead {
 
   company: string | null;
 
+  status: string;
+
   createdAt: Date;
 
 }
@@ -152,6 +154,12 @@ export default function LeadsTable({
 
                 </th>
 
+                <th className="pb-4">
+
+                  Status
+
+                </th>
+
                 <th className="text-left p-5">
 
                   Action
@@ -204,6 +212,35 @@ export default function LeadsTable({
                       ).toLocaleDateString()}
 
                     </td>
+
+                    <td className="py-5 px-4">
+
+                      <select
+                       defaultValue={lead.status}
+                       className="bg-black border border-white/10 rounded-xl px-3 py-2 outline-none"
+                      >
+
+                      <option value="New">
+
+                        New
+
+                      </option>
+
+                      <option value="Contacted">
+
+                        Contacted
+
+                      </option>
+
+                      <option value="Completed">
+
+                         Completed
+
+                      </option>
+
+                    </select>
+
+                  </td>
 
                     <td className="p-5">
 

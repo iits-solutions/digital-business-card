@@ -50,6 +50,7 @@ export default function Sidebar() {
         console.log(error);
 
       }
+
     };
 
     fetchProfile();
@@ -66,7 +67,7 @@ export default function Sidebar() {
     {
       name: "View Profile",
       href:
-        `/dashboard/view-profile`,
+        "/dashboard/view-profile",
     },
 
     {
@@ -79,6 +80,12 @@ export default function Sidebar() {
       name: "QR Code",
       href:
         "/dashboard/qr",
+    },
+
+    {
+      name: "Leads Management",
+      href:
+        "/dashboard/leads",
     },
 
   ];

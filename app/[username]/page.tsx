@@ -1,3 +1,5 @@
+import LeadCaptureForm from "@/app/components/LeadCaptureForm";
+
 import { prisma } from "@/lib/prisma";
 
 import { notFound } from "next/navigation";
@@ -108,28 +110,28 @@ export default async function PublicProfilePage({
         <div className="bg-[#081028] border border-white/10 rounded-3xl p-6 md:p-10">
 
           {/* Profile Image */}
-          <div className="flex justify-center">
+<div className="flex justify-center mb-8 overflow-hidden">
 
-            {profile.image ? (
+  {profile.image ? (
 
-              <img
-                src={profile.image}
-                alt={profile.fullName}
-                className="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover border-4 border-blue-500 shadow-2xl"
-              />
+    <img
+      src={profile.image}
+      alt={profile.fullName}
+      className="w-52 h-52 md:w-64 md:h-64 rounded-full object-cover border-4 border-blue-500 shadow-2xl mx-auto"
+    />
 
-            ) : (
+  ) : (
 
-              <div className="w-48 h-48 md:w-64 md:h-64 rounded-full bg-gray-800 flex items-center justify-center text-5xl font-bold border-4 border-blue-500">
+    <div className="w-40 h-40 md:w-52 md:h-52 rounded-full bg-gray-800 flex items-center justify-center text-5xl font-bold border-4 border-blue-500">
 
-                {profile.fullName
-                  ?.charAt(0)}
+      {profile.fullName
+        ?.charAt(0)}
 
-              </div>
+    </div>
 
-            )}
+  )}
 
-          </div>
+</div>
 
           {/* Profile Content */}
           <div className="mt-10 text-center">
@@ -350,6 +352,11 @@ export default async function PublicProfilePage({
           </div>
 
         </div>
+
+        {/* Lead Capture Form */}
+        <LeadCaptureForm
+          username={profile.username}
+        />
 
       </div>
 

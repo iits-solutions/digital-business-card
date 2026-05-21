@@ -52,8 +52,8 @@ export default function NFCPage() {
         if (data?.username) {
 
           setProfileUrl(
-            `http://localhost:3000/nfc/${data.username}`
-          );
+          `https://ilinq.team/${username}`
+        );
 
         }
 

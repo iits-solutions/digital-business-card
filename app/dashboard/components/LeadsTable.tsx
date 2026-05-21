@@ -1,21 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import Link from "next/link";
+
+import { useState } from "react";
 
 interface Lead {
-
   id: string;
-
   name: string;
-
   email: string | null;
-
   phone: string | null;
-
   company: string | null;
-
   createdAt: Date;
-
 }
 
 export default function LeadsTable({
@@ -27,230 +22,197 @@ export default function LeadsTable({
   const [search, setSearch] =
     useState("");
 
-  const [loadingId, setLoadingId] =
-    useState<string | null>(null);
-
-  // Filter Leads
   const filteredLeads =
-    useMemo(() => {
-
-      return leads.filter((lead) => {
-
-        const query =
-          search.toLowerCase();
-
-        return (
-
-          lead.name
-            ?.toLowerCase()
-            .includes(query) ||
-
-          lead.email
-            ?.toLowerCase()
-            .includes(query) ||
-
-          lead.company
-            ?.toLowerCase()
-            .includes(query)
-
-        );
-
-      });
-
-    }, [search, leads]);
-
-  // Delete Lead
-  const deleteLead = async (
-    id: string
-  ) => {
-
-    try {
-
-      setLoadingId(id);
-
-      const response =
-        await fetch(`/api/leads/${id}`, {
-
-          method: "DELETE",
-
-        });
-
-      if (response.ok) {
-
-        window.location.reload();
-
-      }
-
-    } catch (error) {
-
-      console.log(error);
-
-    } finally {
-
-      setLoadingId(null);
-
-    }
-  };
+    leads.filter((lead) =>
+      lead.name
+        .toLowerCase()
+        .includes(
+          search.toLowerCase()
+        )
+    );
 
   return (
 
-    <div>
+    <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
 
-      {/* Search */}
-      <div className="mb-6">
+      {/* Top Bar */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+
+        <h2 className="text-3xl font-bold">
+          Captured Leads
+        </h2>
 
         <input
           type="text"
           placeholder="Search leads..."
           value={search}
           onChange={(e) =>
-            setSearch(e.target.value)
+            setSearch(
+              e.target.value
+            )
           }
-          className="w-full bg-[#081028] border border-white/10 rounded-2xl px-5 py-4 outline-none"
+          className="bg-black border border-white/10 rounded-2xl px-5 py-3 outline-none w-full md:w-80"
         />
 
       </div>
 
-      {/* Table */}
-      <div className="bg-[#081028] border border-white/10 rounded-3xl overflow-hidden">
+      {/* Desktop Table */}
+      <div className="hidden md:block overflow-x-auto">
 
-        <div className="overflow-x-auto">
+        <table className="w-full min-w-[1000px] border-separate border-spacing-y-2">
 
-          <table className="w-full">
+          <thead>
 
-            <thead className="bg-black/40">
+            <tr className="text-left border-b border-white/10 text-gray-400">
 
-              <tr>
+              <th className="pb-4">
+                Name
+              </th>
 
-                <th className="text-left p-5">
+              <th className="pb-4">
+                Email
+              </th>
 
-                  Name
+              <th className="pb-4">
+                Phone
+              </th>
 
-                </th>
+              <th className="pb-4">
+                Company
+              </th>
 
-                <th className="text-left p-5">
+              <th className="pb-4">
+                Date
+              </th>
 
-                  Email
+              <th className="pb-4">
+                Action
+              </th>
 
-                </th>
+            </tr>
 
-                <th className="text-left p-5">
+          </thead>
 
-                  Phone
+          <tbody>
 
-                </th>
+            {filteredLeads.map(
+              (lead) => (
 
-                <th className="text-left p-5">
+                <tr
+                  key={lead.id}
+                  className="bg-black/20"
+                >
 
-                  Company
+                  <td className="py-5 text-gray-300">
+                    {lead.name}
+                  </td>
 
-                </th>
+                  <td className="py-5">
+                    {lead.email || "-"}
+                  </td>
 
-                <th className="text-left p-5">
+                  <td className="py-5">
+                    {lead.phone || "-"}
+                  </td>
 
-                  Date
+                  <td className="py-5">
+                    {lead.company || "-"}
+                  </td>
 
-                </th>
+                  <td className="py-5 text-gray-400">
+                    {new Date(
+                      lead.createdAt
+                    ).toLocaleDateString()}
+                  </td>
 
-                <th className="text-left p-5">
+                  <td className="py-5">
 
-                  Action
+                    <div className="flex gap-3">
 
-                </th>
-
-              </tr>
-
-            </thead>
-
-            <tbody>
-
-              {filteredLeads.length ? (
-
-                filteredLeads.map((lead) => (
-
-                  <tr
-                    key={lead.id}
-                    className="border-t border-white/10 hover:bg-white/5 transition"
-                  >
-
-                    <td className="p-5">
-
-                      {lead.name}
-
-                    </td>
-
-                    <td className="p-5">
-
-                      {lead.email || "-"}
-
-                    </td>
-
-                    <td className="p-5">
-
-                      {lead.phone || "-"}
-
-                    </td>
-
-                    <td className="p-5">
-
-                      {lead.company || "-"}
-
-                    </td>
-
-                    <td className="p-5 text-gray-400">
-
-                      {new Date(
-                        lead.createdAt
-                      ).toLocaleDateString()}
-
-                    </td>
-
-                    <td className="p-5">
-
-                      <button
-                        onClick={() =>
-                          deleteLead(lead.id)
-                        }
-                        disabled={
-                          loadingId === lead.id
-                        }
-                        className="bg-red-600 hover:bg-red-700 transition px-4 py-2 rounded-xl"
+                      <Link
+                        href={`/dashboard/leads/${lead.id}`}
                       >
+                        <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl text-white transition">
+                          View
+                        </button>
+                      </Link>
 
-                        {loadingId === lead.id
-                          ? "Deleting..."
-                          : "Delete"}
-
+                      <button className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-xl text-white transition">
+                        Delete
                       </button>
 
-                    </td>
-
-                  </tr>
-
-                ))
-
-              ) : (
-
-                <tr>
-
-                  <td
-                    colSpan={6}
-                    className="p-10 text-center text-gray-400"
-                  >
-
-                    No matching leads found.
+                    </div>
 
                   </td>
 
                 </tr>
 
-              )}
+              )
+            )}
 
-            </tbody>
+          </tbody>
 
-          </table>
+        </table>
 
-        </div>
+      </div>
+
+      {/* Mobile Cards */}
+      <div className="md:hidden space-y-4">
+
+        {filteredLeads.map(
+          (lead) => (
+
+            <div
+              key={lead.id}
+              className="bg-black/30 border border-white/10 rounded-2xl p-5"
+            >
+
+              <h3 className="text-xl font-bold mb-2">
+                {lead.name}
+              </h3>
+
+              <div className="space-y-2 text-gray-300 text-sm">
+
+                <p>
+                  📧 {lead.email || "-"}
+                </p>
+
+                <p>
+                  📱 {lead.phone || "-"}
+                </p>
+
+                <p>
+                  🏢 {lead.company || "-"}
+                </p>
+
+                <p className="text-gray-500">
+                  {new Date(
+                    lead.createdAt
+                  ).toLocaleDateString()}
+                </p>
+
+              </div>
+
+              <div className="flex gap-3 mt-5">
+
+                <Link
+                  href={`/dashboard/leads/${lead.id}`}
+                >
+                  <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl text-white transition">
+                    View
+                  </button>
+                </Link>
+
+                <button className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-xl text-white transition">
+                  Delete
+                </button>
+
+              </div>
+
+            </div>
+
+          )
+        )}
 
       </div>
 

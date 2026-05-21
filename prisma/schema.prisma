@@ -114,6 +114,8 @@ model Lead {
 
   company   String?
 
+  status    String   @default("New")
+
   createdAt DateTime @default(now())
 
   userId    String

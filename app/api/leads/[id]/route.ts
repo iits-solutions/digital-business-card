@@ -2,9 +2,10 @@ import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 
-export async function DELETE(
+// UPDATE STATUS
+export async function PATCH(
   request: Request,
-  { params }: {
+  context: {
     params: Promise<{
       id: string;
     }>;
@@ -14,13 +15,19 @@ export async function DELETE(
   try {
 
     const { id } =
-      await params;
+      await context.params;
 
-    await prisma.lead.delete({
+    const body =
+      await request.json();
 
-      where: {
-        id,
-      },
+    const { status } =
+      body;
+
+    await prisma.lead.update({
+
+      where: { id },
+
+      data: { status },
 
     });
 
@@ -36,8 +43,53 @@ export async function DELETE(
 
     return NextResponse.json(
       {
+
         success: false,
-        error: "Failed to delete lead",
+
+      },
+      { status: 500 }
+    );
+
+  }
+
+}
+
+// DELETE LEAD
+export async function DELETE(
+  request: Request,
+  context: {
+    params: Promise<{
+      id: string;
+    }>;
+  }
+) {
+
+  try {
+
+    const { id } =
+      await context.params;
+
+    await prisma.lead.delete({
+
+      where: { id },
+
+    });
+
+    return NextResponse.json({
+
+      success: true,
+
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    return NextResponse.json(
+      {
+
+        success: false,
+
       },
       { status: 500 }
     );
