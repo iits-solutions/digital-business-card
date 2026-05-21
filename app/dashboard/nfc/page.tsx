@@ -51,9 +51,14 @@ export default function NFCPage() {
 
         if (data?.username) {
 
-          const username =
-  session.user.email
-    .split("@")[0];
+          const response =
+  await fetch("/api/profile");
+
+const data =
+  await response.json();
+
+const username =
+  data.username;
 
 setProfileUrl(
   `https://ilinq.team/${username}`
