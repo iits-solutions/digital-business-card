@@ -1,19 +1,11 @@
 "use client";
 
-export const dynamic =
-  "force-dynamic";
-
-import { useSearchParams } from "next/navigation";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ResetPasswordPage() {
 
-  const searchParams =
-    useSearchParams();
-
-  const token =
-    searchParams.get("token");
+  const [token, setToken] =
+    useState("");
 
   const [password, setPassword] =
     useState("");
@@ -23,6 +15,27 @@ export default function ResetPasswordPage() {
 
   const [message, setMessage] =
     useState("");
+
+  // Get token from URL safely
+  useEffect(() => {
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const tokenFromUrl =
+      params.get("token");
+
+    if (tokenFromUrl) {
+
+      setToken(
+        tokenFromUrl
+      );
+
+    }
+
+  }, []);
 
   const handleSubmit = async (
     e: React.FormEvent
@@ -51,7 +64,6 @@ export default function ResetPasswordPage() {
             body: JSON.stringify({
 
               token,
-
               password,
 
             }),
