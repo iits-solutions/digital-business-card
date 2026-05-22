@@ -22,33 +22,65 @@ export async function POST(
 
     } = body;
 
-    // Check existing email
-    const existingUser =
-      await prisma.user.findUnique({
+    // Check duplicate email
+const existingEmail =
+  await prisma.user.findUnique({
 
-        where: {
-          email,
-        },
+    where: {
+      email,
+    },
 
-      });
+  });
 
-    if (existingUser) {
+if (existingEmail) {
 
-      return NextResponse.json(
-        {
+  return NextResponse.json(
+    {
 
-          success: false,
+      success: false,
 
-          error:
-            "User already exists",
+      error:
+        "Email already exists",
 
-        },
-        {
-          status: 400,
-        }
-      );
+    },
+    {
+
+      status: 400,
 
     }
+  );
+
+}
+
+// Check duplicate username
+const existingUsername =
+  await prisma.profile.findUnique({
+
+    where: {
+      username,
+    },
+
+  });
+
+if (existingUsername) {
+
+  return NextResponse.json(
+    {
+
+      success: false,
+
+      error:
+        "Username already exists",
+
+    },
+    {
+
+      status: 400,
+
+    }
+  );
+
+}
 
     // Hash password
     const hashedPassword =

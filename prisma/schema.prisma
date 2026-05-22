@@ -38,6 +38,10 @@ model User {
 
   stripeCustomerId   String?
 
+  resetToken String?
+
+  resetTokenExpiry DateTime?
+
 }
 
 model Profile {
