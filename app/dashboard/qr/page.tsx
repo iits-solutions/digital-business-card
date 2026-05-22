@@ -74,8 +74,9 @@ export default function QRPage() {
   }
 
   // QR tracking route
-  const profileUrl =
-  `${window.location.origin}/qr/${profile.username}`;
+  // Live public profile URL
+const profileUrl =
+`https://ilinq.team/${profile.username}`;
 
   return (
 
