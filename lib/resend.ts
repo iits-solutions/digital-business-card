@@ -1,25 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { Resend } from "resend";
 
-const globalForPrisma =
-  globalThis as unknown as {
-    prisma: PrismaClient | undefined;
-  };
-
-export const prisma =
-  globalForPrisma.prisma ??
-
-  new PrismaClient({
-
-    log: ["error"],
-
-  });
-
-if (
-  process.env.NODE_ENV !==
-  "production"
-) {
-
-  globalForPrisma.prisma =
-    prisma;
-
-}
+export const resend =
+  new Resend(
+    process.env.RESEND_API_KEY
+  );
