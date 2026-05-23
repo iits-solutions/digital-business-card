@@ -1,3 +1,5 @@
+import { resend } from "@/lib/resend";
+
 import { NextResponse } from "next/server";
 
 import crypto from "crypto";
@@ -77,6 +79,55 @@ export async function POST(
     });
 
     // Reset URL
+    // Send reset email
+await resend.emails.send({
+
+  from:
+    "ILinq <onboarding@resend.dev>",
+
+  to:
+    email,
+
+  subject:
+    "Reset Your Password",
+
+  html: `
+
+    <div style="font-family:sans-serif;">
+
+      <h2>
+        Reset Your Password
+      </h2>
+
+      <p>
+        Click the button below to reset your password:
+      </p>
+
+      <a
+        href="${resetUrl}"
+        style="
+          display:inline-block;
+          background:#2563eb;
+          color:white;
+          padding:12px 20px;
+          border-radius:10px;
+          text-decoration:none;
+        "
+      >
+
+        Reset Password
+
+      </a>
+
+      <p>
+        This link expires in 30 minutes.
+      </p>
+
+    </div>
+
+  `,
+
+});
     const resetUrl =
       `https://ilinq.team/reset-password?token=${resetToken}`;
 

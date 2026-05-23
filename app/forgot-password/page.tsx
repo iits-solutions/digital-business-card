@@ -13,70 +13,70 @@ export default function ForgotPasswordPage() {
   const [message, setMessage] =
     useState("");
 
-const handleSubmit = async (
-  e: React.FormEvent
-) => {
+  const handleSubmit = async (
+    e: React.FormEvent
+  ) => {
 
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
+    try {
 
-    setLoading(true);
+      setLoading(true);
 
-    setMessage("");
+      setMessage("");
 
-    const response =
-      await fetch(
-        "/api/forgot-password",
-        {
+      const response =
+        await fetch(
+          "/api/forgot-password",
+          {
 
-          method: "POST",
+            method: "POST",
 
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
 
-          body: JSON.stringify({
-            email,
-          }),
+            body: JSON.stringify({
+              email,
+            }),
 
-        }
-      );
+          }
+        );
 
-    const data =
-      await response.json();
+      const data =
+        await response.json();
 
-    if (data.success) {
+      if (data.success) {
+
+        setMessage(
+          "If an account exists, a reset link has been sent to your email."
+        );
+
+      } else {
+
+        setMessage(
+          data.error ||
+          "Something went wrong"
+        );
+
+      }
+
+    } catch (error) {
+
+      console.log(error);
 
       setMessage(
-        data.resetUrl
-      );
-
-    } else {
-
-      setMessage(
-        data.error ||
         "Something went wrong"
       );
 
+    } finally {
+
+      setLoading(false);
+
     }
 
-  } catch (error) {
-
-    console.log(error);
-
-    setMessage(
-      "Something went wrong"
-    );
-
-  } finally {
-
-    setLoading(false);
-
-  }
-
-};
+  };
 
   return (
 
@@ -103,7 +103,7 @@ const handleSubmit = async (
 
           <input
             type="email"
-            placeholder="Your Email"
+            placeholder="Email Address"
             value={email}
             onChange={(e) =>
               setEmail(
@@ -128,35 +128,18 @@ const handleSubmit = async (
 
         </form>
 
-       {message && (
+        {message && (
 
-  <div className="mt-6 text-center">
+          <div className="mt-6 text-center text-white">
 
-    <p className="text-white break-all">
+            {message}
 
-      {message}
+          </div>
 
-    </p>
-
-    {message.includes("https://") && (
-
-      <a
-        href={message}
-        className="text-blue-400 underline break-all"
-      >
-
-        Open Reset Link
-
-      </a>
-
-    )}
-
-  </div>
-
-)}
+        )}
 
       </div>
 
     </main>
   );
-}   
+}
