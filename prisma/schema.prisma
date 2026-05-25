@@ -31,6 +31,8 @@ model User {
 
   activities Activity[]
 
+  nfcCards NfcCard[]
+
   // Subscription
   plan               String   @default("FREE")
 
@@ -199,5 +201,29 @@ model Activity {
   userId    String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+}
+
+model NfcCard {
+
+  id          String   @id @default(cuid())
+
+  token       String   @unique
+
+  status      String   @default("ACTIVE")
+
+  type        String   @default("BASIC")
+
+  createdAt   DateTime @default(now())
+
+  updatedAt   DateTime @updatedAt
+
+  lastUsedAt  DateTime?
+
+  expiresAt   DateTime?
+
+  userId      String
+
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
 }
