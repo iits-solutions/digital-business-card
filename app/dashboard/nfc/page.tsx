@@ -49,11 +49,14 @@ export default function NFCPage() {
 
         if (data?.card?.token) {
 
-          setProfileUrl(
-            `https://ilinq.team/card/${data.card.token}`
-          );
+  const baseUrl =
+    window.location.origin;
 
-        }
+  setProfileUrl(
+    `${baseUrl}/card/${data.card.token}`
+  );
+
+}
 
       } catch (error) {
 
