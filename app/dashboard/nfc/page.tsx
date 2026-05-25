@@ -32,37 +32,26 @@ export default function NFCPage() {
 
   }, []);
 
-  // Fetch REAL profile username
+  // Fetch or Create NFC Card
   useEffect(() => {
 
-    const fetchProfile = async () => {
+    const setupNfcCard = async () => {
 
       if (!session?.user?.email) return;
 
       try {
 
         const response =
-          await fetch(
-            `/api/profile-by-email?email=${session.user.email}`
-          );
+          await fetch("/api/test-nfc");
 
         const data =
           await response.json();
 
-        if (data?.username) {
+        if (data?.card?.token) {
 
-          const response =
-          await fetch("/api/profile");
-
-          const data =
-          await response.json();
-
-          const username =
-          data.username;
-
-        setProfileUrl(
-           `https://ilinq.team/${username}`
-        );
+          setProfileUrl(
+            `https://ilinq.team/card/${data.card.token}`
+          );
 
         }
 
@@ -74,7 +63,7 @@ export default function NFCPage() {
 
     };
 
-    fetchProfile();
+    setupNfcCard();
 
   }, [session]);
 
@@ -219,10 +208,10 @@ export default function NFCPage() {
 
           </p>
 
-          {/* Profile URL */}
+          {/* NFC URL */}
           <div className="bg-black border border-white/10 rounded-2xl p-4 mb-6 break-all text-sm text-gray-300">
 
-            {profileUrl || "Loading profile URL..."}
+            {profileUrl || "Generating NFC token..."}
 
           </div>
 
