@@ -33,6 +33,7 @@ export async function GET(
 
       });
 
+    // CARD NOT FOUND
     if (!card) {
 
       return NextResponse.json(
@@ -46,6 +47,7 @@ export async function GET(
 
     }
 
+    // CARD INACTIVE
     if (
       card.status !== "ACTIVE"
     ) {
@@ -61,6 +63,48 @@ export async function GET(
 
     }
 
+    // LIFETIME ACCESS
+    if (card.lifetimeAccess) {
+
+      return NextResponse.json({
+        username:
+          card.user.profile?.username,
+      });
+
+    }
+
+    // TRIAL ACCESS
+    if (
+      card.trialEndsAt &&
+      new Date(card.trialEndsAt) > new Date()
+    ) {
+
+      return NextResponse.json({
+        username:
+          card.user.profile?.username,
+      });
+
+    }
+
+    // EXPIRED SUBSCRIPTION
+    if (
+      card.expiresAt &&
+      new Date(card.expiresAt) < new Date()
+    ) {
+
+      return NextResponse.json(
+        {
+          error: "Subscription expired",
+          expired: true,
+        },
+        {
+          status: 403,
+        }
+      );
+
+    }
+
+    // VALID ACCESS
     return NextResponse.json({
       username:
         card.user.profile?.username,
