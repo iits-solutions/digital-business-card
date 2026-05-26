@@ -206,24 +206,32 @@ model Activity {
 
 model NfcCard {
 
-  id          String   @id @default(cuid())
+  id            String   @id @default(cuid())
 
-  token       String   @unique
+  token         String   @unique
 
-  status      String   @default("ACTIVE")
+  status        String   @default("ACTIVE")
 
-  type        String   @default("BASIC")
+  type          String   @default("BASIC")
 
-  createdAt   DateTime @default(now())
+  plan          String   @default("FREE")
 
-  updatedAt   DateTime @updatedAt
+  billingCycle  String   @default("MONTHLY")
 
-  lastUsedAt  DateTime?
+  lifetimeAccess Boolean @default(false)
 
-  expiresAt   DateTime?
+  trialEndsAt DateTime?
 
-  userId      String
+  createdAt     DateTime @default(now())
 
-  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  updatedAt     DateTime @updatedAt
+
+  lastUsedAt    DateTime?
+
+  expiresAt     DateTime?
+
+  userId        String
+
+  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
 }

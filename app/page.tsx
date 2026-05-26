@@ -326,7 +326,7 @@ export default function Home() {
 
         <h4 className="text-3xl font-bold mb-4">
 
-          $1
+          $2*
           <span className="text-xs text-gray-400">
 
             /mo
@@ -374,7 +374,7 @@ export default function Home() {
 
         <h4 className="text-3xl font-bold mb-4">
 
-          $2
+          $3*
           <span className="text-xs text-gray-500">
 
             /mo
@@ -385,6 +385,7 @@ export default function Home() {
 
         <ul className="space-y-1 text-sm mb-5">
 
+          <li>✓ Starter +</li>  
           <li>✓ Premium Themes</li>
           <li>✓ Analytics</li>
           <li>✓ Branding</li>
@@ -416,7 +417,7 @@ export default function Home() {
 
         <h4 className="text-3xl font-bold mb-4">
 
-          $5
+          $5.9
           <span className="text-xs text-gray-400">
 
             /mo
@@ -427,6 +428,7 @@ export default function Home() {
 
         <ul className="space-y-1 text-sm text-gray-300 mb-5">
 
+          <li>✓ Pro +</li>
           <li>✓ NFC Analytics</li>
           <li>✓ Multi Profiles</li>
           <li>✓ Priority Support</li>
