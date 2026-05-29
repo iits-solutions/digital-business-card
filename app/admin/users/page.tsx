@@ -129,9 +129,11 @@ export default function UsersPage() {
                       </p>
 
                       <p>
-
                         {user.email}
+                      </p>
 
+                      <p className="text-xs text-yellow-400">
+                         ID: {user.id}
                       </p>
 
                     </div>

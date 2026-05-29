@@ -16,6 +16,8 @@ model User {
 
   password  String
 
+  role String @default("USER")
+
   createdAt DateTime @default(now())
 
   // Relations
@@ -266,4 +268,16 @@ model Coupon {
 
   createdAt      DateTime @default(now())
 
+}
+
+enum Plan {
+  FREE
+  STARTER
+  PRO
+  PREMIUM
+}
+
+enum CardStatus {
+  ACTIVE
+  INACTIVE
 }
