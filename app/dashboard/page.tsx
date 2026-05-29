@@ -33,19 +33,21 @@ export default async function DashboardPage() {
 
       include: {
 
-        profile: true,
+  profile: true,
 
-        analytics: true,
+  analytics: true,
 
-        leads: {
+  nfcCards: true,
 
-          orderBy: {
-            createdAt: "desc",
-          },
+  leads: {
 
-          take: 5,
+    orderBy: {
+      createdAt: "desc",
+    },
 
-        },
+    take: 5,
+
+  },
 
         activities: {
 
@@ -187,6 +189,15 @@ export default async function DashboardPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
+
+<a
+  href="/manage-subscription"
+  className="bg-purple-600 hover:bg-purple-700 transition px-5 py-3 rounded-2xl font-medium"
+>
+
+  Manage Subscription
+
+</a>
 
             <a
               href="/dashboard/nfc"

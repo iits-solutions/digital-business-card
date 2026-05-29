@@ -64,6 +64,52 @@ export const authOptions: NextAuthOptions = {
        },
     }),
   ],
+callbacks: {
 
+  async jwt({
+    token,
+    user,
+  }) {
+
+    if (user?.email) {
+
+      const dbUser =
+        await prisma.user.findUnique({
+
+          where: {
+            email: user.email,
+          },
+
+          include: {
+
+            nfcCards: true,
+
+          },
+
+        });
+
+      token.lemonCustomerId =
+        dbUser?.nfcCards?.[0]
+          ?.lemonCustomerId;
+
+    }
+
+    return token;
+
+  },
+
+  async session({
+    session,
+    token,
+  }) {
+
+    session.lemonCustomerId =
+      token.lemonCustomerId;
+
+    return session;
+
+  },
+
+},
   secret: process.env.NEXTAUTH_SECRET,
 };

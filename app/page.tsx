@@ -337,6 +337,7 @@ export default function Home() {
 
         <ul className="space-y-1 text-sm text-gray-300 mb-5">
 
+          <li>✓ Free +</li>
           <li>✓ NFC Sharing</li>
           <li>✓ WhatsApp</li>
           <li>✓ Save Contact</li>
