@@ -114,7 +114,7 @@ export default function UsersPage() {
                         className="text-xl font-bold hover:text-blue-400 transition"
                       >
 
-                        {user.name || "Unknown"}
+                        {user.profile?.fullName || "Unknown"}
 
                       </a>
 

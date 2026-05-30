@@ -17,12 +17,13 @@ const userId = id;
 console.log("PARAM ID:", userId);
 
 const user = await prisma.user.findFirst({
-where: {
-id: userId,
-},
-include: {
-nfcCards: true,
-},
+  where: {
+    id: userId,
+  },
+  include: {
+    profile: true,
+    nfcCards: true,
+  },
 });
 
 if (!user) {
@@ -34,56 +35,86 @@ User not found. </div>
 const activeCard = user.nfcCards?.[0];
 
 async function assignPlan(
-plan: string,
-status: string = "ACTIVE"
+  plan: string,
+  formData: FormData
 ) {
+  "use server";
 
+  const status = "ACTIVE";
 
-"use server";
+  const expiresAt = new Date();
 
-const expiresAt = new Date();
+  expiresAt.setFullYear(
+    expiresAt.getFullYear() + 1
+  );
 
-expiresAt.setFullYear(
-  expiresAt.getFullYear() + 1
-);
+  console.log("PLAN RECEIVED:", plan);
+  console.log("STATUS RECEIVED:", status);
 
-const card =
-  await prisma.nfcCard.findFirst({
-    where: {
+  await prisma.user.update({
+  where: {
+    id: user.id,
+  },
+  data: {
+    plan,
+    subscriptionStatus: status,
+  },
+});
+
+const card = await prisma.nfcCard.findFirst({
+      where: {
       userId: user.id,
     },
-  });
-
-if (card) {
-
-  await prisma.nfcCard.update({
-    where: {
-      id: card.id,
-    },
-    data: {
-      plan,
-      status,
-      expiresAt,
+    orderBy: {
+      createdAt: "desc",
     },
   });
 
-} else {
+  if (status === "INACTIVE") {
+    if (card) {
+      await prisma.nfcCard.update({
+        where: {
+          id: card.id,
+        },
+        data: {
+          status: "INACTIVE",
+        },
+      });
+    }
 
-  await prisma.nfcCard.create({
-    data: {
-      token: crypto.randomUUID(),
-      userId: user.id,
-      plan,
-      status,
-      expiresAt,
-    },
-  });
+    revalidatePath(
+      `/admin/users/${user.id}`
+    );
 
-}
+    return;
+  }
 
-revalidatePath(`/admin/users/${user.id}`);
+  if (card) {
+    await prisma.nfcCard.update({
+      where: {
+        id: card.id,
+      },
+      data: {
+        plan,
+        status: "ACTIVE",
+        expiresAt,
+      },
+    });
+  } else {
+    await prisma.nfcCard.create({
+      data: {
+        token: crypto.randomUUID(),
+        userId: user.id,
+        plan,
+        status: "ACTIVE",
+        expiresAt,
+      },
+    });
+  }
 
-
+  revalidatePath(
+    `/admin/users/${user.id}`
+  );
 }
 
 return ( <div className="space-y-8">
@@ -134,12 +165,42 @@ return ( <div className="space-y-8">
       </form>
 
       <form
-        action={assignPlan.bind(
-          null,
-          "FREE",
-          "INACTIVE"
-        )}
-      >
+  action={async () => {
+    "use server";
+
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        plan: "FREE",
+        subscriptionStatus: "INACTIVE",
+      },
+    });
+
+    const card =
+      await prisma.nfcCard.findFirst({
+        where: {
+          userId: user.id,
+        },
+      });
+
+    if (card) {
+      await prisma.nfcCard.update({
+        where: {
+          id: card.id,
+        },
+        data: {
+          status: "INACTIVE",
+        },
+      });
+    }
+
+    revalidatePath(
+      `/admin/users/${user.id}`
+    );
+  }}
+>
         <button
           className="bg-red-600 px-4 py-2 rounded-xl"
         >
@@ -157,7 +218,7 @@ return ( <div className="space-y-8">
         </p>
 
         <h2 className="text-3xl font-bold">
-          {user.name || "Unknown"}
+          {user.profile?.fullName || "Unknown"}
         </h2>
       </div>
 
