@@ -62,6 +62,13 @@ export default function Navbar() {
 
         </Link>
 
+        <Link
+          href="/admin"
+          className="hover:text-red-400 transition"
+        >
+          Admin
+        </Link>
+
       </div>
 
     </nav>

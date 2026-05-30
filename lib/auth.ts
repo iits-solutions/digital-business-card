@@ -91,6 +91,8 @@ callbacks: {
       token.lemonCustomerId =
         dbUser?.nfcCards?.[0]
           ?.lemonCustomerId;
+      token.role = dbUser?.role;
+      token.userId = dbUser?.id;    
 
     }
 
@@ -105,6 +107,8 @@ callbacks: {
 
     session.lemonCustomerId =
       token.lemonCustomerId;
+    session.user.role = token.role as string;
+    session.user.id = token.userId as string;  
 
     return session;
 
