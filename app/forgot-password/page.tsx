@@ -80,63 +80,80 @@ export default function ForgotPasswordPage() {
 
   return (
 
-    <main className="min-h-screen bg-black flex items-center justify-center px-6">
+  <main className="min-h-screen bg-black flex items-center justify-center px-6 relative">
 
-      <div className="w-full max-w-md bg-[#081028] border border-white/10 rounded-3xl p-10">
+    <a
+      href="/"
+      className="absolute top-8 left-8 text-white hover:text-blue-400 transition flex items-center gap-2 text-lg"
+    >
+      ← Home
+    </a>
 
-        <h1 className="text-5xl font-bold text-white mb-4">
+    <div className="w-full max-w-md bg-[#081028] border border-white/10 rounded-3xl p-10">
 
-          Forgot Password
+      <h1 className="text-5xl font-bold text-white mb-4">
+
+        Forgot Password
 
         </h1>
 
         <p className="text-gray-400 mb-10">
+  Enter your email to receive a password reset link.
+</p>
 
-          Enter your email to receive a password reset link.
+<form
+  onSubmit={handleSubmit}
+  className="space-y-6"
+>
 
-        </p>
+  <input
+    type="email"
+    placeholder="Email Address"
+    value={email}
+    onChange={(e) =>
+      setEmail(e.target.value)
+    }
+    required
+    className="w-full bg-black text-white border border-white/10 rounded-2xl px-5 py-4 outline-none"
+  />
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-6"
-        >
+  <button
+    type="submit"
+    disabled={loading}
+    className="w-full bg-blue-600 hover:bg-blue-700 transition py-4 rounded-2xl font-semibold text-white"
+  >
 
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) =>
-              setEmail(
-                e.target.value
-              )
-            }
-            required
-            className="w-full bg-black text-white border border-white/10 rounded-2xl px-5 py-4 outline-none"
-          />
+    {loading
+      ? "Sending..."
+      : "Send Reset Link"}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 transition py-4 rounded-2xl font-semibold text-white"
-          >
+  </button>
 
-            {loading
-              ? "Sending..."
-              : "Send Reset Link"}
+</form>
 
-          </button>
+<div className="text-center mt-4 text-gray-400">
+  Remember your password?{" "}
+  <a
+    href="/login"
+    className="text-blue-400 hover:text-blue-300 transition"
+  >
+    Sign In
+  </a>
+</div>
 
-        </form>
+{message && (
 
-        {message && (
+  <div className="mt-6 bg-green-500/10 border border-green-500/30 rounded-2xl p-4 text-center">
 
-          <div className="mt-6 text-center text-white">
+    <p className="text-green-400 font-medium">
 
-            {message}
+      {message}
 
-          </div>
+    </p>
 
-        )}
+  </div>
+
+)}
 
       </div>
 
