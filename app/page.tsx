@@ -346,7 +346,7 @@ export default function Home() {
 
         <button className="w-full border border-white/10 hover:bg-white hover:text-black transition py-2 rounded-xl text-sm">
 
-          Upgrade
+          Starter
 
         </button>
 
@@ -386,10 +386,11 @@ export default function Home() {
 
         <ul className="space-y-1 text-sm mb-5">
 
-          <li>✓ Starter +</li>  
-          <li>✓ Premium Themes</li>
-          <li>✓ Analytics</li>
+          <li>✓ Profile Analytics</li>
+          <li>✓ QR Analytics</li>
+          <li>✓ Lead Analytics</li>
           <li>✓ Branding</li>
+          <li>✓ Premium Themes</li>
 
         </ul>
 
@@ -429,8 +430,8 @@ export default function Home() {
 
         <ul className="space-y-1 text-sm text-gray-300 mb-5">
 
-          <li>✓ Pro +</li>
-          <li>✓ NFC Analytics</li>
+          <li>✓ Everything in Pro</li>
+          <li>✓ Advanced NFC Analytics</li>
           <li>✓ Multi Profiles</li>
           <li>✓ Priority Support</li>
 
