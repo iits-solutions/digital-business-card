@@ -105,7 +105,7 @@ export default function SignupPage() {
         className="absolute top-8 left-8 text-white hover:text-blue-400 transition flex items-center gap-2 text-lg"
       >
 
-        ← Back to Home
+        ← Home
 
       </a>
 
@@ -175,16 +175,24 @@ export default function SignupPage() {
 
           {/* Button */}
           <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 transition rounded-2xl py-4 font-semibold text-lg"
-          >
+  type="submit"
+  disabled={loading}
+  className="w-full bg-blue-600 hover:bg-blue-700 transition rounded-2xl py-4 font-semibold text-lg"
+>
+  {loading
+    ? "Creating Account..."
+    : "Create Account"}
+</button>
 
-            {loading
-              ? "Creating Account..."
-              : "Create Account"}
-
-          </button>
+<div className="text-center mt-4 text-gray-400">
+  Already have an account?{" "}
+  <a
+    href="/login"
+    className="text-blue-400 hover:text-blue-300 transition"
+  >
+    Sign In
+  </a>
+</div>
 
         </form>
 
