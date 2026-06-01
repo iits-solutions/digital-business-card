@@ -19,6 +19,8 @@ export default function SignupPage() {
 
   const [loading, setLoading] =
     useState(false);
+  const [showPassword, setShowPassword] =
+  useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -163,16 +165,32 @@ export default function SignupPage() {
           />
 
           {/* Password */}
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500 transition"
-          />
+          <div className="relative">
 
+  <input
+    type={showPassword ? "text" : "password"}
+    name="password"
+    placeholder="Password"
+    value={formData.password}
+    onChange={handleChange}
+    required
+    className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 pr-16 outline-none focus:border-blue-500 transition"
+  />
+
+  <button
+    type="button"
+    onClick={() =>
+      setShowPassword(!showPassword)
+    }
+    className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-blue-400 hover:text-blue-300"
+  >
+    {showPassword ? "Hide" : "Show"}
+  </button>
+
+</div>
+<p className="text-xs text-gray-400">
+  Password should contain at least 8 characters.
+</p>
           {/* Button */}
           <button
   type="submit"
