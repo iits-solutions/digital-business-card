@@ -14,11 +14,18 @@ export default function SignupPage() {
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
 
   });
 
   const [loading, setLoading] =
     useState(false);
+  const [message, setMessage] =
+  useState("");
+
+const [messageType, setMessageType] =
+  useState<"success" | "error" | "">("");
+
   const [showPassword, setShowPassword] =
   useState(false);
 
@@ -43,9 +50,29 @@ export default function SignupPage() {
 
     e.preventDefault();
 
+    if (
+  formData.password !==
+  formData.confirmPassword
+) {
+
+  setMessage(
+  "Passwords do not match"
+);
+
+setMessageType("error");
+
+return;
+
+}
+
   if (formData.password.length < 8) {
-  alert("Password must be at least 8 characters long");
-  return;
+  setMessage(
+  "Password must be at least 8 characters long"
+);
+
+setMessageType("error");
+
+return;
   }
 
     try {
@@ -78,21 +105,37 @@ export default function SignupPage() {
 
       if (!response.ok) {
 
-        alert(data.error || "Signup failed");
+        setMessage(
+  data.error || "Signup failed"
+);
+
+setMessageType("error");
 
         return;
 
       }
 
-      alert("Account created successfully");
+      setMessage(
+  "Account created successfully. Redirecting to login..."
+);
 
-      router.push("/login");
+setMessageType("success");  
+
+      setTimeout(() => {
+  router.push("/login");
+}, 1500);
+
+return;
 
     } catch (error) {
 
       console.log(error);
 
-      alert("Something went wrong");
+      setMessage(
+  "Something went wrong"
+);
+
+setMessageType("error");
 
     } finally {
 
@@ -172,30 +215,56 @@ export default function SignupPage() {
           {/* Password */}
           <div className="relative">
 
-  <input
-    type={showPassword ? "text" : "password"}
-    name="password"
-    placeholder="Password"
-    value={formData.password}
-    onChange={handleChange}
-    required
-    className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 pr-16 outline-none focus:border-blue-500 transition"
-  />
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 pr-16 outline-none focus:border-blue-500 transition"
+          />
 
-  <button
-    type="button"
-    onClick={() =>
-      setShowPassword(!showPassword)
-    }
-    className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-blue-400 hover:text-blue-300"
+           <button
+            type="button"
+            onClick={() =>
+            setShowPassword(!showPassword)
+          }
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-blue-400 hover:text-blue-300"
   >
-    {showPassword ? "Hide" : "Show"}
-  </button>
+          {showPassword ? "Hide" : "Show"}
+          </button>
 
 </div>
 <p className="text-xs text-gray-400">
   Password must contain at least 8 characters.
 </p>
+{/* Confirm Password */}
+<input
+  type={showPassword ? "text" : "password"}
+  name="confirmPassword"
+  placeholder="Confirm Password"
+  value={formData.confirmPassword}
+  onChange={handleChange}
+  required
+  className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500 transition"
+/>
+{message && (
+
+  <div
+    className={`rounded-2xl p-4 text-center text-sm ${
+      messageType === "success"
+        ? "bg-green-500/10 border border-green-500/30 text-green-400"
+        : "bg-red-500/10 border border-red-500/30 text-red-400"
+    }`}
+  >
+
+    {message}
+
+  </div>
+
+)}
+
           {/* Button */}
           <button
   type="submit"
