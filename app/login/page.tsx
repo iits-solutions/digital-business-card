@@ -11,14 +11,17 @@ export default function LoginPage() {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  email: "",
+  password: "",
+});
 
-  const [loading, setLoading] =
-    useState(false);
+const [loading, setLoading] =
+  useState(false);
 
-  const handleChange = (
+const [showPassword, setShowPassword] =
+  useState(false);
+
+const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
 
@@ -123,15 +126,29 @@ export default function LoginPage() {
           />
 
           {/* Password */}
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-blue-500 transition"
-          />
+          <div className="relative">
+
+  <input
+    type={showPassword ? "text" : "password"}
+    name="password"
+    placeholder="Password"
+    value={formData.password}
+    onChange={handleChange}
+    required
+    className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 pr-16 outline-none focus:border-blue-500 transition"
+  />
+
+  <button
+    type="button"
+    onClick={() =>
+      setShowPassword(!showPassword)
+    }
+    className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-blue-400 hover:text-blue-300"
+  >
+    {showPassword ? "Hide" : "Show"}
+  </button>
+
+</div>
 
           {/* Button */}
           <div className="mt-5 text-center">
