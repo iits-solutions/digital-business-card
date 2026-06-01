@@ -15,14 +15,64 @@ export async function POST(
 
     const {
 
-      email,
-      password,
-      fullName,
-      username,
+  email,
+  password,
+  fullName,
+  username,
 
-    } = body;
+} = body;
 
-    // Check duplicate email
+// Password validation
+if (!password || password.length < 8) {
+
+  return NextResponse.json(
+    {
+      success: false,
+      error:
+        "Password must be at least 8 characters long",
+    },
+    {
+      status: 400,
+    }
+  );
+
+}
+
+// Username validation
+if (!username || username.length < 3) {
+
+  return NextResponse.json(
+    {
+      success: false,
+      error:
+        "Username must be at least 3 characters long",
+    },
+    {
+      status: 400,
+    }
+  );
+
+}
+
+const usernameRegex =
+  /^[a-z0-9_]+$/;
+
+if (!usernameRegex.test(username)) {
+
+  return NextResponse.json(
+    {
+      success: false,
+      error:
+        "Username can only contain lowercase letters, numbers and underscores",
+    },
+    {
+      status: 400,
+    }
+  );
+
+}
+
+// Check duplicate email
 const existingEmail =
   await prisma.user.findUnique({
 

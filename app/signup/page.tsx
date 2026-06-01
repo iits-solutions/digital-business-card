@@ -43,6 +43,11 @@ export default function SignupPage() {
 
     e.preventDefault();
 
+  if (formData.password.length < 8) {
+  alert("Password must be at least 8 characters long");
+  return;
+  }
+
     try {
 
       setLoading(true);
@@ -189,7 +194,7 @@ export default function SignupPage() {
 
 </div>
 <p className="text-xs text-gray-400">
-  Password should contain at least 8 characters.
+  Password must contain at least 8 characters.
 </p>
           {/* Button */}
           <button
