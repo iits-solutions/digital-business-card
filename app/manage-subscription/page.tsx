@@ -16,7 +16,7 @@ export default function ManageSubscriptionPage() {
       try {
 
         const customerId =
-          session?.lemonCustomerId;
+  (session as any)?.lemonCustomerId;
 
         if (!customerId) {
 

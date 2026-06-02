@@ -40,7 +40,7 @@ async function assignPlan(
 ) {
   "use server";
 
-  const status = "ACTIVE";
+  const status: string = "ACTIVE";
 
   const expiresAt = new Date();
 
@@ -53,7 +53,7 @@ async function assignPlan(
 
   await prisma.user.update({
   where: {
-    id: user.id,
+    id: user!.id,
   },
   data: {
     plan,
@@ -63,31 +63,15 @@ async function assignPlan(
 
 const card = await prisma.nfcCard.findFirst({
       where: {
-      userId: user.id,
+      userId: user!.id,
     },
     orderBy: {
       createdAt: "desc",
     },
   });
 
-  if (status === "INACTIVE") {
-    if (card) {
-      await prisma.nfcCard.update({
-        where: {
-          id: card.id,
-        },
-        data: {
-          status: "INACTIVE",
-        },
-      });
-    }
 
-    revalidatePath(
-      `/admin/users/${user.id}`
-    );
 
-    return;
-  }
 
   if (card) {
     await prisma.nfcCard.update({
@@ -104,7 +88,7 @@ const card = await prisma.nfcCard.findFirst({
     await prisma.nfcCard.create({
       data: {
         token: crypto.randomUUID(),
-        userId: user.id,
+        userId: user!.id,
         plan,
         status: "ACTIVE",
         expiresAt,
@@ -113,7 +97,7 @@ const card = await prisma.nfcCard.findFirst({
   }
 
   revalidatePath(
-    `/admin/users/${user.id}`
+    `/admin/users/${user!.id}`
   );
 }
 
@@ -127,7 +111,7 @@ return ( <div className="space-y-8">
     </h1>
 
     <div className="text-yellow-400 mb-4">
-      User ID: {user.id}
+      User ID: {user!.id}
     </div>
 
     <p className="text-gray-400 text-xl">
@@ -170,7 +154,7 @@ return ( <div className="space-y-8">
 
     await prisma.user.update({
       where: {
-        id: user.id,
+        id: user!.id,
       },
       data: {
         plan: "FREE",
@@ -181,7 +165,7 @@ return ( <div className="space-y-8">
     const card =
       await prisma.nfcCard.findFirst({
         where: {
-          userId: user.id,
+          userId: user!.id,
         },
       });
 
@@ -197,7 +181,7 @@ return ( <div className="space-y-8">
     }
 
     revalidatePath(
-      `/admin/users/${user.id}`
+      `/admin/users/${user!.id}`
     );
   }}
 >

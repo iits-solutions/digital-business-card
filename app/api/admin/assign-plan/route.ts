@@ -61,21 +61,14 @@ export async function POST(
     } else {
 
       await prisma.nfcCard.create({
-
-        data: {
-
-          userId,
-
-          status:
-            "ACTIVE",
-
-          plan,
-
-          expiresAt,
-
-        },
-
-      });
+  data: {
+    token: crypto.randomUUID(),
+    userId,
+    status: "ACTIVE",
+    plan,
+    expiresAt,
+  },
+});
 
     }
 

@@ -105,10 +105,14 @@ callbacks: {
     token,
   }) {
 
-    session.lemonCustomerId =
+    (session as any).lemonCustomerId =
       token.lemonCustomerId;
-    session.user.role = token.role as string;
-    session.user.id = token.userId as string;  
+    
+      (session.user as any).role =
+      token.role;
+
+    (session.user as any).id =
+      token.userId;
 
     return session;
 
