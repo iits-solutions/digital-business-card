@@ -199,14 +199,25 @@ export default async function DashboardPage() {
 
 </a>
 
-            <a
-              href="/dashboard/nfc"
-              className="bg-blue-600 hover:bg-blue-700 transition px-5 py-3 rounded-2xl font-medium"
-            >
+            {user?.plan === "FREE" ? (
 
-              NFC Tools
+  <a
+    href="/manage-subscription"
+    className="bg-gray-600 hover:bg-gray-700 transition px-5 py-3 rounded-2xl font-medium"
+  >
+    NFC Tools 🔒
+  </a>
 
-            </a>
+) : (
+
+  <a
+    href="/dashboard/nfc"
+    className="bg-blue-600 hover:bg-blue-700 transition px-5 py-3 rounded-2xl font-medium"
+  >
+    NFC Tools
+  </a>
+
+)}
 
             <form
               action="/api/auth/signout"
