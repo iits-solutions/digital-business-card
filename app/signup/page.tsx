@@ -123,7 +123,7 @@ setMessageType("success");
 
       setTimeout(() => {
   router.push("/login");
-}, 1500);
+}, 4000);
 
 return;
 
