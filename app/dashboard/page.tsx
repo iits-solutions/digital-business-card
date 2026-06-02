@@ -124,36 +124,9 @@ export default async function DashboardPage() {
     );
 
   const chartData =
-    hasRealData
-      ? realChartData
-      : [
-
-          {
-            name: "Mon",
-            leads: 12,
-          },
-
-          {
-            name: "Tue",
-            leads: 18,
-          },
-
-          {
-            name: "Wed",
-            leads: 24,
-          },
-
-          {
-            name: "Thu",
-            leads: 31,
-          },
-
-          {
-            name: "Fri",
-            leads: 38,
-          },
-
-        ];
+  hasRealData
+    ? realChartData
+    : [];
 
   return (
 
@@ -252,15 +225,15 @@ export default async function DashboardPage() {
 
             <h2 className="text-3xl font-bold">
 
-              FREE
+  {user?.plan || "FREE"}
 
-            </h2>
+</h2>
 
-            <p className="text-sm text-white/70 mt-2">
+<p className="text-sm text-white/70 mt-2">
 
-              Free Plan
+  {(user?.plan || "FREE") + " Plan"}
 
-            </p>
+</p>
 
           </div>
 
