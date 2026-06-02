@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+import SignupBetaNotice from "../components/SignupBetaNotice";
+
 export default function SignupPage() {
 
   const router = useRouter();
@@ -149,6 +151,8 @@ setMessageType("error");
 
     <main className="min-h-screen bg-black text-white flex items-center justify-center px-6 relative">
 
+      <SignupBetaNotice />
+
       {/* Back Button */}
       <a
         href="/"
@@ -264,6 +268,29 @@ setMessageType("error");
   </div>
 
 )}
+
+<div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-4">
+  <label className="flex items-start gap-3 cursor-pointer">
+    <input
+      type="checkbox"
+      required
+      className="mt-1 h-4 w-4"
+    />
+
+    <div>
+      <p className="text-sm text-white font-medium">
+        Public Beta Acknowledgment
+      </p>
+
+      <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+        I acknowledge that iLinq.Team is currently operating
+        in a public beta environment and that features,
+        subscriptions, integrations and services may change
+        during development and testing.
+      </p>
+    </div>
+  </label>
+</div>
 
           {/* Button */}
           <button
