@@ -17,6 +17,7 @@ export default function Sidebar() {
     fullName: "",
     username: "",
     image: "",
+    role: "USER",
 
   });
 
@@ -34,16 +35,19 @@ export default function Sidebar() {
 
         setProfile({
 
-          fullName:
-            data.fullName || "",
+  fullName:
+    data.fullName || "",
 
-          username:
-            data.username || "",
+  username:
+    data.username || "",
 
-          image:
-            data.image || "",
+  image:
+    data.image || "",
 
-        });
+  role:
+    data.role || "USER",
+
+});
 
       } catch (error) {
 
@@ -155,6 +159,21 @@ export default function Sidebar() {
             </Link>
 
           ))}
+{profile.role ===
+  "SUPER_ADMIN" && (
+
+  <>
+    <div className="border-t border-white/10 my-6" />
+
+    <Link
+      href="/admin"
+      className="block px-5 py-4 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-semibold transition"
+    >
+      Super Admin
+    </Link>
+  </>
+
+)}
 
         </nav>
 

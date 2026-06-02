@@ -53,6 +53,9 @@ export async function GET() {
       username:
         user.profile.username || "",
 
+      role:
+        user.role || "USER",  
+
       bio:
         user.profile.bio || "",
 

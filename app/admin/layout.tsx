@@ -1,5 +1,7 @@
 "use client";
 
+import { signOut } from "next-auth/react";
+
 import Link from "next/link";
 
 import { usePathname } from "next/navigation";
@@ -82,32 +84,55 @@ export default function AdminLayout({
 
         <nav className="space-y-3">
 
-          {menuItems.map((item) => {
+  {menuItems.map((item) => {
 
-            const isActive =
-              pathname === item.href;
+    const isActive =
+      pathname === item.href;
 
-            return (
+    return (
 
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`block px-5 py-4 rounded-2xl transition font-semibold ${
-                  isActive
-                    ? "bg-blue-600 hover:bg-blue-700"
-                    : "bg-[#0b1736] hover:bg-[#13224d]"
-                }`}
-              >
+      <Link
+        key={item.href}
+        href={item.href}
+        className={`block px-5 py-4 rounded-2xl transition font-semibold ${
+          isActive
+            ? "bg-blue-600 hover:bg-blue-700"
+            : "bg-[#0b1736] hover:bg-[#13224d]"
+        }`}
+      >
 
-                {item.name}
+        {item.name}
 
-              </Link>
+      </Link>
 
-            );
+    );
 
-          })}
+  })}
 
-        </nav>
+  {/* Divider */}
+  <div className="border-t border-white/10 my-6" />
+
+  {/* Back to User Dashboard */}
+  <Link
+    href="/dashboard"
+    className="block px-5 py-4 rounded-2xl bg-[#0b1736] hover:bg-[#13224d] transition font-semibold"
+  >
+    ← User Dashboard
+    
+    <button
+  onClick={() =>
+    signOut({
+      callbackUrl: "/login",
+    })
+  }
+  className="w-full mt-3 px-5 py-4 rounded-2xl bg-red-600 hover:bg-red-700 transition font-semibold text-left"
+>
+  Logout
+
+</button>
+  </Link>
+
+</nav>
 
       </aside>
 
