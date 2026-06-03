@@ -59,8 +59,8 @@ return (
   <Image
     src="/ilinq-logo.png"
     alt="iLinq Team"
-    width={110}
-    height={110}
+    width={400}
+    height={340}
     priority
   />
 </div>
@@ -118,7 +118,7 @@ return (
 
         {/* Version */}
         <div className="mt-8 text-gray-500 text-sm">
-          iLinq.Team Beta v0.9
+          iLinq.Team Beta v1.2
         </div>
 
       </div>
