@@ -59,8 +59,8 @@ return (
   <Image
     src="/ilinq-logo.png"
     alt="iLinq Team"
-    width={400}
-    height={340}
+    width={300}
+    height={240}
     priority
   />
 </div>
