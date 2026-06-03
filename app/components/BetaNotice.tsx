@@ -57,7 +57,7 @@ return (
         {/* Logo */}
         <div className="flex justify-center mb-6">
   <Image
-    src="/ilinq-logo.png"
+    src="/iLinq-Logo.png"
     alt="iLinq Team"
     width={300}
     height={240}
@@ -118,7 +118,7 @@ return (
 
         {/* Version */}
         <div className="mt-8 text-gray-500 text-sm">
-          iLinq.Team Beta v1.2
+          iLinq.Team Beta v1.3
         </div>
 
       </div>
