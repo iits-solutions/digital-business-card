@@ -79,15 +79,9 @@ export async function POST(
     // Send reset email
     await resend.emails.send({
 
-      from:
-        "ILinq <onboarding@resend.dev>",
-
-      to:
-        email,
-
-      subject:
-        "Reset Your Password",
-
+      from: "iLinq Team <noreply@ilinq.team>",
+      to: email,
+      subject: "Reset Your Password",
       html: `
 
         <div style="font-family:sans-serif;">

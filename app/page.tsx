@@ -572,16 +572,16 @@ export default function Home() {
 
           <li>
             <a
-              href="#"
-              className="hover:text-white transition"
-            >
-              About
-            </a>
+  href="/about"
+  className="hover:text-white transition"
+>
+  About
+</a>
           </li>
 
           <li>
             <a
-              href="#"
+              href="/contact"
               className="hover:text-white transition"
             >
               Contact
