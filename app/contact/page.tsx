@@ -1,11 +1,81 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ContactPage() {
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (
+    e: React.FormEvent
+  ) => {
+    e.preventDefault();
+
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await fetch(
+        "/api/contact",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            subject,
+            message,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error();
+      }
+
+      setSuccess(
+        "Message sent successfully!"
+      );
+
+      setName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+    } catch {
+      setError(
+        "Failed to send message."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-black text-white">
       <div className="max-w-5xl mx-auto px-6 py-16">
 
         {/* Header */}
+
+        <div className="mb-8">
+  <Link
+    href="/"
+    className="inline-flex items-center px-4 py-2 border border-blue-700 rounded-lg bg-blue-950 hover:bg-blue-900 transition"
+  >
+    ← Back to Home
+  </Link>
+</div>
         <div className="text-center mb-16">
 
           <Image
@@ -13,6 +83,7 @@ export default function ContactPage() {
             alt="iLinq.Team"
             width={200}
             height={200}
+            priority
             className="mx-auto mb-6"
           />
 
@@ -37,7 +108,7 @@ export default function ContactPage() {
             </h3>
 
             <p className="text-gray-400">
-              iits.solutions.2019@gmail.com
+              support@ilinq.team
             </p>
           </div>
 
@@ -74,38 +145,70 @@ export default function ContactPage() {
             Send Us a Message
           </h2>
 
-          <form className="space-y-6">
+          <form
+  onSubmit={handleSubmit}
+  className="space-y-6"
+>
 
             <input
-              type="text"
-              placeholder="Your Name"
-              className="w-full p-4 rounded-lg bg-black border border-blue-900"
-            />
+  type="text"
+  placeholder="Your Name"
+  value={name}
+  onChange={(e) =>
+    setName(e.target.value)
+  }
+  className="w-full p-4 rounded-lg bg-black border border-blue-900"
+/>
 
             <input
-              type="email"
-              placeholder="Your Email"
-              className="w-full p-4 rounded-lg bg-black border border-blue-900"
-            />
+  type="email"
+  placeholder="Your Email"
+  value={email}
+  onChange={(e) =>
+    setEmail(e.target.value)
+  }
+  className="w-full p-4 rounded-lg bg-black border border-blue-900"
+/>
 
             <input
-              type="text"
-              placeholder="Subject"
-              className="w-full p-4 rounded-lg bg-black border border-blue-900"
-            />
+  type="text"
+  placeholder="Subject"
+  value={subject}
+  onChange={(e) =>
+    setSubject(e.target.value)
+  }
+  className="w-full p-4 rounded-lg bg-black border border-blue-900"
+/>
 
             <textarea
-              placeholder="Your Message"
-              rows={6}
-              className="w-full p-4 rounded-lg bg-black border border-blue-900"
-            />
+  placeholder="Your Message"
+  rows={6}
+  value={message}
+  onChange={(e) =>
+    setMessage(e.target.value)
+  }
+  className="w-full p-4 rounded-lg bg-black border border-blue-900"
+/>
 
-            <button
-              type="submit"
-              className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-xl font-semibold"
-            >
-              Send Message
-            </button>
+{success && (
+  <div className="bg-green-900 border border-green-600 text-green-300 p-4 rounded-lg">
+    {success}
+  </div>
+)}
+
+{error && (
+  <div className="bg-red-900 border border-red-600 text-red-300 p-4 rounded-lg">
+    {error}
+  </div>
+)}
+
+<button
+  type="submit"
+  disabled={loading}
+  className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-xl font-semibold disabled:opacity-50"
+>
+  {loading ? "Sending..." : "Send Message"}
+</button>
 
           </form>
 
