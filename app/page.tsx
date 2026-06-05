@@ -536,15 +536,14 @@ export default function Home() {
               Features
             </a>
           </li>
-
-          <li>
-            <a
-              href="#pricing"
-              className="hover:text-white transition"
-            >
-              Pricing
-            </a>
-          </li>
+<li>
+  <Link
+    href="/pricing"
+    className="hover:text-white transition"
+  >
+    Pricing
+  </Link>
+</li>
 
           <li>
             <a
