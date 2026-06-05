@@ -589,13 +589,13 @@ export default function Home() {
           </li>
 
           <li>
-            <a
-              href="#"
-              className="hover:text-white transition"
-            >
-              Support
-            </a>
-          </li>
+  <Link
+    href="/support"
+    className="hover:text-white transition"
+  >
+    Support
+  </Link>
+</li>
 
         </ul>
 
@@ -613,22 +613,22 @@ export default function Home() {
         <ul className="space-y-2 text-gray-400 text-sm">
 
           <li>
-            <a
-              href="#"
-              className="hover:text-white transition"
-            >
-              Privacy Policy
-            </a>
+            <Link
+  href="/privacy-policy"
+  className="hover:text-white transition"
+>
+  Privacy Policy
+</Link>
           </li>
 
           <li>
-            <a
-              href="#"
-              className="hover:text-white transition"
-            >
-              Terms of Service
-            </a>
-          </li>
+  <Link
+    href="/terms-of-service"
+    className="hover:text-white transition"
+  >
+    Terms of Service
+  </Link>
+</li>
 
         </ul>
 
