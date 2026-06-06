@@ -259,17 +259,13 @@ export default function Home() {
     {/* Heading */}
     <div className="text-center mb-12">
 
-      <h2 className="text-4xl font-bold mb-3">
+      <h2 className="text-5xl font-bold text-center mb-6">
+  Pricing Plans
+</h2>
 
-        Simple Pricing
-
-      </h2>
-
-      <p className="text-gray-400 text-base">
-
-        Flexible plans for everyone.
-
-      </p>
+<p className="text-center text-gray-400 mb-16">
+  Choose the plan that best fits your networking needs.
+</p>
 
     </div>
 
@@ -299,64 +295,24 @@ export default function Home() {
 
         <ul className="space-y-1 text-sm text-gray-300 mb-5">
 
-          <li>✓ Basic Profile</li>
-          <li>✓ QR Sharing</li>
-          <li>✓ Basic Theme</li>
+          <li>✓ Digital Profile</li>
+          <li>✓ QR Code Sharing</li>
+          <li>✓ Social Links</li>
+          <li>✓ Basic Customization</li>
+          <li>✓ Community Support</li>
 
         </ul>
 
+        
         <button className="w-full border border-white/10 hover:bg-white hover:text-black transition py-2 rounded-xl text-sm">
 
-          Start
+          Get Started
 
         </button>
 
       </div>
 
-      {/* Starter */}
-      <div className="min-w-[170px] bg-[#081028] border border-white/10 rounded-2xl p-4 flex-shrink-0">
-
-        <h3 className="text-lg font-bold mb-2">
-
-          Starter
-
-        </h3>
-
-        <p className="text-gray-400 text-sm mb-4">
-
-          Freelancers.
-
-        </p>
-
-        <h4 className="text-3xl font-bold mb-4">
-
-          $2*
-          <span className="text-xs text-gray-400">
-
-            /mo
-
-          </span>
-
-        </h4>
-
-        <ul className="space-y-1 text-sm text-gray-300 mb-5">
-
-          <li>✓ Free +</li>
-          <li>✓ NFC Sharing</li>
-          <li>✓ WhatsApp</li>
-          <li>✓ Save Contact</li>
-
-        </ul>
-
-        <button className="w-full border border-white/10 hover:bg-white hover:text-black transition py-2 rounded-xl text-sm">
-
-          Starter
-
-        </button>
-
-      </div>
-
-      {/* Pro */}
+      {/* Professional */}
       <div className="min-w-[170px] bg-white text-black rounded-2xl p-4 flex-shrink-0 shadow-xl">
 
         <div className="inline-block bg-black text-white text-[10px] px-3 py-1 rounded-full mb-3">
@@ -367,7 +323,7 @@ export default function Home() {
 
         <h3 className="text-lg font-bold mb-2">
 
-          Pro
+          Professional
 
         </h3>
 
@@ -379,7 +335,7 @@ export default function Home() {
 
         <h4 className="text-3xl font-bold mb-4">
 
-          $3*
+          $4.99
           <span className="text-xs text-gray-500">
 
             /mo
@@ -390,28 +346,28 @@ export default function Home() {
 
         <ul className="space-y-1 text-sm mb-5">
 
-          <li>✓ Profile Analytics</li>
-          <li>✓ QR Analytics</li>
-          <li>✓ Lead Analytics</li>
-          <li>✓ Branding</li>
-          <li>✓ Premium Themes</li>
+          <li>✓ Everything in Free</li>
+          <li>✓ NFC Card Support</li>
+          <li>✓ Analytics</li>
+          <li>✓ Custom Branding</li>
+          <li>✓ Priority Support</li>
 
         </ul>
 
         <button className="w-full bg-black text-white hover:bg-gray-800 transition py-2 rounded-xl text-sm">
 
-          Go Pro
+          Upgrade
 
         </button>
 
       </div>
 
-      {/* Premium */}
+      {/* Business */}
       <div className="min-w-[170px] bg-[#081028] border border-white/10 rounded-2xl p-4 flex-shrink-0">
 
         <h3 className="text-lg font-bold mb-2">
 
-          Premium
+          Business
 
         </h3>
 
@@ -423,7 +379,7 @@ export default function Home() {
 
         <h4 className="text-3xl font-bold mb-4">
 
-          $5.9
+          $14.99
           <span className="text-xs text-gray-400">
 
             /mo
@@ -434,62 +390,107 @@ export default function Home() {
 
         <ul className="space-y-1 text-sm text-gray-300 mb-5">
 
-          <li>✓ Everything in Pro</li>
-          <li>✓ Advanced NFC Analytics</li>
-          <li>✓ Multi Profiles</li>
-          <li>✓ Priority Support</li>
+          <li>✓ Everything in Professional</li> 
+          <li>✓ Team Management</li>
+          <li>✓ Multiple Profiles</li>
+          <li>✓ Advanced Analytics</li>
+          <li>✓ Premium Support</li>
 
         </ul>
 
         <button className="w-full border border-white/10 hover:bg-white hover:text-black transition py-2 rounded-xl text-sm">
 
-          Premium
+          Upgrade
 
         </button>
 
       </div>
 
-      {/* Company */}
-      <div className="min-w-[170px] bg-[#081028] border border-white/10 rounded-2xl p-4 flex-shrink-0">
+      {/* Enterprise */}
+<div className="min-w-[170px] bg-[#081028] border border-white/10 rounded-2xl p-4 flex-shrink-0">
 
-        <h3 className="text-lg font-bold mb-2">
+  <h3 className="text-lg font-bold mb-2">
+    Enterprise
+  </h3>
 
-          Company
+  <p className="text-gray-400 text-sm mb-4">
+    Custom business solutions.
+  </p>
 
-        </h3>
+  <h4 className="text-2xl font-bold mb-4">
+    Custom Quote
+  </h4>
 
-        <p className="text-gray-400 text-sm mb-4">
+  <ul className="space-y-1 text-sm text-gray-300 mb-5">
 
-          Teams.
+    <li>✓ Team Dashboard</li>
+    <li>✓ Employee Profiles</li>
+    <li>✓ Custom NFC Cards</li>
+    <li>✓ Dedicated Support</li>
+    <li>✓ Volume Discounts</li>
+    <li>✓ Custom Integrations</li>
 
-        </p>
+  </ul>
 
-        <h4 className="text-2xl font-bold mb-4">
+  <button className="w-full border border-white/10 hover:bg-white hover:text-black transition py-2 rounded-xl text-sm">
+    Contact Sales
+  </button>
 
-          Custom
+</div>
 
-        </h4>
+    </div>
 
-        <ul className="space-y-1 text-sm text-gray-300 mb-5">
+  </div>
 
-          <li>✓ Team Dashboard</li>
-          <li>✓ Employee Profiles</li>
-          <li>✓ Admin Panel</li>
+</section>
 
-        </ul>
+{/* NFC Pricing */}
+<section className="py-16 px-4 bg-black">
+  <div className="max-w-6xl mx-auto">
 
-        <button className="w-full border border-white/10 hover:bg-white hover:text-black transition py-2 rounded-xl text-sm">
+    <div className="bg-blue-950 border border-blue-800 rounded-xl p-8">
 
-          Contact
+      <h3 className="text-3xl font-bold text-center mb-8">
+        NFC Card Pricing
+      </h3>
 
-        </button>
+      <div className="grid md:grid-cols-3 gap-6 text-center">
+
+        <div>
+          <h4 className="font-semibold mb-2">
+            Basic NFC Card
+          </h4>
+
+          <p className="text-2xl font-bold">
+            Starting at $9.99
+          </p>
+        </div>
+
+        <div>
+          <h4 className="font-semibold mb-2">
+            Premium NFC Card
+          </h4>
+
+          <p className="text-2xl font-bold">
+            Starting at $19.99
+          </p>
+        </div>
+
+        <div>
+          <h4 className="font-semibold mb-2">
+            Custom Business Cards
+          </h4>
+
+          <p className="text-2xl font-bold">
+            Contact Us
+          </p>
+        </div>
 
       </div>
 
     </div>
 
   </div>
-
 </section>
 
      {/* FOOTER */}

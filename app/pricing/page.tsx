@@ -34,68 +34,100 @@ export default function PricingPage() {
           </p>
         </div>
 
-        {/* Plans */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+{/* Plans */}
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
 
-          {/* Free */}
-          <div className="bg-blue-950 border border-blue-800 rounded-xl p-6">
-            <h2 className="text-3xl font-bold mb-2">Free</h2>
-            <p className="text-4xl font-bold mb-6">$0</p>
+  {/* Free */}
+  <div className="bg-blue-950 border border-blue-800 rounded-xl p-6">
+    <h2 className="text-3xl font-bold mb-2">Free</h2>
+    <p className="text-4xl font-bold mb-6">$0</p>
 
-            <ul className="space-y-3 text-gray-300">
-              <li>✔ Digital Profile</li>
-              <li>✔ QR Code Sharing</li>
-              <li>✔ Social Links</li>
-              <li>✔ Basic Customization</li>
-              <li>✔ Community Support</li>
-            </ul>
-          </div>
+    <ul className="space-y-3 text-gray-300">
+      <li>✔ Digital Profile</li>
+      <li>✔ QR Code Sharing</li>
+      <li>✔ Social Links</li>
+      <li>✔ Basic Customization</li>
+      <li>✔ Community Support</li>
+    </ul>
+  </div>
 
-          {/* Pro */}
-          <div className="bg-blue-950 border-2 border-blue-500 rounded-xl p-6">
-            <h2 className="text-3xl font-bold mb-2 text-blue-300">
-                <div className="inline-block bg-blue-500 text-white text-sm px-3 py-1 rounded-full mb-4">
-                 Most Popular
-                </div>
-              Professional
-            </h2>
+  {/* Professional */}
+  <div className="bg-blue-950 border-2 border-blue-500 rounded-xl p-6">
+    <div className="inline-block bg-blue-500 text-white text-sm px-3 py-1 rounded-full mb-4">
+      Most Popular
+    </div>
 
-            <p className="text-4xl font-bold mb-6">
-              $4.99
-              <span className="text-lg text-gray-400"> / month</span>
-            </p>
+    <h2 className="text-3xl font-bold mb-2 text-blue-300">
+      Professional
+    </h2>
 
-            <ul className="space-y-3 text-gray-300">
-              <li>✔ Everything in Free</li>
-              <li>✔ NFC Card Support</li>
-              <li>✔ Analytics</li>
-              <li>✔ Custom Branding</li>
-              <li>✔ Priority Support</li>
-            </ul>
-          </div>
+    <p className="text-4xl font-bold mb-6">
+      $4.99
+      <span className="text-lg text-gray-400"> / month</span>
+    </p>
 
-          {/* Business */}
-          <div className="bg-blue-950 border border-blue-800 rounded-xl p-6">
-            <h2 className="text-3xl font-bold mb-2">
-              Business
-            </h2>
+    <ul className="space-y-3 text-gray-300">
+      <li>✔ Everything in Free</li>
+      <li>✔ NFC Card Support</li>
+      <li>✔ Analytics</li>
+      <li>✔ Custom Branding</li>
+      <li>✔ Priority Support</li>
+    </ul>
+  </div>
 
-            <p className="text-4xl font-bold mb-6">
-              $14.99
-              <span className="text-lg text-gray-400"> / month</span>
-            </p>
+  {/* Business */}
+  <div className="bg-blue-950 border border-blue-800 rounded-xl p-6">
+    <h2 className="text-3xl font-bold mb-2">
+      Business
+    </h2>
 
-            <ul className="space-y-3 text-gray-300">
-              <li>✔ Everything in Professional</li>
-              <li>✔ Team Management</li>
-              <li>✔ Multiple Profiles</li>
-              <li>✔ Advanced Analytics</li>
-              <li>✔ Premium Support</li>
-            </ul>
-          </div>
+    <p className="text-4xl font-bold mb-6">
+      $14.99
+      <span className="text-lg text-gray-400"> / month</span>
+    </p>
 
-        </div>
+    <ul className="space-y-3 text-gray-300">
+      <li>✔ Everything in Professional</li>
+      <li>✔ Team Management</li>
+      <li>✔ Multiple Profiles</li>
+      <li>✔ Advanced Analytics</li>
+      <li>✔ Premium Support</li>
+    </ul>
+  </div>
 
+  {/* Enterprise */}
+  <div className="bg-blue-950 border border-blue-800 rounded-xl p-6">
+    <h2 className="text-3xl font-bold mb-2">
+      Enterprise
+    </h2>
+
+    <p className="text-gray-400 mb-4">
+      Custom business solutions.
+    </p>
+
+    <p className="text-4xl font-bold mb-6">
+      Custom Quote
+    </p>
+
+    <ul className="space-y-3 text-gray-300">
+      <li>✔ Team Dashboard</li>
+      <li>✔ Employee Profiles</li>
+      <li>✔ Custom NFC Cards</li>
+      <li>✔ Dedicated Support</li>
+      <li>✔ Custom Solutions</li>
+    </ul>
+
+    <div className="mt-6">
+      <Link
+        href="/contact"
+        className="inline-block bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg"
+      >
+        Contact Sales
+      </Link>
+    </div>
+  </div>
+
+</div>
         {/* NFC Pricing */}
         <div className="bg-blue-950 border border-blue-800 rounded-xl p-8">
 
@@ -103,7 +135,7 @@ export default function PricingPage() {
             NFC Card Pricing
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-12">
 
             <div>
               <h3 className="text-xl font-semibold mb-2">
