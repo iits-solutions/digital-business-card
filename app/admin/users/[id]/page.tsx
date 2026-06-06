@@ -190,6 +190,12 @@ return ( <div className="space-y-8">
         >
           Deactivate
         </button>
+        <a
+  href={`/admin/users/${user.id}/delete`}
+  className="bg-yellow-800 hover:bg-red-600 px-4 py-2 rounded-xl"
+>
+  Delete User
+</a>
       </form>
 
     </div>

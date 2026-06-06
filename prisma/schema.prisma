@@ -155,7 +155,6 @@ enum Plan {
   STARTER
   PRO
   PREMIUM
-  ENTERPRISE
 }
 
 enum CardStatus {
