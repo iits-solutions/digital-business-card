@@ -31,49 +31,49 @@ export default async function DeleteUserPage({
   try {
     await prisma.profile.deleteMany({
       where: {
-        userId: user.id,
+        userId: user!.id,
       },
     });
 
     await prisma.analytics.deleteMany({
       where: {
-        userId: user.id,
+        userId: user!.id,
       },
     });
 
     await prisma.lead.deleteMany({
       where: {
-        userId: user.id,
+        userId: user!.id,
       },
     });
 
     await prisma.activity.deleteMany({
       where: {
-        userId: user.id,
+        userId: user!.id,
       },
     });
 
     await prisma.session.deleteMany({
       where: {
-        userId: user.id,
+        userId: user!.id,
       },
     });
 
     await prisma.account.deleteMany({
       where: {
-        userId: user.id,
+        userId: user!.id,
       },
     });
 
     await prisma.nfcCard.deleteMany({
       where: {
-        userId: user.id,
+        userId: user!.id,
       },
     });
 
     await prisma.user.delete({
       where: {
-        id: user.id,
+        id: user!.id,
       },
     });
 
