@@ -128,7 +128,7 @@ return ( <div className="space-y-8">
         <button
           className="bg-blue-600 px-4 py-2 rounded-xl"
         >
-          Starter
+          Professional
         </button>
       </form>
 
@@ -136,7 +136,7 @@ return ( <div className="space-y-8">
         <button
           className="bg-purple-600 px-4 py-2 rounded-xl"
         >
-          Pro
+          Business
         </button>
       </form>
 
@@ -144,7 +144,7 @@ return ( <div className="space-y-8">
         <button
           className="bg-green-600 px-4 py-2 rounded-xl"
         >
-          Premium
+          Enterprise
         </button>
       </form>
 
@@ -186,17 +186,18 @@ return ( <div className="space-y-8">
   }}
 >
         <button
-          className="bg-red-600 px-4 py-2 rounded-xl"
-        >
-          Deactivate
-        </button>
-        <a
+    className="bg-red-600 px-4 py-2 rounded-xl"
+  >
+    Deactivate
+  </button>
+</form>
+
+<a
   href={`/admin/users/${user.id}/delete`}
-  className="bg-yellow-800 hover:bg-red-600 px-4 py-2 rounded-xl"
+  className="bg-yellow-800 hover:bg-red-600 px-4 py-2 rounded-xl inline-flex items-center"
 >
   Delete User
 </a>
-      </form>
 
     </div>
 
@@ -228,8 +229,14 @@ return ( <div className="space-y-8">
         </p>
 
         <h2 className="text-2xl">
-          {activeCard?.plan || "FREE"}
-        </h2>
+  {activeCard?.plan === "STARTER"
+    ? "PROFESSIONAL"
+    : activeCard?.plan === "PRO"
+    ? "BUSINESS"
+    : activeCard?.plan === "PREMIUM"
+    ? "ENTERPRISE"
+    : activeCard?.plan || "FREE"}
+</h2>
       </div>
 
       <div>
@@ -282,7 +289,15 @@ return ( <div className="space-y-8">
                 <p className="text-gray-500 text-sm">
                   Plan
                 </p>
-                <p>{card.plan}</p>
+                <p>
+  {card.plan === "STARTER"
+    ? "PROFESSIONAL"
+    : card.plan === "PRO"
+    ? "BUSINESS"
+    : card.plan === "PREMIUM"
+    ? "ENTERPRISE"
+    : card.plan}
+</p>
               </div>
 
               <div>

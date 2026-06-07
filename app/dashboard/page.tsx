@@ -224,15 +224,23 @@ export default async function DashboardPage() {
             </p>
 
             <h2 className="text-3xl font-bold">
-
-  {user?.plan || "FREE"}
-
+  {user?.plan === "STARTER"
+    ? "PROFESSIONAL"
+    : user?.plan === "PRO"
+    ? "BUSINESS"
+    : user?.plan === "PREMIUM"
+    ? "ENTERPRISE"
+    : user?.plan || "FREE"}
 </h2>
 
 <p className="text-sm text-white/70 mt-2">
-
-  {(user?.plan || "FREE") + " Plan"}
-
+  {(user?.plan === "STARTER"
+    ? "PROFESSIONAL"
+    : user?.plan === "PRO"
+    ? "BUSINESS"
+    : user?.plan === "PREMIUM"
+    ? "ENTERPRISE"
+    : user?.plan || "FREE") + " Plan"}
 </p>
 
           </div>

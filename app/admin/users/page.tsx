@@ -147,10 +147,14 @@ export default function UsersPage() {
                       </p>
 
                       <p>
-
-                        {activeCard?.plan || "FREE"}
-
-                      </p>
+  {activeCard?.plan === "STARTER"
+    ? "PROFESSIONAL"
+    : activeCard?.plan === "PRO"
+    ? "BUSINESS"
+    : activeCard?.plan === "PREMIUM"
+    ? "ENTERPRISE"
+    : activeCard?.plan || "FREE"}
+</p>
 
                     </div>
 
