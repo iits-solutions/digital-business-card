@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { supabase } from "@/lib/supabase";
 
 export default function ProfilePage() {
 
@@ -22,6 +23,9 @@ export default function ProfilePage() {
 
   const [loading, setLoading] =
     useState(false);
+
+    const fileInputRef =
+  useRef<HTMLInputElement>(null);
 
   useEffect(() => {
 
@@ -110,6 +114,8 @@ export default function ProfilePage() {
 
         });
 
+
+
       const data =
         await response.json();
 
@@ -136,6 +142,60 @@ export default function ProfilePage() {
     }
 
   };
+
+const handleImageUpload = async (
+  event: React.ChangeEvent<HTMLInputElement>
+) => {
+
+  const file = event.target.files?.[0];
+
+  if (!file) return;
+
+  try {
+
+    setLoading(true);
+
+    const fileName =
+      `${Date.now()}-${file.name}`;
+
+    const { error } =
+      await supabase.storage
+        .from("profiles")
+        .upload(fileName, file);
+
+    if (error) {
+  console.error("UPLOAD ERROR:", error);
+  alert(JSON.stringify(error));
+  return;
+}
+
+    const { data } =
+      supabase.storage
+        .from("profiles")
+        .getPublicUrl(fileName);
+
+    setProfile((prev: any) => ({
+      ...prev,
+      image: data.publicUrl,
+    }));
+
+    alert(
+      "Image uploaded successfully. Click Save Profile."
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("Upload failed");
+
+  } finally {
+
+    setLoading(false);
+
+  }
+
+};
 
   return (
 
@@ -186,11 +246,23 @@ export default function ProfilePage() {
 
           </div>
 
-          <button className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl transition">
+<input
+  type="file"
+  accept="image/*"
+  ref={fileInputRef}
+  onChange={handleImageUpload}
+  className="hidden"
+/>
 
-            Upload Image
-
-          </button>
+          <button
+  type="button"
+  onClick={() =>
+    fileInputRef.current?.click()
+  }
+  className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl transition"
+>
+  Upload Image
+</button>
 
         </div>
 

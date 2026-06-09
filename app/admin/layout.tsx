@@ -57,6 +57,11 @@ export default function AdminLayout({
       href: "/admin/settings",
     },
 
+    {
+      name: "NFC Cards",
+      href: "/admin/nfc",
+    }
+
   ];
 
   return (
