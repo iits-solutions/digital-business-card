@@ -158,16 +158,25 @@ const handleImageUpload = async (
     const fileName =
       `${Date.now()}-${file.name}`;
 
-    const { error } =
-      await supabase.storage
-        .from("profiles")
-        .upload(fileName, file);
+    const { data: uploadData, error } =
+  await supabase.storage
+    .from("profiles")
+    .upload(fileName, file, {
+      cacheControl: "3600",
+      upsert: true,
+    });
+
+console.log("UPLOAD DATA:", uploadData);
+console.log("UPLOAD ERROR:", error);
 
     if (error) {
-  console.error("UPLOAD ERROR:", error);
-  alert(JSON.stringify(error));
-  return;
-}
+
+      console.error(error);
+
+      alert("Image upload failed");
+
+      return;
+    }
 
     const { data } =
       supabase.storage
