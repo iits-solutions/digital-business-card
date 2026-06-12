@@ -61,6 +61,26 @@ model Analytics {
   user         User     @relation(fields: [userId], references: [id])
 }
 
+model PlanLimit {
+  plan_name       String   @id
+  max_profiles    Int?
+  max_qr_codes    Int?
+  max_leads       Int?
+  analytics_level String?
+  nfc_enabled     Boolean?
+  team_enabled    Boolean?
+  company_enabled Boolean?
+  api_enabled     Boolean?
+  display_name    String?
+  monthly_price   Decimal? @db.Decimal(10, 2)
+  yearly_price    Decimal? @db.Decimal(10, 2)
+  active          Boolean? @default(true)
+  display_order   Int?     @default(0)
+  description     String?
+
+  @@map("plan_limits")
+}
+
 model Lead {
   id        String   @id @default(cuid())
   name      String

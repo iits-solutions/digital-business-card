@@ -11,8 +11,9 @@ export async function createNfcCard(userId: string) {
       where: {
         userId,
       },
-
+      
     });
+    
 
   // RETURN EXISTING
   if (existingCard) {
@@ -23,15 +24,28 @@ export async function createNfcCard(userId: string) {
   const token =
     generateToken();
 
-  const card =
-    await prisma.nfcCard.create({
+  const user = await prisma.user.findUnique({
+  where: {
+    id: userId,
+  },
+});
+if (!user) {
+  throw new Error("User not found");
+}
+const card =
+  await prisma.nfcCard.create({
+    data: {
+      token,
+      userId,
 
-      data: {
-        token,
-        userId,
-      },
+      plan: user?.plan || "FREE",
 
-    });
+      status:
+        user?.subscriptionStatus === "ACTIVE"
+          ? "ACTIVE"
+          : "INACTIVE",
+    },
+  });
 
   return card;
 
