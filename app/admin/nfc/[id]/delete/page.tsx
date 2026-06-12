@@ -30,7 +30,7 @@ export default async function DeleteCardPage({
 
     await prisma.nfcCard.delete({
       where: {
-        id: card.id,
+        id: id,
       },
     });
 

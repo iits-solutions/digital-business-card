@@ -13,7 +13,7 @@ export default async function EditPlanPage({
       plan_name: planName,
     },
   });
-
+  
   if (!plan) {
     return (
       <div className="p-6">
@@ -24,7 +24,7 @@ export default async function EditPlanPage({
 async function saveMonthlyPrice(formData: FormData) {
   "use server";
 
-  await updatePlan(plan.plan_name, {
+  await updatePlan(planName, {
     displayName: String(
       formData.get("displayName")
     ),
