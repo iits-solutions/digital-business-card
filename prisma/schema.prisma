@@ -9,22 +9,23 @@ datasource db {
 }
 
 model User {
-  id                 String     @id @default(cuid())
-  email              String     @unique
+  id                 String            @id @default(cuid())
+  email              String            @unique
   password           String
-  createdAt          DateTime   @default(now())
-  plan               String     @default("FREE")
+  createdAt          DateTime          @default(now())
+  plan               String            @default("FREE")
   subscriptionStatus String?
   stripeCustomerId   String?
   resetToken         String?
   resetTokenExpiry   DateTime?
-  role               String     @default("USER")
+  role               String            @default("USER")
   accounts           Account[]
   activities         Activity[]
   analytics          Analytics?
   leads              Lead[]
   nfcCards           NfcCard[]
   profile            Profile?
+  businessProfiles   BusinessProfile[]
   sessions           Session[]
 }
 
@@ -168,6 +169,65 @@ model Coupon {
   allowedPlans String?
   description  String?
   createdAt    DateTime  @default(now())
+}
+
+model BusinessProfile {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  slug String @unique
+
+  firstName  String
+  middleName String?
+  lastName   String
+
+  companyName String
+  displayName String?
+
+  jobTitle String
+
+  primaryPhone   String
+  secondaryPhone String?
+  officePhone    String?
+  extension      String?
+
+  email   String
+  website String?
+
+  address String?
+
+  city    String
+  country String
+
+  aboutMe String?
+
+  profileImage    String?
+  companyLogo     String?
+  backgroundImage String?
+
+  linkedin      String?
+  github        String?
+  instagram     String?
+  youtube       String?
+  whatsapp      String?
+  twitter       String?
+  facebook      String?
+  pinterest     String?
+  bluesky       String?
+  snapchat      String?
+  googleReviews String?
+  blogger       String?
+
+  active Boolean @default(true)
+
+  profileViews Int @default(0)
+
+  isPublished Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Plan {
