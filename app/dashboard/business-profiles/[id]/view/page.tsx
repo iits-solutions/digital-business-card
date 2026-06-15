@@ -99,6 +99,16 @@ export default async function ProfessionalProfileView({
             </p>
 
           </div>
+<div className="flex flex-wrap gap-4 mb-6">
+
+  <a
+    href={`/api/business-profiles/${profile.id}/vcard`}
+    className="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-2xl font-medium"
+  >
+    Save Contact
+  </a>
+
+</div>
 
           {/* Social Links */}
           <div className="bg-[#081028] border border-white/10 rounded-3xl p-8 mb-8">
