@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import ImageUploader from "@/app/components/ImageUploader";
 async function updateProfessionalProfile(
   formData: FormData
 ) {
@@ -148,46 +149,11 @@ export default async function ProfileEditor({
 
   <div className="grid md:grid-cols-3 gap-6 mb-8">
 
-  {/* Profile Image */}
-  <div className="bg-black border border-gray-700 rounded-xl p-4">
-
-    <div className="h-40 rounded-lg bg-[#111827] flex items-center justify-center mb-4">
-      {profile.profileImage ? (
-        <img
-          src={profile.profileImage}
-          alt="Profile"
-          className="w-full h-full object-cover rounded-lg"
-        />
-      ) : (
-        <span className="text-gray-500">
-          Profile Image
-        </span>
-      )}
-    </div>
-
-    <label className="block">
-  <span className="sr-only">
-    Upload Profile Image
-  </span>
-
-  <input
-    type="file"
-    name="profileImage"
-    className="
-      block w-full text-sm text-gray-400
-      file:mr-4
-      file:py-2
-      file:px-4
-      file:rounded-lg
-      file:border-0
-      file:bg-blue-600
-      file:text-white
-      hover:file:bg-blue-700
-    "
-  />
-</label>
-
-  </div>
+ {/* Profile Image */}
+<ImageUploader
+  label="Profile Image"
+  currentImage={profile.profileImage}
+/>
 
   {/* Company Logo */}
   <div className="bg-black border border-gray-700 rounded-xl p-4">

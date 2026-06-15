@@ -16,35 +16,42 @@ export default function ImageUploader({
     currentImage || ""
   );
 
-  async function handleUpload(
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
-    const file = e.target.files?.[0];
+async function handleUpload(
+  e: React.ChangeEvent<HTMLInputElement>
+) {
+  console.log("UPLOAD STARTED");
 
-    if (!file) return;
+  const file = e.target.files?.[0];
 
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+  console.log("FILE:", file);
 
-    const fileName = `${Date.now()}-${file.name}`;
+  if (!file) return;
 
-    const { error } = await supabase.storage
-      .from("profiles")
-      .upload(fileName, file);
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
+  const fileName = `${Date.now()}-${file.name}`;
 
-    const { data } = supabase.storage
-      .from("profiles")
-      .getPublicUrl(fileName);
+  const { error } = await supabase.storage
+    .from("profiles")
+    .upload(fileName, file);
 
-    setPreview(data.publicUrl);
+  if (error) {
+    alert(error.message);
+    console.error(error);
+    return;
   }
+
+  const { data } = supabase.storage
+    .from("profiles")
+    .getPublicUrl(fileName);
+
+  console.log("PUBLIC URL:", data.publicUrl);
+
+  setPreview(data.publicUrl);
+}
 
   return (
     <div className="bg-black border border-gray-700 rounded-xl p-4">
@@ -66,11 +73,11 @@ export default function ImageUploader({
       </div>
 
       <input
-        type="file"
-        accept="image/*"
-        onChange={handleUpload}
-        className="w-full"
-      />
+  type="file"
+  accept="image/*"
+  onChange={handleUpload}
+  className="w-full"
+/>
 
     </div>
   );
