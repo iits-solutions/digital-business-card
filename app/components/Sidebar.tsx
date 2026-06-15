@@ -75,16 +75,19 @@ export default function Sidebar() {
     },
 
     {
-      name: "Edit Profile",
-      href:
-        "/dashboard/profile",
-    },
+  name: "Edit Profile",
+  href: "/dashboard/profile",
+},
 
-    {
-      name: "QR Code",
-      href:
-        "/dashboard/qr",
-    },
+{
+  name: "Professional Profiles",
+  href: "/dashboard/business-profiles",
+},
+
+{
+  name: "QR Code",
+  href: "/dashboard/qr",
+},
 
     {
       name: "Leads Management",

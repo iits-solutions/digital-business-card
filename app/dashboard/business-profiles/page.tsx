@@ -73,18 +73,19 @@ export default async function BusinessProfilesPage() {
 
               <div className="mt-4 flex gap-3">
 
-                <Link
+               <Link
   href={`/dashboard/business-profiles/${profile.id}`}
   className="bg-green-600 px-3 py-1 rounded"
 >
   Edit
 </Link>
 
-                <button
-                  className="bg-blue-600 px-3 py-1 rounded"
-                >
-                  View
-                </button>
+<Link
+  href={`/dashboard/business-profiles/${profile.id}/view`}
+  className="bg-blue-600 px-3 py-1 rounded"
+>
+  View
+</Link>
 
               </div>
             </div>

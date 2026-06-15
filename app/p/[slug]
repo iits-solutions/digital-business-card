@@ -1,0 +1,66 @@
+import { prisma } from "@/lib/prisma";
+
+export default async function PublicProfile({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+
+  const profile =
+    await prisma.businessProfile.findFirst({
+      where: {
+        slug,
+      },
+    });
+
+  if (!profile) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        Profile Not Found
+      </div>
+    );
+  }
+
+  const fullName = [
+    profile.firstName,
+    profile.middleName,
+    profile.lastName,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return (
+    <div className="min-h-screen bg-black text-white">
+
+      <div className="h-64 bg-[#081028]">
+      </div>
+
+      <div className="max-w-4xl mx-auto px-6">
+
+        <div className="-mt-16 flex justify-center">
+          <div className="w-32 h-32 rounded-full bg-gray-700 border-4 border-black">
+          </div>
+        </div>
+
+        <div className="text-center mt-6">
+
+          <h1 className="text-4xl font-bold">
+            {fullName}
+          </h1>
+
+          <p className="text-xl text-gray-300 mt-2">
+            {profile.jobTitle}
+          </p>
+
+          <p className="text-gray-400">
+            {profile.companyName}
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
