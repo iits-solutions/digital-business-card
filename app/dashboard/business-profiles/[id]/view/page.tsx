@@ -35,16 +35,39 @@ export default async function ProfessionalProfileView({
     <main className="min-h-screen bg-black text-white">
 
       {/* Banner */}
-      <section className="relative">
+<section className="relative">
 
-        <div className="h-52 bg-gradient-to-r from-blue-700 to-cyan-500"></div>
+  {profile.backgroundImage ? (
+    <div className="h-66 overflow-hidden">
+      <img
+        src={profile.backgroundImage}
+        alt="Background"
+        className="w-full h-full object-cover"
+      />
+    </div>
+  ) : (
+    <div className="h-70 bg-gradient-to-r from-blue-700 to-cyan-500"></div>
+  )}
 
-        <div className="max-w-5xl mx-auto px-6">
+  {/* Company Logo */}
+{profile.companyLogo && (
+  <div className="absolute top-10 right-8 z-20">
+    <div className="w-[150px] h-[150px] rounded-2xl overflow-hidden bg-white/90 shadow-2xl p-3">
+      <img
+        src={profile.companyLogo}
+        alt="Company Logo"
+        className="w-full h-full object-contain"
+      />
+    </div>
+  </div>
+)}
+
+<div className="max-w-5xl mx-auto px-6">
 
           {/* Profile Image */}
-          <div className="-mt-20 mb-6">
+          <div className="-mt-34 mb-6">
 
-            <div className="w-40 h-40 rounded-3xl overflow-hidden border-4 border-[#081028] bg-[#111827] shadow-2xl">
+            <div className="w-48 h-48 rounded-3xl overflow-hidden border-4 border-[#081028] bg-[#111827] shadow-2xl">
 
               {profile.profileImage ? (
                 <img
