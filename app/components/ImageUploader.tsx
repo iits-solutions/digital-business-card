@@ -72,7 +72,13 @@ async function handleUpload(
 
       </div>
 
-      <input
+  <input
+  type="hidden"
+  name="profileImageUrl"
+  value={preview}
+/>
+
+<input
   type="file"
   accept="image/*"
   onChange={handleUpload}

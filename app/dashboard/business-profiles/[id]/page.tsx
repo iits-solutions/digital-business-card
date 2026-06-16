@@ -93,6 +93,14 @@ blogger:
 
       twitter:
         String(formData.get("twitter")) || null,
+      profileImage:
+        String(formData.get("profileImageUrl")) || null,
+
+      companyLogo:
+        String(formData.get("companyLogoUrl")) || null,
+
+      backgroundImage:
+        String(formData.get("backgroundImageUrl")) || null,  
     },
   });
 
