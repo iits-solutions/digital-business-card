@@ -164,45 +164,10 @@ export default async function ProfileEditor({
 />
 
   {/* Company Logo */}
-  <div className="bg-black border border-gray-700 rounded-xl p-4">
-
-    <div className="h-40 rounded-lg bg-[#111827] flex items-center justify-center mb-4">
-      {profile.companyLogo ? (
-        <img
-          src={profile.companyLogo}
-          alt="Company Logo"
-          className="w-full h-full object-cover rounded-lg"
-        />
-      ) : (
-        <span className="text-gray-500">
-          Company Logo
-        </span>
-      )}
-    </div>
-
-    <label className="block">
-  <span className="sr-only">
-    Upload Company Logo
-  </span>
-
-  <input
-    type="file"
-    name="companyLogo"
-    className="
-      block w-full text-sm text-gray-400
-      file:mr-4
-      file:py-2
-      file:px-4
-      file:rounded-lg
-      file:border-0
-      file:bg-blue-600
-      file:text-white
-      hover:file:bg-blue-700
-    "
-  />
-</label>
-
-  </div>
+  <ImageUploader
+  label="Company Logo"
+  currentImage={profile.companyLogo}
+/>
 
   <ImageUploader
   label="Background Image"
