@@ -74,7 +74,13 @@ async function handleUpload(
 
   <input
   type="hidden"
-  name="profileImageUrl"
+  name={
+    label === "Profile Image"
+      ? "profileImageUrl"
+      : label === "Background Image"
+      ? "backgroundImageUrl"
+      : "companyLogoUrl"
+  }
   value={preview}
 />
 

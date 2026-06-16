@@ -204,46 +204,10 @@ export default async function ProfileEditor({
 
   </div>
 
-  {/* Background Image */}
-  <div className="bg-black border border-gray-700 rounded-xl p-4">
-
-    <div className="h-40 rounded-lg bg-[#111827] flex items-center justify-center mb-4">
-      {profile.backgroundImage ? (
-        <img
-          src={profile.backgroundImage}
-          alt="Background"
-          className="w-full h-full object-cover rounded-lg"
-        />
-      ) : (
-        <span className="text-gray-500">
-          Background Image
-        </span>
-      )}
-    </div>
-
-    <label className="block">
-  <span className="sr-only">
-    Upload Background Image
-  </span>
-
-  <input
-    type="file"
-    name="backgroundImage"
-    className="
-      block w-full text-sm text-gray-400
-      file:mr-4
-      file:py-2
-      file:px-4
-      file:rounded-lg
-      file:border-0
-      file:bg-blue-600
-      file:text-white
-      hover:file:bg-blue-700
-    "
-  />
-</label>
-
-  </div>
+  <ImageUploader
+  label="Background Image"
+  currentImage={profile.backgroundImage}
+/>  
 
 </div>
 
