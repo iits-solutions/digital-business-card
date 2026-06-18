@@ -4,9 +4,12 @@ import { useState } from "react";
 
 export default function LeadCaptureForm({
   username,
+  businessProfileId,
 }: {
-  username: string;
-}) {
+  username?: string;
+  businessProfileId?: string;
+})
+{
 
   const [leadData, setLeadData] =
     useState({
@@ -48,11 +51,12 @@ export default function LeadCaptureForm({
 
           body: JSON.stringify({
 
-            username,
+  username,
+  businessProfileId,
 
-            ...leadData,
+  ...leadData,
 
-          }),
+}),
 
         });
 

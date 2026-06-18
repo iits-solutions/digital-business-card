@@ -20,7 +20,7 @@ export default async function ProfessionalProfileView({
       </div>
     );
   }
-
+console.log("VIEW TEMPLATE:", profile.templateId);
  const fullName =
   profile.displayName ||
   [
@@ -30,7 +30,6 @@ export default async function ProfessionalProfileView({
   ]
     .filter(Boolean)
     .join(" ");
-
   return (
     <main className="min-h-screen bg-black text-white">
 

@@ -14,71 +14,95 @@ export async function POST(
     console.log("BODY:", body);
 
     const {
-      username,
+  username,
+  businessProfileId,
+  name,
+  email,
+  phone,
+  company,
+} = body;
+
+    // Find profile by username
+   let userId: string;
+
+if (businessProfileId) {
+
+  const businessProfile =
+    await prisma.businessProfile.findUnique({
+
+      where: {
+        id: businessProfileId,
+      },
+
+    });
+
+  if (!businessProfile) {
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Business Profile not found",
+      },
+      { status: 404 }
+    );
+
+  }
+
+  userId = businessProfile.userId;
+
+} else {
+
+  // Old system (FREE profile)
+
+  const profile =
+    await prisma.profile.findFirst({
+
+      where: {
+
+        username: {
+          equals: username.toLowerCase(),
+          mode: "insensitive",
+        },
+
+      },
+
+      include: {
+        user: true,
+      },
+
+    });
+
+  if (!profile?.user) {
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "User not found",
+      },
+      { status: 404 }
+    );
+
+  }
+
+  userId = profile.user.id;
+
+}
+
+      // Create lead  //
+const lead =
+  await prisma.lead.create({
+
+    data: {
+
       name,
       email,
       phone,
       company,
-    } = body;
+      userId,
+      businessProfileId,
+    },
 
-    // Find profile by username
-    const profile =
-      await prisma.profile.findFirst({
-
-        where: {
-
-          username: {
-            equals:
-              username.toLowerCase(),
-            mode: "insensitive",
-          },
-
-        },
-
-        include: {
-          user: true,
-        },
-
-      });
-
-    console.log(
-      "PROFILE:",
-      profile
-    );
-
-    if (!profile?.user) {
-
-      return NextResponse.json(
-        {
-
-          success: false,
-
-          error:
-            "User not found",
-
-        },
-        { status: 404 }
-      );
-
-    }
-
-    // Create lead
-    const lead =
-      await prisma.lead.create({
-
-        data: {
-
-          name,
-          email,
-          phone,
-          company,
-
-          userId:
-            profile.user.id,
-
-        },
-
-      });
+  });
 
     console.log(
       "LEAD CREATED:",
@@ -89,9 +113,8 @@ export async function POST(
     await prisma.analytics.updateMany({
 
       where: {
-        userId:
-          profile.user.id,
-      },
+  userId,
+},
 
       data: {
 
@@ -113,9 +136,7 @@ export async function POST(
         message:
           `${name} submitted lead form`,
 
-        userId:
-          profile.user.id,
-
+        userId,
       },
 
     });
