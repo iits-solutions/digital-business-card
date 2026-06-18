@@ -16,21 +16,23 @@ export default async function TemplateGalleryPage(
   if (!profile) {
     return <div>Profile not found</div>;
   }
+
+  const profileId = profile.id;
   async function applyTemplate(templateId: string) {
   "use server";
 
   await prisma.businessProfile.update({
-    where: {
-      id: profile.id,
-    },
-    data: {
-      templateId,
-    },
-  });
+  where: {
+    id: profileId,
+  },
+  data: {
+    templateId,
+  },
+});
 
-  revalidatePath(
-    `/dashboard/business-profiles/${profile.id}/templates`
-  );
+revalidatePath(
+  `/dashboard/business-profiles/${profileId}/templates`
+);
 }
 console.log("PROFILE:", profile);
   return (
@@ -58,9 +60,12 @@ console.log("PROFILE:", profile);
 
           <div className="flex gap-3">
 
-  <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">
-    View
-  </button>
+  <Link
+  href={`/dashboard/business-profiles/${profile.id}/view/classic`}
+  className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
+>
+  View
+</Link>
 
   {profile.templateId === "classic-business-card" ? (
   <button className="bg-green-700 px-4 py-2 rounded">
