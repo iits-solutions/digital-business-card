@@ -38,8 +38,7 @@ include: {
 
     });
 console.log("STEP 2");
-  const analytics =
-    user?.analytics;
+  const analytics = null;
 
   // REAL Dynamic Chart Data
   const days = [
