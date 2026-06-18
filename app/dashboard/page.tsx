@@ -24,6 +24,7 @@ export default async function DashboardPage() {
   }
 
   // Find user with analytics
+  console.log("STEP 1");
   const user =
     await prisma.user.findUnique({
 
@@ -31,38 +32,12 @@ export default async function DashboardPage() {
         email: session.user.email,
       },
 
-      include: {
-
+include: {
   profile: true,
-
-  analytics: true,
-
-  nfcCards: true,
-
-  leads: {
-
-    orderBy: {
-      createdAt: "desc",
-    },
-
-    take: 5,
-
-  },
-
-        activities: {
-
-          orderBy: {
-            createdAt: "desc",
-          },
-
-          take: 10,
-
-        },
-
-      },
+},
 
     });
-
+console.log("STEP 2");
   const analytics =
     user?.analytics;
 
