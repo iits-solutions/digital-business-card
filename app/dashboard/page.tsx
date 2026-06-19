@@ -24,44 +24,57 @@ export default async function DashboardPage() {
   }
 
   // Find user with analytics
-  const user =
-    await prisma.user.findUnique({
+  let user;
 
-      where: {
-        email: session.user.email,
-      },
+try {
 
-      include: {
+  user = await prisma.user.findUnique({
 
-  profile: true,
-
-  analytics: true,
-
-  nfcCards: true,
-
-  leads: {
-
-    orderBy: {
-      createdAt: "desc",
+    where: {
+      email: session.user.email,
     },
 
-    take: 5,
+    include: {
 
-  },
+      profile: true,
 
-        activities: {
+      analytics: true,
 
-          orderBy: {
-            createdAt: "desc",
-          },
+      nfcCards: true,
 
-          take: 10,
+      leads: {
 
+        orderBy: {
+          createdAt: "desc",
         },
+
+        take: 5,
 
       },
 
-    });
+      activities: {
+
+        orderBy: {
+          createdAt: "desc",
+        },
+
+        take: 10,
+
+      },
+
+    },
+
+  });
+
+} catch (error) {
+
+  console.error("========== FULL PRISMA ERROR ==========");
+  console.error(error);
+  console.error("=======================================");
+
+  throw error;
+
+}
 
   const analytics =
     user?.analytics;
