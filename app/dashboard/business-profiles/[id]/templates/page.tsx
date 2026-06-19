@@ -17,13 +17,12 @@ export default async function TemplateGalleryPage(
     return <div>Profile not found</div>;
   }
 
-  const profileId = profile.id;
   async function applyTemplate(templateId: string) {
   "use server";
 
   await prisma.businessProfile.update({
   where: {
-    id: profileId,
+    id,
   },
   data: {
     templateId,
@@ -31,7 +30,7 @@ export default async function TemplateGalleryPage(
 });
 
 revalidatePath(
-  `/dashboard/business-profiles/${profileId}/templates`
+  `/dashboard/business-profiles/${id}/templates`
 );
 }
 console.log("PROFILE:", profile);
