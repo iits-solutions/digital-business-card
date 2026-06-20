@@ -17,17 +17,15 @@ export default function Home() {
       {/* HERO */}
       <section className="flex flex-col items-center justify-center text-center px-6 pt-4">
 
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold max-w-5xl leading-tight tracking-tight">
+        <h1 className="text-center leading-tight">
+  <span className="block text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-white">
+    Smart Digital Business Cards
+  </span>
 
-          Smart Digital Business Cards
-
-          <span className="text-gray-400">
-
-            {" "}Powered by NFC
-
-          </span>
-
-        </h1>
+  <span className="mt-2 block text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-semibold tracking-wide text-gray-400">
+    Powered by NFC
+  </span>
+</h1>
 
         <p className="mt-6 max-w-3xl px-4 text-base sm:text-lg lg:text-xl leading-relaxed text-gray-400">
 
@@ -311,30 +309,30 @@ export default function Home() {
     </div>
 
     {/* Cards */}
-    <div className="flex justify-center gap-3 overflow-x-auto pb-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
 
       {/* Free */}
-      <div className="min-w-[170px] bg-[#081028] border border-white/10 rounded-2xl p-4 flex-shrink-0">
+      <div className="bg-[#081028] border border-white/10 rounded-3xl p-10 flex flex-col h-full transition duration-300 hover:border-blue-500 hover:-translate-y-2 hover:shadow-2xl">
 
         <h3 className="text-lg font-bold mb-2">
 
-          Free
+          🎁 Free
 
         </h3>
 
         <p className="text-gray-400 text-sm mb-4">
 
-          Getting started.
+          Perfect for personal use.
 
         </p>
 
-        <h4 className="text-3xl font-bold mb-4">
+        <h4 className="text-5xl font-extrabold mb-6">
 
           $0
 
         </h4>
 
-        <ul className="space-y-1 text-sm text-gray-300 mb-5">
+        <ul className="space-y-1 flex-1 text-sm text-gray-300 mb-8">
 
           <li>✓ Digital Profile</li>
           <li>✓ QR Code Sharing</li>
@@ -345,7 +343,7 @@ export default function Home() {
         </ul>
 
         
-        <button className="w-full border border-white/10 hover:bg-white hover:text-black transition py-2 rounded-xl text-sm">
+        <button className="mt-auto w-full border border-white/10 hover:bg-white hover:text-black transition py-3 rounded-xl text-sm font-semibold">
 
           Get Started
 
@@ -354,27 +352,25 @@ export default function Home() {
       </div>
 
       {/* Professional */}
-      <div className="min-w-[170px] bg-white text-black rounded-2xl p-4 flex-shrink-0 shadow-xl">
+      <div className="relative bg-white text-black rounded-3xl p-10 flex flex-col h-full shadow-2xl border-2 border-blue-500 xl:scale-105">
 
-        <div className="inline-block bg-black text-white text-[10px] px-3 py-1 rounded-full mb-3">
-
-          Popular
-
-        </div>
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-5 py-2 rounded-full shadow-lg">
+  ⭐ MOST POPULAR
+</div>
 
         <h3 className="text-lg font-bold mb-2">
 
-          Professional
+          👤 Professional
 
         </h3>
 
         <p className="text-gray-600 text-sm mb-4">
 
-          Professionals.
+          Ideal for freelancers.
 
         </p>
 
-        <h4 className="text-3xl font-bold mb-4">
+        <h4 className="text-5xl font-extrabold mb-6">
 
           $4.99
           <span className="text-xs text-gray-500">
@@ -385,7 +381,7 @@ export default function Home() {
 
         </h4>
 
-        <ul className="space-y-1 text-sm mb-5">
+        <ul className="space-y-1 flex-1 text-sm mb-8">
 
           <li>✓ Everything in Free</li>
           <li>✓ NFC Card Support</li>
@@ -404,23 +400,23 @@ export default function Home() {
       </div>
 
       {/* Business */}
-      <div className="min-w-[170px] bg-[#081028] border border-white/10 rounded-2xl p-4 flex-shrink-0">
+      <div className="bg-[#081028] border border-white/10 rounded-3xl p-10 flex flex-col h-full transition duration-300 hover:border-blue-500 hover:-translate-y-2 hover:shadow-2xl">
 
         <h3 className="text-lg font-bold mb-2">
 
-          Business
+          🏢 Business
 
         </h3>
 
         <p className="text-gray-400 text-sm mb-4">
 
-          Agencies.
+          Perfect for growing teams.
 
         </p>
 
-        <h4 className="text-3xl font-bold mb-4">
+        <h4 className="text-5xl font-extrabold mb-6">
 
-          $14.99
+          $11.99
           <span className="text-xs text-gray-400">
 
             /mo
@@ -429,7 +425,7 @@ export default function Home() {
 
         </h4>
 
-        <ul className="space-y-1 text-sm text-gray-300 mb-5">
+        <ul className="space-y-1 flex-1 text-sm text-gray-300 mb-8">
 
           <li>✓ Everything in Professional</li> 
           <li>✓ Team Management</li>
@@ -439,7 +435,7 @@ export default function Home() {
 
         </ul>
 
-        <button className="w-full border border-white/10 hover:bg-white hover:text-black transition py-2 rounded-xl text-sm">
+        <button className="mt-auto w-full border border-white/10 hover:bg-white hover:text-black transition py-3 rounded-xl text-sm font-semibold">
 
           Upgrade
 
@@ -448,10 +444,10 @@ export default function Home() {
       </div>
 
       {/* Enterprise */}
-<div className="min-w-[170px] bg-[#081028] border border-white/10 rounded-2xl p-4 flex-shrink-0">
+<div className="bg-[#081028] border border-white/10 rounded-3xl p-10 flex flex-col h-full transition duration-300 hover:border-blue-500 hover:-translate-y-2 hover:shadow-2xl">
 
   <h3 className="text-lg font-bold mb-2">
-    Enterprise
+    🌍 Enterprise
   </h3>
 
   <p className="text-gray-400 text-sm mb-4">
@@ -462,7 +458,7 @@ export default function Home() {
     Custom Quote
   </h4>
 
-  <ul className="space-y-1 text-sm text-gray-300 mb-5">
+  <ul className="space-y-1 flex-1 text-sm text-gray-300 mb-8">
 
     <li>✓ Team Dashboard</li>
     <li>✓ Employee Profiles</li>
@@ -473,7 +469,7 @@ export default function Home() {
 
   </ul>
 
-  <button className="w-full border border-white/10 hover:bg-white hover:text-black transition py-2 rounded-xl text-sm">
+  <button className="mt-auto w-full border border-white/10 hover:bg-white hover:text-black transition py-3 rounded-xl text-sm font-semibold">
     Contact Sales
   </button>
 
