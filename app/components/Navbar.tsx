@@ -1,21 +1,26 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 
 export default function Navbar() {
 
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
 
-    <nav className="w-full bg-black border-b border-gray-800 px-6 py-4 flex items-center justify-between">
+    <nav className="relative w-full bg-black border-b border-gray-800 px-8 py-5 flex items-center justify-between">
 
       <Link
         href="/"
-        className="text-3xl font-bold text-white"
+        className="text-3xl font-extrabold tracking-tight text-white hover:text-blue-400 transition-colors"
       >
 
         ILinq.Team
 
       </Link>
 
-      <div className="flex gap-5 text-gray-300">
+      <div className="hidden md:flex items-center gap-6 text-gray-300 text-sm font-medium">
 
         <Link
           href="/"
@@ -69,8 +74,49 @@ export default function Navbar() {
           Admin
         </Link>
 
-      </div>
+            </div>
+
+            {/* Mobile Menu Button */}
+      <button
+        onClick={() => setMenuOpen(!menuOpen)}
+        className="md:hidden text-white text-3xl"
+      >
+        ☰
+      </button>
+
+      {/* Mobile Dropdown Menu */}
+      {menuOpen && (
+        <div className="absolute top-full left-0 w-full bg-black border-t border-gray-800 md:hidden">
+          <div className="flex flex-col p-6 space-y-4">
+
+            <Link href="/" onClick={() => setMenuOpen(false)}>
+              Home
+            </Link>
+
+            <a href="#features" onClick={() => setMenuOpen(false)}>
+              Features
+            </a>
+
+            <a href="#pricing" onClick={() => setMenuOpen(false)}>
+              Pricing
+            </a>
+
+            <Link href="/login" onClick={() => setMenuOpen(false)}>
+              Login
+            </Link>
+
+            <Link href="/signup" onClick={() => setMenuOpen(false)}>
+              Signup
+            </Link>
+
+            <Link href="/admin" onClick={() => setMenuOpen(false)}>
+              Admin
+            </Link>
+
+          </div>
+        </div>
+      )}
 
     </nav>
-  );
+      );
 }

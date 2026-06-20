@@ -15,9 +15,9 @@ export default function Home() {
       <Navbar />
 
       {/* HERO */}
-      <section className="flex flex-col items-center justify-center text-center px-6 pt-6">
+      <section className="flex flex-col items-center justify-center text-center px-6 pt-4">
 
-        <h1 className="text-5xl md:text-6xl font-bold max-w-4xl leading-tight">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold max-w-5xl leading-tight tracking-tight">
 
           Smart Digital Business Cards
 
@@ -29,7 +29,7 @@ export default function Home() {
 
         </h1>
 
-        <p className="text-gray-400 text-lg md:text-xl mt-8 max-w-2xl">
+        <p className="mt-6 max-w-3xl px-4 text-base sm:text-lg lg:text-xl leading-relaxed text-gray-400">
 
           Create professional digital profiles, share instantly with QR & NFC,
           and grow your business identity with ILinq.
@@ -43,16 +43,16 @@ export default function Home() {
 {/* PRODUCT DEMO */}
 <section className="px-6 py-8 bg-black">
 
-  <div className="max-w-6xl mx-auto text-center">
+  <div className="max-w-8xl mx-auto text-center">
 
     <h2 className="text-5xl font-bold mb-6">
       iLinq.Team in Action
     </h2>
 
-        <div className="max-w-3xl mx-auto overflow-hidden rounded-3xl border border-gray-800 shadow-2xl">
+        <div className="max-w-7xl mx-auto overflow-hidden rounded-3xl border border-gray-800 shadow-2xl">
 
       <video
-        className="w-full"
+        className="w-full h-auto"
         autoPlay
         muted
         loop
@@ -110,7 +110,7 @@ export default function Home() {
 
         <div className="text-center mb-8">
 
-          <h2 className="text-5xl font-bold mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
 
             Everything You Need
 
@@ -503,7 +503,7 @@ export default function Home() {
           </h4>
 
           <p className="text-2xl font-bold">
-            Starting at $9.99
+            Starting at $7.5
           </p>
         </div>
 
@@ -680,7 +680,8 @@ export default function Home() {
     {/* Bottom */}
     <div className="border-t border-gray-800 mt-14 pt-6 text-center text-gray-500 text-sm">
 
-      © 2025 ilinq.team — All rights reserved.
+          {/* © 2026 ilinq.team (Imran IT Solutions) — All rights reserved. */}
+      © {new Date().getFullYear()} ilinq.team (Imran IT Solutons)— All rights reserved.
 
     </div>
 
