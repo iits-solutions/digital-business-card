@@ -15,9 +15,9 @@ export default function Home() {
       <Navbar />
 
       {/* HERO */}
-      <section className="flex flex-col items-center justify-center text-center px-6 pt-32">
+      <section className="flex flex-col items-center justify-center text-center px-6 pt-6">
 
-        <h1 className="text-6xl md:text-7xl font-bold max-w-4xl leading-tight">
+        <h1 className="text-5xl md:text-6xl font-bold max-w-4xl leading-tight">
 
           Smart Digital Business Cards
 
@@ -36,7 +36,46 @@ export default function Home() {
 
         </p>
 
-        <div className="flex gap-6 mt-10">
+        
+
+      </section>
+
+{/* PRODUCT DEMO */}
+<section className="px-6 py-8 bg-black">
+
+  <div className="max-w-6xl mx-auto text-center">
+
+    <h2 className="text-5xl font-bold mb-6">
+      iLinq.Team in Action
+    </h2>
+
+        <div className="max-w-3xl mx-auto overflow-hidden rounded-3xl border border-gray-800 shadow-2xl">
+
+      <video
+        className="w-full"
+        autoPlay
+        muted
+        loop
+        playsInline
+        controls
+      >
+        <source
+          src="/videos/ilinq-demo.mp4"
+          type="video/mp4"
+        />
+
+        Your browser does not support the video tag.
+
+      </video>
+
+    </div>
+
+<p className="text-gray-400 text-xl max-w-3xl mx-auto mt-4 mb-8">
+      Experience how easily you can share your digital business card using
+      QR Code, NFC Card, or Phone-to-Phone technology.
+    </p>
+
+<div className="flex justify-center gap-6 mt-10">
 
           {/* FIXED BUTTON */}
           <Link
@@ -59,15 +98,17 @@ export default function Home() {
 
         </div>
 
-      </section>
+  </div>
+
+</section>
 
       {/* FEATURES */}
       <section
         id="features"
-        className="px-6 py-32 max-w-7xl mx-auto"
+        className="px-6 pt-16 pb-8 max-w-7xl mx-auto"
       >
 
-        <div className="text-center mb-20">
+        <div className="text-center mb-8">
 
           <h2 className="text-5xl font-bold mb-6">
 
@@ -154,7 +195,7 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="px-6 py-32 bg-gray-950">
+      <section className="px-6 pt-8 pb-10 bg-gray-950">
 
         <div className="max-w-7xl mx-auto">
 
@@ -251,7 +292,7 @@ export default function Home() {
       {/* Pricing */}
 <section
   id="pricing"
-  className="py-24 px-4 bg-black"
+  className="py-10 px-4 bg-black"
 >
 
   <div className="max-w-7xl mx-auto">
@@ -445,7 +486,7 @@ export default function Home() {
 </section>
 
 {/* NFC Pricing */}
-<section className="py-16 px-4 bg-black">
+<section className="pt-2 pb-6 px-4 bg-black">
   <div className="max-w-6xl mx-auto">
 
     <div className="bg-blue-950 border border-blue-800 rounded-xl p-8">
