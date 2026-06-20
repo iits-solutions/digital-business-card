@@ -43,7 +43,7 @@ export default function Home() {
 
   <div className="max-w-8xl mx-auto text-center">
 
-    <h2 className="text-5xl font-bold mb-6">
+    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
       iLinq.Team in Action
     </h2>
 
