@@ -71,17 +71,17 @@ overflow-y-auto
         {/* Logo */}
         <div className="flex justify-center mb-3">
   <Image
-    src="/iLinq-Logo.png"
-    alt="iLinq Team"
-    width={140}
-  height={112}
-className="sm:w-[240px] w-[170px] h-auto"
-    priority
-  />
+  src="/iLinq-Logo.png"
+  alt="iLinq.Team"
+  width={120}
+  height={96}
+  priority
+  className="w-[120px] sm:w-[170px] md:w-[210px] h-auto mx-auto"
+/>
 </div>
 
         {/* Badge */}
-        <div className="inline-flex items-center px-6 py-2 rounded-full bg-blue-600 text-white font-semibold text-sm my-5 shadow-lg">
+        <div className="inline-flex items-center px-5 py-2 rounded-full bg-blue-600 text-white font-semibold text-sm mb-5 shadow-lg">
           PUBLIC BETA
         </div>
 
@@ -92,53 +92,44 @@ className="sm:w-[240px] w-[170px] h-auto"
         </h2>
 
         {/* Main Text */}
-        <p className="text-gray-300 text-lg leading-relaxed max-w-2xl mx-auto mb-6">
-          iLinq.Team is currently in Public Beta.
+<div className="text-gray-300 text-base sm:text-lg leading-7 max-w-md mx-auto mb-6">
 
-• Features may change during testing.
-• Some services may be updated without notice.
-• Your feedback helps us improve the platform.
-        </p>
+  <p className="mb-5">
+    Thank you for trying the <strong>iLinq.Team Public Beta</strong>.
+  </p>
 
-        <div className="w-full h-px bg-white/10 my-8"></div>
+  <div className="space-y-3 text-left inline-block">
+    <div>✅ Features are still being improved.</div>
+    <div>✅ Updates may occur during testing.</div>
+    <div>✅ Your feedback helps us build a better platform.</div>
+  </div>
 
-        {/* Legal Text */}
-        <p className="text-gray-400 leading-relaxed max-w-2xl mx-auto my-5">
-          By continuing, you acknowledge that you are
-          accessing a pre-release version of the platform
-          and agree to participate in testing and evaluation
-          activities. The platform should not yet be relied
-          upon for critical business operations or commercial
-          transactions.
-        </p>
+</div>
 
-        {/* Don't Show Again */}
-        <label className="flex items-center justify-center gap-3 my-5 text-gray-300">
-          <input
-            type="checkbox"
-            checked={dontShow}
-            onChange={(e) =>
-              setDontShow(e.target.checked)
-            }
-            className="h-5 w-5 rounded border-gray-500 accent-blue-600"
-          />
-          Don't show again on this device
-        </label>
+<div className="w-full h-px bg-white/10 my-5"></div>
 
-        {/* Button */}
-        <button
-          onClick={handleContinue}
-          className="w-full
-sm:w-auto
-px-8
-py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-lg transition"
-        >
-          Continue to iLinq
-        </button>
+{/* Don't Show Again */}
+<label className="flex items-center justify-center gap-3 mb-6 text-gray-300 text-sm sm:text-base">
+  <input
+    type="checkbox"
+    checked={dontShow}
+    onChange={(e) => setDontShow(e.target.checked)}
+    className="h-5 w-5 rounded accent-blue-600"
+  />
+  Don't show again on this device
+</label>
+
+{/* Button */}
+<button
+  onClick={handleContinue}
+  className="w-full sm:w-auto px-8 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-lg transition"
+>
+  Continue to iLinq
+</button>
 
         {/* Version */}
         <div className="mt-8 text-gray-500 text-sm">
-          iLinq.Team Beta v1.3
+          iLinq.Team Beta v1.4
         </div>
 
       </div>

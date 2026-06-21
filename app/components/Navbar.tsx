@@ -16,7 +16,7 @@ export default function Navbar() {
         className="text-3xl font-extrabold tracking-tight text-white hover:text-blue-400 transition-colors"
       >
 
-        ILinq.Team
+        iLinq.Team
 
       </Link>
 

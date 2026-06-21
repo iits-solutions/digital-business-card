@@ -30,7 +30,7 @@ export default function Home() {
         <p className="mt-6 max-w-3xl px-4 text-base sm:text-lg lg:text-xl leading-relaxed text-gray-400">
 
           Create professional digital profiles, share instantly with QR & NFC,
-          and grow your business identity with ILinq.
+          and grow your business identity with iLinq.
 
         </p>
 
@@ -201,7 +201,7 @@ export default function Home() {
 
             <h2 className="text-5xl font-bold mb-6">
 
-              How ILinq Works
+              How iLinq Works
 
             </h2>
 
