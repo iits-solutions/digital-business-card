@@ -50,43 +50,60 @@ export default function BetaNotice() {
 
 return (
   <div className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-md flex items-center justify-center px-4">
-    <div className="max-w-3xl w-full bg-[#081028] border border-blue-500/40 rounded-[32px] p-8 md:p-12 shadow-[0_0_40px_rgba(37,99,235,0.25)]">
+    <div className="
+w-full
+max-w-xl
+mx-auto
+bg-[#081028]
+border border-blue-500/40
+rounded-3xl
+px-5
+py-6
+sm:px-8
+sm:py-8
+shadow-[0_0_40px_rgba(37,99,235,0.25)]
+max-h-[90vh]
+overflow-y-auto
+">
 
       <div className="text-center">
 
         {/* Logo */}
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-3">
   <Image
     src="/iLinq-Logo.png"
     alt="iLinq Team"
-    width={300}
-    height={240}
+    width={140}
+  height={112}
+className="sm:w-[240px] w-[170px] h-auto"
     priority
   />
 </div>
 
         {/* Badge */}
-        <div className="inline-flex items-center px-6 py-2 rounded-full bg-blue-600 text-white font-semibold text-sm mb-8 shadow-lg">
+        <div className="inline-flex items-center px-6 py-2 rounded-full bg-blue-600 text-white font-semibold text-sm my-5 shadow-lg">
           PUBLIC BETA
         </div>
 
         {/* Heading */}
-        <h2 className="text-3xl md:text-5xl font-bold text-white mb-8">
-          Welcome to iLinq.Team
+        <h2 className="text-2xl
+            sm:text-4xl font-bold text-white my-5">
+                Welcome to iLinq.Team
         </h2>
 
         {/* Main Text */}
         <p className="text-gray-300 text-lg leading-relaxed max-w-2xl mx-auto mb-6">
-          iLinq.Team is currently operating in a public beta
-          environment. Features, subscriptions, integrations
-          and services may be modified, interrupted or removed
-          without notice during the testing phase.
+          iLinq.Team is currently in Public Beta.
+
+• Features may change during testing.
+• Some services may be updated without notice.
+• Your feedback helps us improve the platform.
         </p>
 
         <div className="w-full h-px bg-white/10 my-8"></div>
 
         {/* Legal Text */}
-        <p className="text-gray-400 leading-relaxed max-w-2xl mx-auto mb-8">
+        <p className="text-gray-400 leading-relaxed max-w-2xl mx-auto my-5">
           By continuing, you acknowledge that you are
           accessing a pre-release version of the platform
           and agree to participate in testing and evaluation
@@ -96,14 +113,14 @@ return (
         </p>
 
         {/* Don't Show Again */}
-        <label className="flex items-center justify-center gap-3 mb-8 text-gray-300">
+        <label className="flex items-center justify-center gap-3 my-5 text-gray-300">
           <input
             type="checkbox"
             checked={dontShow}
             onChange={(e) =>
               setDontShow(e.target.checked)
             }
-            className="w-4 h-4"
+            className="h-5 w-5 rounded border-gray-500 accent-blue-600"
           />
           Don't show again on this device
         </label>
@@ -111,7 +128,10 @@ return (
         {/* Button */}
         <button
           onClick={handleContinue}
-          className="px-10 py-4 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-lg transition"
+          className="w-full
+sm:w-auto
+px-8
+py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-lg transition"
         >
           Continue to iLinq
         </button>
