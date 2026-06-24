@@ -99,11 +99,12 @@ console.log("PROFILE:", profile);
           </p>
 
           <div className="flex gap-3">
-
-  <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">
+<Link
+    href={`/dashboard/business-profiles/${profile.id}/view?template=corporate`}
+    className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
+  >
     View
-  </button>
-
+  </Link>
   {profile.templateId === "professional-corporate" ? (
   <button className="bg-green-700 px-4 py-2 rounded">
     Selected
@@ -138,9 +139,12 @@ console.log("PROFILE:", profile);
 
           <div className="flex gap-3">
 
-  <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">
-    View
-  </button>
+  <Link
+  href={`/dashboard/business-profiles/${profile.id}/view`}
+  className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
+>
+  View
+</Link>
 
   {profile.templateId === "compact-mobile-card" ? (
   <button className="bg-green-700 px-4 py-2 rounded">
