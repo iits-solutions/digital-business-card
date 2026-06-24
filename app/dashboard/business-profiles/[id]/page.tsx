@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import ImageUploader from "@/app/components/ImageUploader";
-import ClassicTemplate from "./templates/ClassicTemplate";
 async function updateProfessionalProfile(
   formData: FormData
 ) {
