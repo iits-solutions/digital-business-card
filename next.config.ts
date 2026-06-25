@@ -3,8 +3,17 @@
 const nextConfig = {
 
   allowedDevOrigins: [
-    "192.168.0.106",
+    "192.168.0.112",
   ],
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "zdqbbvjrhvbkmqutssoy.supabase.co",
+      },
+    ],
+  },
 
 };
 
