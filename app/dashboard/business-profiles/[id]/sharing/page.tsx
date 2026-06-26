@@ -1,3 +1,6 @@
+import CopyLinkButton from "@/app/components/sharing/CopyLinkButton";
+import PrintQRButton from "@/app/components/sharing/PrintQRButton";
+import DownloadQRButton from "@/app/components/sharing/DownloadQRButton";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { getPublicProfileUrl } from "@/lib/url";
@@ -94,11 +97,9 @@ export default async function BusinessProfileSharingPage({
         Open Profile
       </Link>
 
-      <button
-  className="rounded-lg bg-slate-700 hover:bg-slate-600 px-4 py-2"
->
-  Copy Link
-</button>
+      <CopyLinkButton
+  url={getPublicProfileUrl(profile.slug)}
+/>
 
     </div>
   </div>
@@ -108,7 +109,10 @@ export default async function BusinessProfileSharingPage({
   </h2>
 
   <div className="mt-6 flex justify-center">
-  <div className="bg-white rounded-xl p-5 shadow-md">
+  <div
+  id="profile-qr-code"
+  className="bg-white rounded-xl p-5 shadow-md inline-block"
+>
     <QRCode
       value={getPublicProfileUrl(profile.slug)}
       size={170}
@@ -118,13 +122,14 @@ export default async function BusinessProfileSharingPage({
 
   <div className="mt-auto pt-6 flex flex-wrap gap-3">
 
-    <button className="rounded-lg bg-blue-600 hover:bg-blue-700 px-4 py-2">
-      Download QR
-    </button>
+    <DownloadQRButton
+  elementId="profile-qr-code"
+  fileName={profile.slug}
+/>
 
-    <button className="rounded-lg bg-slate-700 hover:bg-slate-600 px-4 py-2">
-      Print QR
-    </button>
+    <PrintQRButton
+  elementId="profile-qr-code"
+/>
 
   </div>
 </div>

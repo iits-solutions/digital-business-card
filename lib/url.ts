@@ -1,7 +1,7 @@
 export function getPublicProfileUrl(slug: string) {
-  if (typeof window !== "undefined") {
-    return `${window.location.origin}/p/${slug}`;
-  }
+  const baseUrl =
+    process.env.NEXTAUTH_URL ||
+    "http://localhost:3000";
 
-  return `/p/${slug}`;
+  return `${baseUrl}/p/${slug}`;
 }
