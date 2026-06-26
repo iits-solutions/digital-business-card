@@ -163,7 +163,7 @@ const nfcCard = profile.user.nfcCards[0];
 
   <div className="flex justify-between">
     <span className="text-gray-400">Card Type</span>
-    <span>{nfcCard?.cardType ?? "-"}</span>
+    <span>{nfcCard?.type ?? "-"}</span>
   </div>
 
   <div className="flex justify-between">
