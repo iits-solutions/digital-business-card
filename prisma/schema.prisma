@@ -87,11 +87,11 @@ model Lead {
 
   // Existing User Relation (KEEP)
   userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // New Professional Profile Relation
   businessProfileId String?
-  businessProfile BusinessProfile? @relation(fields: [businessProfileId], references: [id], onDelete: Cascade)
+  businessProfile   BusinessProfile? @relation(fields: [businessProfileId], references: [id], onDelete: Cascade)
 
   name String
 
@@ -109,6 +109,7 @@ model Lead {
 
   updatedAt DateTime @updatedAt
 }
+
 enum LeadStatus {
   NEW
   CONTACTED
@@ -161,23 +162,26 @@ model Activity {
 }
 
 model NfcCard {
-  id                  String    @id @default(cuid())
-  token               String    @unique
-  status              String    @default("ACTIVE")
-  type                String    @default("BASIC")
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
-  lastUsedAt          DateTime?
-  expiresAt           DateTime?
-  userId              String
-  plan                String    @default("FREE")
-  billingCycle        String    @default("MONTHLY")
-  lifetimeAccess      Boolean   @default(false)
-  trialEndsAt         DateTime?
-  lemonCustomerId     String?
-  lemonOrderId        String?
-  lemonSubscriptionId String?
-  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                      String    @id @default(cuid())
+  token                   String    @unique
+  status                  String    @default("ACTIVE")
+  type                    String    @default("BASIC")
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+  lastUsedAt              DateTime?
+  expiresAt               DateTime?
+  userId                  String
+  plan                    String    @default("FREE")
+  billingCycle            String    @default("MONTHLY")
+  lifetimeAccess          Boolean   @default(false)
+  trialEndsAt             DateTime?
+  lemonCustomerId         String?
+  lemonOrderId            String?
+  lemonSubscriptionId     String?
+  user                    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activeBusinessProfileId String?
+
+  activeBusinessProfile BusinessProfile? @relation(fields: [activeBusinessProfileId], references: [id])
 }
 
 model Coupon {
@@ -229,28 +233,29 @@ model BusinessProfile {
   profileImage    String?
   companyLogo     String?
   backgroundImage String?
-  templateId String @default("professional-corporate")
-  linkedin      String?
-  github        String?
-  instagram     String?
-  youtube       String?
-  whatsapp      String?
-  twitter       String?
-  facebook      String?
-  pinterest     String?
-  bluesky       String?
-  snapchat      String?
-  googleReviews String?
-  blogger       String?
+  templateId      String  @default("professional-corporate")
+  linkedin        String?
+  github          String?
+  instagram       String?
+  youtube         String?
+  whatsapp        String?
+  twitter         String?
+  facebook        String?
+  pinterest       String?
+  bluesky         String?
+  snapchat        String?
+  googleReviews   String?
+  blogger         String?
 
   active Boolean @default(true)
 
   profileViews Int @default(0)
 
-  isPublished Boolean @default(false)
-  leads Lead[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isPublished Boolean   @default(false)
+  leads       Lead[]
+  nfcCards    NfcCard[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 enum Plan {

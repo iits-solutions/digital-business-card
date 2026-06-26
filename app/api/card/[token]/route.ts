@@ -16,22 +16,19 @@ export async function GET(
 
   try {
 
-    const card =
-      await prisma.nfcCard.findUnique({
-
-        where: {
-          token,
-        },
-
-        include: {
-          user: {
-            include: {
-              profile: true,
-            },
-          },
-        },
-
-      });
+    const card = await prisma.nfcCard.findUnique({
+  where: {
+    token,
+  },
+  include: {
+    activeBusinessProfile: true,
+    user: {
+      include: {
+        profile: true,
+      },
+    },
+  },
+});
 
     // CARD NOT FOUND
     if (!card) {
@@ -67,9 +64,10 @@ export async function GET(
     if (card.lifetimeAccess) {
 
       return NextResponse.json({
-        username:
-          card.user.profile?.username,
-      });
+  username:
+    card.activeBusinessProfile?.slug ??
+    card.user.profile?.username,
+});
 
     }
 
@@ -81,7 +79,8 @@ export async function GET(
 
       return NextResponse.json({
         username:
-          card.user.profile?.username,
+  card.activeBusinessProfile?.slug ??
+  card.user.profile?.username,
       });
 
     }
@@ -107,7 +106,8 @@ export async function GET(
     // VALID ACCESS
     return NextResponse.json({
       username:
-        card.user.profile?.username,
+  card.activeBusinessProfile?.slug ??
+  card.user.profile?.username,
     });
 
   } catch (error) {

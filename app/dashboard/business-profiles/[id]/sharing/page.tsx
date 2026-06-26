@@ -1,4 +1,5 @@
 import CopyLinkButton from "@/app/components/sharing/CopyLinkButton";
+import ActivateNFCButton from "@/app/components/sharing/ActivateNFCButton";
 import PrintQRButton from "@/app/components/sharing/PrintQRButton";
 import DownloadQRButton from "@/app/components/sharing/DownloadQRButton";
 import { prisma } from "@/lib/prisma";
@@ -14,10 +15,17 @@ export default async function BusinessProfileSharingPage({
   const { id } = await params;
 
   const profile = await prisma.businessProfile.findFirst({
-    where: {
-      id,
+  where: {
+    id,
+  },
+  include: {
+    user: {
+      include: {
+        nfcCards: true,
+      },
     },
-  });
+  },
+});
 
   if (!profile) {
     return (
@@ -27,6 +35,7 @@ export default async function BusinessProfileSharingPage({
       </div>
     );
   }
+const nfcCard = profile.user.nfcCards[0];
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-8 text-white">
@@ -145,28 +154,30 @@ export default async function BusinessProfileSharingPage({
 
   <div className="mt-5 space-y-2 text-sm">
 
-    <div className="flex justify-between">
-      <span className="text-gray-400">Status</span>
-      <span className="text-green-400">Ready</span>
-    </div>
-
-    <div className="flex justify-between">
-      <span className="text-gray-400">Card Type</span>
-      <span>Not Assigned</span>
-    </div>
-
-    <div className="flex justify-between">
-      <span className="text-gray-400">Card UID</span>
-      <span>Not Assigned</span>
-    </div>
-
+  <div className="flex justify-between">
+    <span className="text-gray-400">Status</span>
+    <span className={nfcCard ? "text-green-400" : "text-red-400"}>
+      {nfcCard ? "Active" : "Not Assigned"}
+    </span>
   </div>
+
+  <div className="flex justify-between">
+    <span className="text-gray-400">Card Type</span>
+    <span>{nfcCard?.cardType ?? "-"}</span>
+  </div>
+
+  <div className="flex justify-between">
+    <span className="text-gray-400">Card Token</span>
+    <span>{nfcCard?.token ?? "-"}</span>
+  </div>
+
+</div>
 
   <div className="mt-auto pt-6 flex flex-wrap gap-3">
 
-    <button className="rounded-lg bg-blue-600 hover:bg-blue-700 px-4 py-2">
-      Assign
-    </button>
+    <ActivateNFCButton
+  profileId={profile.id}
+/>
 
     <button className="rounded-lg bg-slate-700 hover:bg-slate-600 px-4 py-2">
       Verify
