@@ -31,7 +31,11 @@ export default async function PublicProfile({
     .filter(Boolean)
     .join(" ");
 
-const Template = templates["compact-mobile-card"];
+const Template =
+  templates[
+    profile.templateId as keyof typeof templates
+  ] ??
+  templates["compact-mobile-card"];
  return (
   <Template
     profile={profile}
