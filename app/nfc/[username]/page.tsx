@@ -71,6 +71,6 @@ export default async function NFCPage({
   });
 
   // Redirect to profile
-  redirect(`/${profile.username}`);
+  redirect(`/p/${profile.username}`);
 
 }
