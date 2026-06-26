@@ -100,8 +100,11 @@ try {
   }
 
   return NextResponse.redirect(
-    `${request.nextUrl.origin}/${data.username}`
-  );
+  new URL(
+    `/p/${data.username}`,
+    request.url
+  )
+);
 
 } catch (error) {
 
