@@ -94,18 +94,11 @@ export default async function BusinessProfilesPage() {
   </Link>
 
   <Link
-    href={`/dashboard/business-profiles/${profile.id}/qr`}
-    className="bg-[#111827] hover:bg-[#1f2937] border border-white/10 text-white px-3 py-1 rounded-lg text-sm"
-  >
-    QR
-  </Link>
-
-  <Link
-    href={`/dashboard/business-profiles/${profile.id}/nfc`}
-    className="bg-[#111827] hover:bg-[#1f2937] border border-white/10 text-white px-3 py-1 rounded-lg text-sm"
-  >
-    NFC
-  </Link>
+  href={`/dashboard/business-profiles/${profile.id}/sharing`}
+  className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-sm"
+>
+  🚀 Sharing
+</Link>
 
 </div>
             </div>
