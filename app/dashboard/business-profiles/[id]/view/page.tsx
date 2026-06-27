@@ -4,11 +4,13 @@ import { prisma } from "@/lib/prisma";
 
 export default async function ProfessionalProfileView({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ template?: string }>;
 }) {
   const { id } = await params;
-
+const { template } = await searchParams;
   const profile = await prisma.businessProfile.findFirst({
     where: {
       id,
@@ -33,9 +35,12 @@ export default async function ProfessionalProfileView({
     .filter(Boolean)
     .join(" ");
 
-    const Template =
+    const selectedTemplate =
+  template || profile.templateId;
+
+const Template =
   templates[
-    profile.templateId as keyof typeof templates
+    selectedTemplate as keyof typeof templates
   ] || CorporateTemplate;
 
   return (

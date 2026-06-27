@@ -60,7 +60,7 @@ console.log("PROFILE:", profile);
           <div className="flex gap-3">
 
   <Link
-  href={`/dashboard/business-profiles/${profile.id}/view/classic`}
+  href={`/dashboard/business-profiles/${profile.id}/view?template=classic-business-card`}
   className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
 >
   View
@@ -100,7 +100,7 @@ console.log("PROFILE:", profile);
 
           <div className="flex gap-3">
 <Link
-    href={`/dashboard/business-profiles/${profile.id}/view?template=corporate`}
+    href={`/dashboard/business-profiles/${profile.id}/view?template=professional-corporate`}
     className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
   >
     View
@@ -140,7 +140,7 @@ console.log("PROFILE:", profile);
           <div className="flex gap-3">
 
   <Link
-  href={`/dashboard/business-profiles/${profile.id}/view`}
+  href={`/dashboard/business-profiles/${profile.id}/view?template=compact-mobile-card`}
   className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
 >
   View

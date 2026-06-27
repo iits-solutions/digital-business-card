@@ -177,8 +177,6 @@ export default async function ClassicTemplatePage({
 
 </div>
 
-
-
         </div>
 
       </div>
