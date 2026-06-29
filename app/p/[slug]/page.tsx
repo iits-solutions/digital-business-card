@@ -34,7 +34,10 @@ console.log("Business Profile:", profile);
     .filter(Boolean)
     .join(" ");
 
-    const Template = templates["compact-mobile-card"];
+    const Template =
+  templates[
+    profile.templateId as keyof typeof templates
+  ] || templates["compact-mobile-card"];
     console.log("Slug:", slug);
 console.log("Template ID:", profile.templateId);
  return (
