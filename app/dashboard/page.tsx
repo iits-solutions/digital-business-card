@@ -130,9 +130,9 @@ export default async function DashboardPage() {
 
   return (
 
-    <main className="min-h-screen bg-black text-white p-4 md:p-8">
+    <main className="min-h-screen bg-black text-white p-4 lg:p-8 xl:p-10">
 
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1600px] mx-auto px-2 xl:px-6">
 
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-10">
