@@ -31,20 +31,22 @@ export default function Sidebar() {
 
   return (
 
-    <aside className="w-72 min-h-screen bg-[#0B132B] border-r border-white/10 p-6">
+    <aside className="w-64 min-h-screen bg-[#081028] border-r border-white/10 px-5 py-6 flex flex-col">
 
       {/* Logo */}
-      <div className="mb-12">
+      <div className="mb-8 text-center">
 
-        <h1 className="text-3xl font-bold text-white">
-          ILinq
-        </h1>
+  <img
+    src="/iLinq-Logo.png"
+    alt="iLinq.Team"
+    className="w-28 mx-auto mb-3"
+  />
 
-        <p className="text-gray-400 mt-2">
-          Digital Networking
-        </p>
+  <p className="text-xs text-gray-400 tracking-wide">
+    Professional Digital Networking
+  </p>
 
-      </div>
+</div>
 
       {/* Nav Links */}
       <nav className="flex flex-col gap-3">

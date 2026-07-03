@@ -8,6 +8,16 @@ import { signOut } from "next-auth/react";
 
 import { useEffect, useState } from "react";
 
+import {
+  LayoutDashboard,
+  User,
+  Briefcase,
+  QrCode,
+  Users,
+  LogOut,
+  Shield,
+} from "lucide-react";
+
 export default function Sidebar() {
 
   const pathname = usePathname();
@@ -62,51 +72,43 @@ export default function Sidebar() {
   }, []);
 
   const navItems = [
-
-    {
-      name: "Dashboard",
-      href: "/dashboard",
-    },
-
-    {
-      name: "View Profile",
-      href:
-        "/dashboard/view-profile",
-    },
-
-    {
-  name: "Edit Profile",
-  href: "/dashboard/profile",
-},
-
-{
-  name: "Professional Profiles",
-  href: "/dashboard/business-profiles",
-},
-
-{
-  name: "QR Code",
-  href: "/dashboard/qr",
-},
-
-    {
-      name: "Leads Management",
-      href:
-        "/dashboard/leads",
-    },
-
-  ];
+  {
+    name: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    name: "My Profile",
+    href: "/dashboard/profile",
+    icon: User,
+  },
+  {
+    name: "Business Profiles",
+    href: "/dashboard/business-profiles",
+    icon: Briefcase,
+  },
+  {
+    name: "QR & NFC",
+    href: "/dashboard/qr",
+    icon: QrCode,
+  },
+  {
+    name: "Leads",
+    href: "/dashboard/leads",
+    icon: Users,
+  },
+];
 
   return (
 
-    <aside className="w-72 min-h-screen bg-[#081028] border-r border-white/10 p-6 flex flex-col justify-between">
+    <aside className="w-[290px] md:w-80 h-screen bg-[#081028] border-r border-white/10 px-6 py-8 flex flex-col justify-between shadow-2xl overflow-y-auto">
 
       <div>
 
         {/* User */}
-        <div className="mb-12">
+        <div className="mb-10">
 
-          <div className="w-24 h-24 rounded-3xl overflow-hidden bg-[#111827] border border-white/10 mb-4">
+          <div className="w-20 h-20 rounded-3xl overflow-hidden bg-[#111827] border border-white/10 mb-4">
 
             {profile.image ? (
 
@@ -128,13 +130,13 @@ export default function Sidebar() {
 
           </div>
 
-          <h2 className="text-white text-xl font-bold">
+          <h2 className="text-white text-lg font-bold">
 
             {profile.fullName || "User"}
 
           </h2>
 
-          <p className="text-gray-400 mt-1">
+          <p className="text-gray-500 text-sm mt-1">
 
             @{profile.username || "username"}
 
@@ -150,14 +152,17 @@ export default function Sidebar() {
             <Link
               key={item.name}
               href={item.href}
-              className={`block px-5 py-4 rounded-2xl transition font-medium ${
+              className={`flex items-center px-4 py-3 rounded-xl transition-all duration-300 font-medium ${
                 pathname === item.href
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-300 hover:bg-white/10"
+                  ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg"
+                  : "text-gray-300 hover:bg-white/10 hover:translate-x-1"
               }`}
             >
 
-              {item.name}
+              <div className="flex items-center gap-3">
+  <item.icon size={20} />
+  <span>{item.name}</span>
+</div>
 
             </Link>
 
@@ -170,7 +175,7 @@ export default function Sidebar() {
 
     <Link
       href="/admin"
-      className="block px-5 py-4 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-semibold transition"
+      className="block px-5 py-3 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-semibold transition"
     >
       Super Admin
     </Link>
@@ -189,7 +194,7 @@ export default function Sidebar() {
             callbackUrl: "/login",
           })
         }
-        className="bg-red-600 hover:bg-red-700 px-5 py-4 rounded-2xl font-semibold transition"
+        className="bg-red-600 hover:bg-red-700 px-5 py-3 rounded-2xl font-semibold transition"
       >
 
         Logout
