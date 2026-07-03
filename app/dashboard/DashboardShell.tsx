@@ -85,7 +85,7 @@ export default function DashboardShell({
             <X size={24} />
           </button>
 
-          <Sidebar />
+          <Sidebar onNavigate={() => setSidebarOpen(false)} />
 
         </div>
 

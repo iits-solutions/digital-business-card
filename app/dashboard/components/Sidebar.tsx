@@ -6,7 +6,11 @@ import { usePathname } from "next/navigation";
 
 import { signOut } from "next-auth/react";
 
-export default function Sidebar() {
+interface SidebarProps {
+  onNavigate?: () => void;
+}
+
+export default function Sidebar({ onNavigate }: SidebarProps) {
 
   const pathname = usePathname();
 
@@ -56,6 +60,7 @@ export default function Sidebar() {
           <Link
             key={link.href}
             href={link.href}
+            onClick={onNavigate}
             className={`px-5 py-4 rounded-2xl transition font-medium ${
               pathname === link.href
                 ? "bg-blue-600 text-white"
@@ -72,16 +77,17 @@ export default function Sidebar() {
       {/* Logout */}
       <div className="mt-12">
 
-        <button
-          onClick={() =>
-            signOut({
-              callbackUrl: "/login",
-            })
-          }
-          className="w-full bg-red-600 hover:bg-red-700 px-5 py-4 rounded-2xl font-medium transition"
-        >
-          Logout
-        </button>
+       <button
+  onClick={() => {
+    onNavigate?.();
+    signOut({
+      callbackUrl: "/login",
+    });
+  }}
+  className="w-full bg-red-600 hover:bg-red-700 px-5 py-4 rounded-2xl font-medium transition"
+>
+  Logout
+</button>
 
       </div>
 
