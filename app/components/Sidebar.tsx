@@ -18,7 +18,13 @@ import {
   Shield,
 } from "lucide-react";
 
-export default function Sidebar() {
+interface SidebarProps {
+  onNavigate?: () => void;
+}
+
+export default function Sidebar({
+  onNavigate,
+}: SidebarProps) {
 
   const pathname = usePathname();
 
@@ -152,6 +158,7 @@ export default function Sidebar() {
             <Link
               key={item.name}
               href={item.href}
+              onClick={onNavigate}
               className={`flex items-center px-4 py-3 rounded-xl transition-all duration-300 font-medium ${
                 pathname === item.href
                   ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg"
@@ -189,11 +196,13 @@ export default function Sidebar() {
 
       {/* Logout */}
       <button
-        onClick={() =>
-          signOut({
-            callbackUrl: "/login",
-          })
-        }
+       onClick={() => {
+  onNavigate?.();
+
+  signOut({
+    callbackUrl: "/login",
+  });
+}}
         className="bg-red-600 hover:bg-red-700 px-5 py-3 rounded-2xl font-semibold transition"
       >
 
