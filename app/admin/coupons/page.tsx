@@ -22,6 +22,10 @@ export default function CouponsPage() {
 
       allowedPlans: "",
 
+      purpose: "Discount",
+
+      duration: "1_MONTH",
+
       description: "",
 
     });
@@ -31,9 +35,18 @@ export default function CouponsPage() {
     useState("");
 
   const [coupons,
-    setCoupons] =
-    useState<any[]>([]);
-  async function loadCoupons() {
+  setCoupons] =
+  useState<any[]>([]);
+
+const durationLabels: Record<string, string> = {
+  "1_MONTH": "1 Month",
+  "3_MONTHS": "3 Months",
+  "6_MONTHS": "6 Months",
+  "12_MONTHS": "12 Months",
+  "LIFETIME": "Lifetime",
+};
+
+async function loadCoupons() {
 
   try {
 
@@ -175,6 +188,10 @@ useEffect(() => {
 
           allowedPlans: "",
 
+          purpose: "Discount",
+
+          duration: "1_MONTH",
+
           description: "",
 
         });
@@ -225,128 +242,224 @@ useEffect(() => {
 
         <div className="bg-[#081028] border border-white/10 rounded-3xl p-8 space-y-6">
 
-          <input
-            type="text"
-            placeholder="Coupon Code"
-            value={form.code}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                code:
-                  e.target.value,
-              })
-            }
-            className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
-          />
+          <div className="space-y-2">
 
-          <select
-            value={form.type}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                type:
-                  e.target.value,
-              })
-            }
-            className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
-          >
+  <label className="block text-sm font-semibold text-white">
+    Coupon Code
+  </label>
 
-            <option value="PERCENT">
+  <p className="text-xs text-gray-400">
+    A unique code customers will enter during checkout (e.g. GIFT2026, BETA50).
+  </p>
 
-              Percentage Discount
+  <input
+    type="text"
+    placeholder="Coupon Code"
+    value={form.code}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        code: e.target.value,
+      })
+    }
+    className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
+  />
 
-            </option>
+</div>
 
-            <option value="FIXED">
+          <div className="space-y-2">
 
-              Fixed Discount
+  <label className="block text-sm font-semibold text-white">
+    Discount Type
+  </label>
 
-            </option>
+  <p className="text-xs text-gray-400">
+    Choose whether the coupon provides a percentage discount or a fixed amount.
+  </p>
 
-          </select>
+  <select
+    value={form.type}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        type: e.target.value,
+      })
+    }
+    className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
+  >
+    <option value="PERCENT">
+      Percentage Discount
+    </option>
 
-          <input
-            type="number"
-            placeholder="Discount Value"
-            value={form.value}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                value:
-                  Number(
-                    e.target.value
-                  ),
-              })
-            }
-            className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
-          />
+    <option value="FIXED">
+      Fixed Discount
+    </option>
 
-          <input
-            type="number"
-            placeholder="Usage Limit"
-            value={form.usageLimit}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                usageLimit:
-                  e.target.value,
-              })
-            }
-            className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
-          />
+  </select>
 
-          <input
-            type="datetime-local"
-            value={form.expiresAt}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                expiresAt:
-                  e.target.value,
-              })
-            }
-            className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
-          />
+</div>
 
-          <select
-            value={form.allowedPlans}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                allowedPlans:
-                  e.target.value,
-              })
-            }
-            className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
-          >
+          <div className="space-y-2">
 
-            <option value="">
+  <label className="block text-sm font-semibold text-white">
+    Discount Value
+  </label>
 
-              All Plans
+  <p className="text-xs text-gray-400">
+    Enter the discount amount. Example: 10 = 10%, 50 = 50%, 100 = Free subscription.
+  </p>
 
-            </option>
+  <input
+    type="number"
+    placeholder="Discount Value"
+    value={form.value}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        value: Number(e.target.value),
+      })
+    }
+    className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
+  />
 
-            <option value="STARTER">
+</div>
 
-              Starter
+          <div className="space-y-2">
 
-            </option>
+  <label className="block text-sm font-semibold text-white">
+    Maximum Redemptions
+  </label>
 
-            <option value="PRO">
+  <p className="text-xs text-gray-400">
+    Maximum number of times this coupon can be used. Leave empty for unlimited usage.
+  </p>
 
-              Pro
+  <input
+    type="number"
+    placeholder="Usage Limit"
+    value={form.usageLimit}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        usageLimit: e.target.value,
+      })
+    }
+    className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
+  />
 
-            </option>
+</div>
 
-            <option value="PREMIUM">
+          <div className="space-y-2">
 
-              Premium
+  <label className="block text-sm font-semibold text-white">
+    Expiry Date
+  </label>
 
-            </option>
+  <p className="text-xs text-gray-400">
+    The coupon cannot be redeemed after this date and time. Leave empty if it never expires.
+  </p>
 
-          </select>
+  <input
+    type="datetime-local"
+    value={form.expiresAt}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        expiresAt: e.target.value,
+      })
+    }
+    className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
+  />
 
-          <textarea
+</div>
+
+<div className="space-y-2">
+
+  <label className="block text-sm font-semibold text-white">
+    Eligible Subscription Plan
+  </label>
+
+  <p className="text-xs text-gray-400">
+    Select which subscription plan this coupon can be applied to. Choose "All Plans" to make it valid for every subscription.
+  </p>
+
+  <select
+    value={form.allowedPlans}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        allowedPlans: e.target.value,
+      })
+    }
+    className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
+  >
+    <option value="">All Plans</option>
+    <option value="STARTER">Starter</option>
+    <option value="PRO">Professional</option>
+    <option value="PREMIUM">Business</option>
+  </select>
+
+</div>
+
+<div className="space-y-2">
+
+  <label className="block text-sm font-semibold text-white">
+    Coupon Purpose
+  </label>
+
+  <p className="text-xs text-gray-400">
+    Helps administrators categorize the coupon. This does not affect pricing but makes management easier.
+  </p>
+
+  <select
+    value={form.purpose}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        purpose: e.target.value,
+      })
+    }
+    className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
+  >
+    <option value="Discount">Discount</option>
+    <option value="Gift">Gift</option>
+    <option value="VIP">VIP</option>
+    <option value="Beta Tester">Beta Tester</option>
+    <option value="Employee">Employee</option>
+    <option value="Partner">Partner</option>
+  </select>
+
+</div>
+<div className="space-y-2">
+
+  <label className="block text-sm font-semibold text-white">
+    Subscription Duration
+  </label>
+
+  <p className="text-xs text-gray-400">
+    Defines how long the subscription remains active after the coupon is redeemed.
+  </p>
+
+  <select
+    value={form.duration}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        duration: e.target.value,
+      })
+    }
+    className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 outline-none"
+  >
+    <option value="1_MONTH">1 Month</option>
+    <option value="3_MONTHS">3 Months</option>
+    <option value="6_MONTHS">6 Months</option>
+    <option value="12_MONTHS">12 Months</option>
+    <option value="LIFETIME">Lifetime</option>
+  </select>
+
+</div>
+
+                  <textarea
             placeholder="Description"
             value={form.description}
             onChange={(e) =>
@@ -404,18 +517,48 @@ useEffect(() => {
 
             <div>
 
-              <h3 className="text-2xl font-bold">
+              <div className="flex items-start justify-between">
 
-                {coupon.code}
+  <div>
 
-              </h3>
+    <h3 className="text-2xl font-bold text-white">
+      {coupon.code}
+    </h3>
 
-              <p className="text-gray-400 mt-1">
+    <p className="text-sm text-gray-400 mt-1">
+      {coupon.description || "No description provided"}
+    </p>
 
-                {coupon.description || "No description"}
+  </div>
 
-              </p>
+  <span
+    className={`px-3 py-1 rounded-full text-xs font-semibold ${
+      coupon.active
+        ? "bg-green-500/20 text-green-300"
+        : "bg-red-500/20 text-red-300"
+    }`}
+  >
+    {coupon.active ? "Active" : "Disabled"}
+  </span>
 
+</div>
+
+<div className="flex flex-wrap gap-2 mt-4">
+
+  <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-medium">
+    {coupon.purpose}
+  </span>
+
+  <span className="px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-xs font-medium">
+    {durationLabels[coupon.duration] ?? coupon.duration}
+  </span>
+
+  <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-medium">
+    {coupon.allowedPlans || "All Plans"}
+  </span>
+
+</div>
+  
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
@@ -514,7 +657,7 @@ useEffect(() => {
 
               </div>
 
-            </div>
+              </div>
 
           </div>
 

@@ -13,21 +13,25 @@ export async function POST(
 
     const {
 
-      code,
+  code,
 
-      type,
+  type,
 
-      value,
+  value,
 
-      usageLimit,
+  usageLimit,
 
-      expiresAt,
+  expiresAt,
 
-      allowedPlans,
+  allowedPlans,
 
-      description,
+  purpose,
 
-    } = body;
+  duration,
+
+  description,
+
+} = body;
 
     const coupon =
       await prisma.coupon.create({
@@ -51,6 +55,10 @@ export async function POST(
               : null,
 
           allowedPlans,
+
+          purpose,
+
+          duration,
 
           description,
 
