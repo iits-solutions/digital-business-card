@@ -360,13 +360,13 @@ export default function Home() {
 
         <h3 className="text-lg font-bold mb-2">
 
-          👤 Professional
+          🏢 Professional
 
         </h3>
 
         <p className="text-gray-600 text-sm mb-4">
 
-          Ideal for freelancers.
+          Designed for growing businesses.
 
         </p>
 
@@ -404,13 +404,13 @@ export default function Home() {
 
         <h3 className="text-lg font-bold mb-2">
 
-          🏢 Business
+          💼 Executive
 
         </h3>
 
         <p className="text-gray-400 text-sm mb-4">
 
-          Perfect for growing teams.
+          Best for business-oriented and VIP users.
 
         </p>
 

@@ -223,59 +223,51 @@ export default async function DashboardPage() {
 
             </p>
 
-            <h2 className="text-3xl font-bold">
+            <h2 className="text-2xl font-bold leading-tight">
   {user?.plan === "STARTER"
-    ? "PROFESSIONAL"
+    ? "Professional"
     : user?.plan === "PRO"
     ? "BUSINESS"
     : user?.plan === "PREMIUM"
-    ? "ENTERPRISE"
+    ? "Enterprise"
     : user?.plan || "FREE"}
 </h2>
 
 <p className="text-sm text-white/70 mt-2">
   {(user?.plan === "STARTER"
-    ? "PROFESSIONAL"
+    ? "Professional"
     : user?.plan === "PRO"
     ? "BUSINESS"
     : user?.plan === "PREMIUM"
-    ? "ENTERPRISE"
+    ? "Enterprise"
     : user?.plan || "FREE") + " Plan"}
 </p>
 
           </div>
 
-          <StatsCard
-            title="Profile Views"
-            value={
-              analytics?.profileViews || 0
-            }
-            icon="👀"
-          />
+<StatsCard
+  title="Profile Views"
+  value={analytics?.profileViews || 0}
+  icon="👀"
+/>
 
-          <StatsCard
-            title="QR Scans"
-            value={
-              analytics?.qrScans || 0
-            }
-            icon="📱"
-          />
+<StatsCard
+  title="QR Scans"
+  value={analytics?.qrScans || 0}
+  icon="📱"
+/>
 
-          <StatsCard
-            title="NFC Taps"
-            value={
-              analytics?.nfcTaps || 0
-            }
-            icon="📶"
-          />
+<StatsCard
+  title="NFC Taps"
+  value={analytics?.nfcTaps || 0}
+  icon="📶"
+/>
 
-          <StatsCard
-            title="Leads"
-            value={
-              user?.leads.length || 0
-            }
-            icon="🤝"
-          />
+<StatsCard
+  title="Leads"
+  value={user?.leads.length || 0}
+  icon="🤝"
+/>
 
         </div>
 
