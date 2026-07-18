@@ -74,15 +74,6 @@ export default function AnalyticsChart({
                   bottom: 0,
                 }}
               >
-                <defs>
-  <filter id="lineGlow" x="-50%" y="-50%" width="200%" height="200%">
-    <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-    <feMerge>
-      <feMergeNode in="coloredBlur" />
-      <feMergeNode in="SourceGraphic" />
-    </feMerge>
-  </filter>
-</defs>
                 <CartesianGrid
                   stroke="#1E293B"
                   strokeDasharray="4 4"
@@ -115,7 +106,6 @@ export default function AnalyticsChart({
   dataKey="leads"
   stroke="#3B82F6"
   strokeWidth={4}
-  filter="url(#lineGlow)"
   dot={{
     r: 6,
     fill: "#fff",
