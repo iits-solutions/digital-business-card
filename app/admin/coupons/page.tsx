@@ -4,7 +4,7 @@ import {
   useEffect,
   useState,
 } from "react";
-
+import CouponCard from "@/components/admin/CouponCard";
 export default function CouponsPage() {
 
   const [form,
@@ -37,6 +37,9 @@ export default function CouponsPage() {
   const [coupons,
   setCoupons] =
   useState<any[]>([]);
+
+  const [editingCouponId, setEditingCouponId] =
+  useState<string | null>(null);
 
 const durationLabels: Record<string, string> = {
   "1_MONTH": "1 Month",
@@ -101,6 +104,9 @@ async function toggleCoupon(
           }),
 
         }
+
+        
+
       );
 
     const data =
@@ -118,6 +124,62 @@ async function toggleCoupon(
 
   }
 
+}
+
+function editCoupon(coupon: any) {
+  setEditingCouponId(coupon.id);
+
+  setForm({
+    code: coupon.code,
+    type: coupon.type,
+    value: coupon.value,
+    usageLimit: coupon.usageLimit ?? "",
+    expiresAt: coupon.expiresAt
+      ? new Date(coupon.expiresAt)
+          .toISOString()
+          .slice(0, 16)
+      : "",
+    allowedPlans: coupon.allowedPlans ?? "",
+    purpose: coupon.purpose,
+    duration: coupon.duration,
+    description: coupon.description ?? "",
+  });
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+}
+
+async function deleteCoupon(id: string) {
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this coupon?"
+  );
+
+  if (!confirmed) return;
+
+  try {
+    const response = await fetch("/api/delete-coupon", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      loadCoupons();
+    } else {
+      alert(data.error);
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Failed to delete coupon.");
+  }
 }
 
 useEffect(() => {
@@ -215,6 +277,52 @@ useEffect(() => {
     }
 
   }
+
+async function updateCoupon() {
+  try {
+    const response = await fetch("/api/update-coupon", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: editingCouponId,
+        ...form,
+        value: Number(form.value),
+        usageLimit: form.usageLimit
+          ? Number(form.usageLimit)
+          : null,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      setMessage("Coupon updated successfully.");
+
+      setEditingCouponId(null);
+
+      loadCoupons();
+
+      setForm({
+        code: "",
+        type: "PERCENT",
+        value: 10,
+        usageLimit: "",
+        expiresAt: "",
+        allowedPlans: "",
+        purpose: "Discount",
+        duration: "1_MONTH",
+        description: "",
+      });
+    } else {
+      setMessage(data.error);
+    }
+  } catch (error) {
+    console.error(error);
+    setMessage("Coupon update failed.");
+  }
+}
 
   return (
 
@@ -474,12 +582,14 @@ useEffect(() => {
 
           <button
             onClick={
-              createCoupon
-            }
+  editingCouponId
+    ? updateCoupon
+    : createCoupon
+}
             className="w-full bg-blue-600 hover:bg-blue-700 transition py-4 rounded-2xl text-lg font-semibold"
           >
 
-            Create Coupon
+            {editingCouponId ? "Update Coupon" : "Create Coupon"}
 
           </button>
 
@@ -507,163 +617,15 @@ useEffect(() => {
     {coupons.length ? (
 
       coupons.map((coupon) => (
-
-        <div
-          key={coupon.id}
-          className="bg-black/40 border border-white/10 rounded-2xl p-5"
-        >
-
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-
-            <div>
-
-              <div className="flex items-start justify-between">
-
-  <div>
-
-    <h3 className="text-2xl font-bold text-white">
-      {coupon.code}
-    </h3>
-
-    <p className="text-sm text-gray-400 mt-1">
-      {coupon.description || "No description provided"}
-    </p>
-
-  </div>
-
-  <span
-    className={`px-3 py-1 rounded-full text-xs font-semibold ${
-      coupon.active
-        ? "bg-green-500/20 text-green-300"
-        : "bg-red-500/20 text-red-300"
-    }`}
-  >
-    {coupon.active ? "Active" : "Disabled"}
-  </span>
-
-</div>
-
-<div className="flex flex-wrap gap-2 mt-4">
-
-  <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-medium">
-    {coupon.purpose}
-  </span>
-
-  <span className="px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-xs font-medium">
-    {durationLabels[coupon.duration] ?? coupon.duration}
-  </span>
-
-  <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-medium">
-    {coupon.allowedPlans || "All Plans"}
-  </span>
-
-</div>
-  
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-
-<div className="mt-6">
-
-  <button
-    onClick={() =>
-      toggleCoupon(
-        coupon.id
-      )
-    }
-    className={`px-5 py-3 rounded-2xl font-semibold transition ${
-      coupon.active
-        ? "bg-red-600 hover:bg-red-700"
-        : "bg-green-600 hover:bg-green-700"
-    }`}
-  >
-
-    {coupon.active
-      ? "Disable Coupon"
-      : "Enable Coupon"}
-
-  </button>
-
-</div>
-              <div>
-
-                <p className="text-gray-500">
-
-                  Type
-
-                </p>
-
-                <p>
-
-                  {coupon.type}
-
-                </p>
-
-              </div>
-
-              <div>
-
-                <p className="text-gray-500">
-
-                  Value
-
-                </p>
-
-                <p>
-
-                  {coupon.value}
-
-                </p>
-
-              </div>
-
-              <div>
-
-                <p className="text-gray-500">
-
-                  Used
-
-                </p>
-
-                <p>
-
-                  {coupon.usedCount}
-
-                </p>
-
-              </div>
-
-              <div>
-
-                <p className="text-gray-500">
-
-                  Status
-
-                </p>
-
-                <p
-                  className={
-                    coupon.active
-                      ? "text-green-400"
-                      : "text-red-400"
-                  }
-                >
-
-                  {coupon.active
-                    ? "Active"
-                    : "Inactive"}
-
-                </p>
-
-              </div>
-
-              </div>
-
-          </div>
-
-        </div>
-
-      ))
+  <CouponCard
+    key={coupon.id}
+    coupon={coupon}
+    durationLabels={durationLabels}
+    onToggle={toggleCoupon}
+    onEdit={editCoupon}
+    onDelete={deleteCoupon}
+  />
+))
 
     ) : (
 
