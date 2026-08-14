@@ -10,29 +10,25 @@ export async function GET(
     }>;
   }
 ) {
-
-  const { token } =
-    await context.params;
+  const { token } = await context.params;
 
   try {
-
     const card = await prisma.nfcCard.findUnique({
-  where: {
-    token,
-  },
-  include: {
-    activeBusinessProfile: true,
-    user: {
-      include: {
-        profile: true,
+      where: {
+        token,
       },
-    },
-  },
-});
+      include: {
+        activeBusinessProfile: true,
+        user: {
+          include: {
+            profile: true,
+          },
+        },
+      },
+    });
 
     // CARD NOT FOUND
     if (!card) {
-
       return NextResponse.json(
         {
           error: "Card not found",
@@ -41,14 +37,10 @@ export async function GET(
           status: 404,
         }
       );
-
     }
 
     // CARD INACTIVE
-    if (
-      card.status !== "ACTIVE"
-    ) {
-
+    if (card.status !== "ACTIVE") {
       return NextResponse.json(
         {
           error: "Card inactive",
@@ -57,18 +49,34 @@ export async function GET(
           status: 403,
         }
       );
+    }
 
+    // Determine the correct profile
+    const profileType = card.activeBusinessProfile
+      ? "business"
+      : "default";
+
+    const username =
+      card.activeBusinessProfile?.slug ??
+      card.user.profile?.username;
+
+    if (!username) {
+      return NextResponse.json(
+        {
+          error: "Profile not found",
+        },
+        {
+          status: 404,
+        }
+      );
     }
 
     // LIFETIME ACCESS
     if (card.lifetimeAccess) {
-
       return NextResponse.json({
-  username:
-    card.activeBusinessProfile?.slug ??
-    card.user.profile?.username,
-});
-
+        username,
+        profileType,
+      });
     }
 
     // TRIAL ACCESS
@@ -76,13 +84,10 @@ export async function GET(
       card.trialEndsAt &&
       new Date(card.trialEndsAt) > new Date()
     ) {
-
       return NextResponse.json({
-        username:
-  card.activeBusinessProfile?.slug ??
-  card.user.profile?.username,
+        username,
+        profileType,
       });
-
     }
 
     // EXPIRED SUBSCRIPTION
@@ -90,7 +95,6 @@ export async function GET(
       card.expiresAt &&
       new Date(card.expiresAt) < new Date()
     ) {
-
       return NextResponse.json(
         {
           error: "Subscription expired",
@@ -100,18 +104,14 @@ export async function GET(
           status: 403,
         }
       );
-
     }
 
     // VALID ACCESS
     return NextResponse.json({
-      username:
-  card.activeBusinessProfile?.slug ??
-  card.user.profile?.username,
+      username,
+      profileType,
     });
-
   } catch (error) {
-
     console.log(error);
 
     return NextResponse.json(
@@ -122,7 +122,5 @@ export async function GET(
         status: 500,
       }
     );
-
   }
-
 }

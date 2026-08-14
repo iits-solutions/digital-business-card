@@ -99,9 +99,14 @@ try {
 
   }
 
-  return NextResponse.redirect(
+  const destination =
+  data.profileType === "business"
+    ? `/p/${data.username}`
+    : `/${data.username}`;
+
+return NextResponse.redirect(
   new URL(
-    `/p/${data.username}`,
+    destination,
     request.url
   )
 );
