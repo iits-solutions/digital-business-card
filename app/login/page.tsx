@@ -6,8 +6,6 @@ import { signIn } from "next-auth/react";
 
 import { useRouter } from "next/navigation";
 
-import LoginBetaNotice from "../components/LoginBetaNotice";
-
 export default function LoginPage() {
 
   const router = useRouter();
@@ -86,8 +84,6 @@ const handleChange = (
 
     <main className="min-h-screen bg-black text-white flex items-center justify-center px-6 relative">
       
-      <LoginBetaNotice />
-
       {/* Back Button */}
       <a
         href="/"
