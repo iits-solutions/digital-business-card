@@ -25,8 +25,8 @@ export default function RenewPage() {
     useState("PREMIUM");
 
   async function validateCoupon(
-    plan: string
-  ) {
+  plan: string
+): Promise<any> {
 
     try {
 
@@ -59,25 +59,27 @@ export default function RenewPage() {
       const data =
         await response.json();
 
-      if (data.valid) {
+     if (data.valid) {
 
-        setCouponData(
-          data.coupon
-        );
+  setCouponData(data);
 
-        setCouponMessage(
-          "Coupon applied successfully."
-        );
+  setCouponMessage(
+    "Coupon applied successfully."
+  );
 
-      } else {
+  return data;
 
-        setCouponData(null);
+} else {
 
-        setCouponMessage(
-          data.message
-        );
+  setCouponData(null);
 
-      }
+  setCouponMessage(
+    data.message
+  );
+
+  return null;
+
+}
 
     } catch (error) {
 
@@ -86,7 +88,7 @@ export default function RenewPage() {
       setCouponMessage(
         "Coupon validation failed."
       );
-
+        return null;
     }
 
   }
@@ -119,49 +121,7 @@ export default function RenewPage() {
         plan as keyof typeof prices
       ];
 
-    if (
-      couponData &&
-      (
-        !couponData.allowedPlans ||
-        couponData.allowedPlans ===
-          plan
-      )
-    ) {
-
-      if (
-        couponData.type ===
-        "PERCENT"
-      ) {
-
-        finalPrice =
-          finalPrice -
-          (
-            finalPrice *
-            couponData.value
-          ) / 100;
-
-      }
-
-      if (
-        couponData.type ===
-        "FIXED"
-      ) {
-
-        finalPrice =
-          finalPrice -
-          couponData.value;
-
-      }
-
-    }
-
-    if (finalPrice < 0) {
-
-      finalPrice = 0;
-
-    }
-
-    return finalPrice.toFixed(2);
+      return finalPrice.toFixed(2);
 
   }
 
@@ -173,22 +133,27 @@ export default function RenewPage() {
 
       setSelectedPlan(plan);
 
-      if (couponCode) {
+      let validatedCoupon = null;
 
-        await validateCoupon(plan);
+if (couponCode) {
 
-      }
+  validatedCoupon =
+    await validateCoupon(plan);
 
-      const finalPrice =
-        Number(
-          getPrice(plan)
-        );
+}
 
-      if (
-        finalPrice <= 0
-      ) {
+const finalPrice =
+  validatedCoupon?.finalPrice ??
+  couponData?.finalPrice ??
+  Number(getPrice(plan));
 
-        const response =
+if (
+  validatedCoupon?.isFreeSubscription ||
+  couponData?.isFreeSubscription ||
+  finalPrice <= 0
+)
+ {
+       const response =
           await fetch(
             "/api/free-checkout",
             {
@@ -203,15 +168,10 @@ export default function RenewPage() {
               },
 
               body: JSON.stringify({
-
-                plan,
-
-                billing,
-
-                couponCode,
-
+              plan,
+              billing,
+              couponCode,
               }),
-
             }
           );
 

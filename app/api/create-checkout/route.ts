@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 const variantMap = {
 
@@ -40,16 +41,168 @@ export async function POST(
     const {
       plan,
       billing,
+      couponCode,
     } = body;
+    const normalizedCouponCode =
+          couponCode?.trim().toUpperCase();
+   
+    let coupon = null;
 
-    const variantId =
-      variantMap[
-        plan as keyof typeof variantMap
-      ]?.[
-        billing as
-          "MONTHLY"
-          | "YEARLY"
-      ];
+    if (normalizedCouponCode) {
+
+  coupon =
+    await prisma.coupon.findUnique({
+
+      where: {
+
+        code:
+          normalizedCouponCode,
+
+      },
+
+    });
+
+}
+
+if (
+  normalizedCouponCode &&
+  !coupon
+) {
+
+  return NextResponse.json(
+    {
+      error:
+        "Invalid coupon",
+    },
+    {
+      status: 400,
+    }
+  );
+
+}
+
+if (
+  coupon &&
+  !coupon.active
+) {
+
+  return NextResponse.json(
+    {
+      error:
+        "Coupon is inactive",
+    },
+    {
+      status: 400,
+    }
+  );
+
+}
+
+if (
+  coupon &&
+  coupon.allowedPlans &&
+  coupon.allowedPlans !== plan
+) {
+
+  return NextResponse.json(
+    {
+      error:
+        "Coupon is not valid for this plan",
+    },
+    {
+      status: 400,
+    }
+  );
+
+}
+
+if (
+  coupon &&
+  coupon.expiresAt &&
+  coupon.expiresAt < new Date()
+) {
+
+  return NextResponse.json(
+    {
+      error:
+        "Coupon has expired",
+    },
+    {
+      status: 400,
+    }
+  );
+
+}
+
+if (
+  coupon &&
+  coupon.usageLimit !== null &&
+  coupon.usageLimit !== undefined &&
+  coupon.usedCount >= coupon.usageLimit
+) {
+
+  return NextResponse.json(
+    {
+      error:
+        "Coupon usage limit has been reached",
+    },
+    {
+      status: 400,
+    }
+  );
+
+}
+
+
+
+    const planLimit =
+  await prisma.planLimit.findUnique({
+    where: {
+      plan_name: plan,
+    },
+  });
+
+  if (!planLimit) {
+
+  return NextResponse.json(
+    {
+      error:
+        "Plan configuration not found",
+    },
+    {
+      status: 400,
+    }
+  );
+
+}
+
+const originalPrice =
+  billing === "MONTHLY"
+    ? Number(planLimit.monthly_price)
+    : Number(planLimit.yearly_price);
+
+    let finalPrice =
+  originalPrice;
+
+if (coupon) {
+
+  finalPrice =
+    Math.max(
+      0,
+      originalPrice -
+        Number(coupon.value)
+    );
+
+}
+
+const variantId =
+  variantMap[
+    plan as keyof typeof variantMap
+  ]?.[
+    billing as
+      "MONTHLY"
+      | "YEARLY"
+  ];
 
     if (!variantId) {
 

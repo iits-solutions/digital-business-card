@@ -32,6 +32,8 @@ export async function POST(
       );
 
     }
+    
+const userEmail = session.user.email;
 
     const body =
       await req.json();
@@ -42,13 +44,16 @@ export async function POST(
       couponCode,
     } = body;
 
+    const normalizedCouponCode =
+  couponCode?.trim().toUpperCase();
+    
     const coupon =
       await prisma.coupon.findUnique({
 
         where: {
 
           code:
-            couponCode.toUpperCase(),
+  normalizedCouponCode,
 
         },
 
@@ -90,6 +95,7 @@ export async function POST(
             "Coupon is not fully free",
 
         },
+
         {
 
           status: 400,
@@ -98,6 +104,57 @@ export async function POST(
       );
 
     }
+
+if (
+  coupon.allowedPlans &&
+  coupon.allowedPlans !== plan
+) {
+
+  return NextResponse.json(
+    {
+      error:
+        "Coupon is not valid for this plan",
+    },
+    {
+      status: 400,
+    }
+  );
+
+}
+
+if (
+  coupon.expiresAt &&
+  coupon.expiresAt < new Date()
+) {
+
+  return NextResponse.json(
+    {
+      error:
+        "Coupon has expired",
+    },
+    {
+      status: 400,
+    }
+  );
+}
+
+if (
+  coupon.usageLimit !== null &&
+  coupon.usageLimit !== undefined &&
+  coupon.usedCount >= coupon.usageLimit
+) {
+
+  return NextResponse.json(
+    {
+      error:
+        "Coupon usage limit has been reached",
+    },
+    {
+      status: 400,
+    }
+  );
+
+}
 
     const expiresAt =
       new Date();
@@ -117,15 +174,15 @@ export async function POST(
       );
 
     }
-
-    await prisma.nfcCard.updateMany({
+await prisma.$transaction(async (tx) => {
+    await tx.nfcCard.updateMany({
 
       where: {
 
         user: {
 
           email:
-            session.user.email,
+            userEmail,
 
         },
 
@@ -144,7 +201,7 @@ export async function POST(
 
     });
 
-    await prisma.coupon.update({
+    await tx.coupon.update({
 
       where: {
 
@@ -163,6 +220,7 @@ export async function POST(
 
       },
 
+    });
     });
 
     return NextResponse.json({
