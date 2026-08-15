@@ -39,10 +39,8 @@ const userEmail = session.user.email;
       await req.json();
 
     const {
-      plan,
-      billing,
-      couponCode,
-    } = body;
+  couponCode,
+} = body;
 
     const normalizedCouponCode =
   couponCode?.trim().toUpperCase();
@@ -80,46 +78,123 @@ const userEmail = session.user.email;
 
     }
 
-    if (
-      coupon.type !==
-        "PERCENT"
-      ||
+   const plan = coupon.allowedPlans;
 
-      coupon.value < 100
-    ) {
-
-      return NextResponse.json(
-        {
-
-          error:
-            "Coupon is not fully free",
-
-        },
-
-        {
-
-          status: 400,
-
-        }
-      );
-
-    }
-
-if (
-  coupon.allowedPlans &&
-  coupon.allowedPlans !== plan
-) {
-
+if (!plan) {
   return NextResponse.json(
     {
       error:
-        "Coupon is not valid for this plan",
+        "Coupon does not specify a subscription plan",
     },
     {
       status: 400,
     }
   );
+}
 
+const selectedPlan =
+  await prisma.planLimit.findUnique({
+    where: {
+      plan_name: plan,
+    },
+  });
+
+if (!selectedPlan) {
+  return NextResponse.json(
+    {
+      error:
+        "Subscription plan configuration not found",
+    },
+    {
+      status: 400,
+    }
+  );
+}
+
+if (!selectedPlan.active) {
+  return NextResponse.json(
+    {
+      error:
+        "Subscription plan is inactive",
+    },
+    {
+      status: 400,
+    }
+  );
+}
+
+let originalPrice = 0;
+
+switch (coupon.duration) {
+  case "1_MONTH":
+    originalPrice =
+      Number(selectedPlan.monthly_price);
+    break;
+
+  case "3_MONTHS":
+    originalPrice =
+      Number(selectedPlan.monthly_price) * 3;
+    break;
+
+  case "6_MONTHS":
+    originalPrice =
+      Number(selectedPlan.monthly_price) * 6;
+    break;
+
+  case "12_MONTHS":
+    originalPrice =
+      Number(selectedPlan.yearly_price);
+    break;
+
+  case "LIFETIME":
+    originalPrice = 0;
+    break;
+
+  default:
+    return NextResponse.json(
+      {
+        error:
+          "Invalid coupon duration",
+      },
+      {
+        status: 400,
+      }
+    );
+}
+
+let discount = 0;
+
+if (coupon.type === "PERCENT") {
+  discount =
+    (originalPrice * coupon.value) / 100;
+} else {
+  discount = coupon.value;
+}
+
+if (discount > originalPrice) {
+  discount = originalPrice;
+}
+
+const finalPrice =
+  Math.max(
+    0,
+    Number(
+      (
+        originalPrice - discount
+      ).toFixed(2)
+    )
+  );
+
+if (finalPrice !== 0) {
+  return NextResponse.json(
+    {
+      error:
+        "Coupon does not provide a free subscription",
+    },
+    {
+      status: 400,
+    }
+  );
 }
 
 if (
@@ -156,24 +231,34 @@ if (
 
 }
 
-    const expiresAt =
-      new Date();
+    let expiresAt: Date | null = new Date();
 
-    if (
-      billing === "YEARLY"
-    ) {
+switch (coupon.duration) {
+  case "1_MONTH":
+    expiresAt.setMonth(expiresAt.getMonth() + 1);
+    break;
 
-      expiresAt.setMonth(
-        expiresAt.getMonth() + 12
-      );
+  case "3_MONTHS":
+    expiresAt.setMonth(expiresAt.getMonth() + 3);
+    break;
 
-    } else {
+  case "6_MONTHS":
+    expiresAt.setMonth(expiresAt.getMonth() + 6);
+    break;
 
-      expiresAt.setMonth(
-        expiresAt.getMonth() + 1
-      );
+  case "12_MONTHS":
+    expiresAt.setMonth(expiresAt.getMonth() + 12);
+    break;
 
-    }
+  case "LIFETIME":
+  expiresAt = null;
+  break;
+
+  default:
+    expiresAt.setMonth(expiresAt.getMonth() + 1);
+    break;
+}
+
 await prisma.$transaction(async (tx) => {
     await tx.nfcCard.updateMany({
 
@@ -190,17 +275,37 @@ await prisma.$transaction(async (tx) => {
 
       data: {
 
-        status:
-          "ACTIVE",
+  status:
+    "ACTIVE",
+
+  plan,
+
+  subscriptionStartedAt:
+    new Date(),
+  subscriptionDuration:
+  coupon.duration,  
+
+  expiresAt,
+
+},
+
+    });
+    await tx.user.update({
+
+      where: {
+        email: userEmail,
+      },
+
+      data: {
 
         plan,
 
-        expiresAt,
+        subscriptionStatus:
+          "ACTIVE",
 
       },
 
     });
-
     await tx.coupon.update({
 
       where: {

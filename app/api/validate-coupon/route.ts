@@ -13,9 +13,7 @@ export async function POST(
 
     const {
   code,
-  plan,
-  billing,
-} = body;
+  } = body;
 
     const coupon =
       await prisma.coupon.findUnique({
@@ -89,83 +87,84 @@ export async function POST(
 
     }
 
-    if (
-      coupon.allowedPlans &&
-      coupon.allowedPlans !==
-        plan
-    ) {
+const plan = coupon.allowedPlans;
 
-      return NextResponse.json({
-
-        valid: false,
-
-        message:
-          "Coupon not valid for this plan.",
-
-      });
-
-    }
+if (!plan) {
+  return NextResponse.json({
+    valid: false,
+    message:
+      "This coupon does not specify a subscription plan.",
+  });
+}
 
 const selectedPlan =
   await prisma.planLimit.findUnique({
-
     where: {
       plan_name: plan,
     },
-
   });
 
 if (!selectedPlan) {
-
   return NextResponse.json({
-
     valid: false,
-
     message:
-      "Subscription plan not found.",
-
+      "Subscription plan configuration not found.",
   });
-
 }
 
 if (!selectedPlan.active) {
-
   return NextResponse.json({
-
     valid: false,
-
     message:
       "Subscription plan is inactive.",
-
   });
-
 }
+let originalPrice = 0;
 
-const originalPrice =
-  Number(
-    billing === "YEARLY"
-      ? selectedPlan.yearly_price
-      : selectedPlan.monthly_price
-  );
+switch (coupon.duration) {
+  case "1_MONTH":
+    originalPrice =
+      Number(selectedPlan.monthly_price);
+    break;
+
+  case "3_MONTHS":
+    originalPrice =
+      Number(selectedPlan.monthly_price) * 3;
+    break;
+
+  case "6_MONTHS":
+    originalPrice =
+      Number(selectedPlan.monthly_price) * 6;
+    break;
+
+  case "12_MONTHS":
+    originalPrice =
+      Number(selectedPlan.yearly_price);
+    break;
+
+  case "LIFETIME":
+    originalPrice = 0;
+    break;
+
+  default:
+    return NextResponse.json({
+      valid: false,
+      message:
+        "Invalid coupon duration.",
+    });
+}
 
 let discount = 0;
 
 if (coupon.type === "PERCENT") {
-
   discount =
-    (originalPrice * coupon.value) /
-    100;
-
+    (originalPrice * coupon.value) / 100;
 } else {
-
   discount = coupon.value;
-
 }
 
 if (discount > originalPrice) {
-
   discount = originalPrice;
-
 }
 
 const finalPrice =
@@ -183,12 +182,15 @@ const isFreeSubscription =
 
 const requiresPayment =
   !isFreeSubscription;
-
     return NextResponse.json({
 
   valid: true,
 
   coupon,
+
+  plan,
+
+  duration: coupon.duration,
 
   originalPrice,
 

@@ -22,10 +22,10 @@ model User {
   accounts           Account[]
   activities         Activity[]
   analytics          Analytics?
+  businessProfiles   BusinessProfile[]
   leads              Lead[]
   nfcCards           NfcCard[]
   profile            Profile?
-  businessProfiles   BusinessProfile[]
   sessions           Session[]
 }
 
@@ -83,39 +83,19 @@ model PlanLimit {
 }
 
 model Lead {
-  id String @id @default(cuid())
-
-  // Existing User Relation (KEEP)
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // New Professional Profile Relation
+  id                String           @id @default(cuid())
+  name              String
+  email             String?
+  phone             String?
+  company           String?
+  createdAt         DateTime         @default(now())
+  userId            String
   businessProfileId String?
+  updatedAt         DateTime         @updatedAt
+  message           String?
+  status            LeadStatus       @default(NEW)
   businessProfile   BusinessProfile? @relation(fields: [businessProfileId], references: [id], onDelete: Cascade)
-
-  name String
-
-  company String?
-
-  email String?
-
-  phone String?
-
-  message String?
-
-  status LeadStatus @default(NEW)
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
-}
-
-enum LeadStatus {
-  NEW
-  CONTACTED
-  QUALIFIED
-  WON
-  LOST
+  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -162,26 +142,27 @@ model Activity {
 }
 
 model NfcCard {
-  id                      String    @id @default(cuid())
-  token                   String    @unique
-  status                  String    @default("ACTIVE")
-  type                    String    @default("BASIC")
-  createdAt               DateTime  @default(now())
-  updatedAt               DateTime  @updatedAt
+  id                      String           @id @default(cuid())
+  token                   String           @unique
+  status                  String           @default("ACTIVE")
+  type                    String           @default("BASIC")
+  createdAt               DateTime         @default(now())
+  updatedAt               DateTime         @updatedAt
   lastUsedAt              DateTime?
   expiresAt               DateTime?
+  subscriptionStartedAt   DateTime?
+  subscriptionDuration    String?
   userId                  String
-  plan                    String    @default("FREE")
-  billingCycle            String    @default("MONTHLY")
-  lifetimeAccess          Boolean   @default(false)
+  plan                    String           @default("FREE")
+  billingCycle            String           @default("MONTHLY")
+  lifetimeAccess          Boolean          @default(false)
   trialEndsAt             DateTime?
   lemonCustomerId         String?
   lemonOrderId            String?
   lemonSubscriptionId     String?
-  user                    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   activeBusinessProfileId String?
-
-  activeBusinessProfile BusinessProfile? @relation(fields: [activeBusinessProfileId], references: [id])
+  activeBusinessProfile   BusinessProfile? @relation(fields: [activeBusinessProfileId], references: [id])
+  user                    User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Coupon {
@@ -195,47 +176,34 @@ model Coupon {
   expiresAt    DateTime?
   allowedPlans String?
   description  String?
-  purpose String @default("Discount")
-  duration String @default("1_MONTH")
   createdAt    DateTime  @default(now())
+  purpose      String?   @default("Discount") @db.VarChar(50)
+  duration     String?   @default("1_MONTH") @db.VarChar(20)
 }
 
 model BusinessProfile {
-  id String @id @default(cuid())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  slug String @unique
-
-  firstName  String
-  middleName String?
-  lastName   String
-
-  companyName String
-  displayName String?
-
-  jobTitle String
-
-  primaryPhone   String
-  secondaryPhone String?
-  officePhone    String?
-  extension      String?
-
-  email   String
-  website String?
-
-  address String?
-
-  city    String
-  country String
-
-  aboutMe String?
-
+  id              String    @id @default(cuid())
+  userId          String
+  slug            String    @unique
+  firstName       String
+  middleName      String?
+  lastName        String
+  companyName     String
+  displayName     String?
+  jobTitle        String
+  primaryPhone    String
+  secondaryPhone  String?
+  officePhone     String?
+  extension       String?
+  email           String
+  website         String?
+  address         String?
+  city            String
+  country         String
+  aboutMe         String?
   profileImage    String?
   companyLogo     String?
   backgroundImage String?
-  templateId      String  @default("professional-corporate")
   linkedin        String?
   github          String?
   instagram       String?
@@ -248,16 +216,23 @@ model BusinessProfile {
   snapchat        String?
   googleReviews   String?
   blogger         String?
+  active          Boolean   @default(true)
+  profileViews    Int       @default(0)
+  isPublished     Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  templateId      String    @default("professional-corporate")
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leads           Lead[]
+  nfcCards        NfcCard[]
+}
 
-  active Boolean @default(true)
-
-  profileViews Int @default(0)
-
-  isPublished Boolean   @default(false)
-  leads       Lead[]
-  nfcCards    NfcCard[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  WON
+  LOST
 }
 
 enum Plan {
