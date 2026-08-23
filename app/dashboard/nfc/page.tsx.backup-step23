@@ -20,14 +20,6 @@ type NfcReadResult = {
   message?: string;
 };
 
-type NfcReadUrlResult = {
-  success: boolean;
-  card_present?: boolean;
-  uid?: string | null;
-  url?: string | null;
-  message?: string;
-};
-
 type NfcWriteResult = {
   success: boolean;
   card_present?: boolean;
@@ -40,8 +32,16 @@ type NfcWriteResult = {
 export default function NFCPage() {
   const { data: session } = useSession();
 
+  // ---------------------------------------------------------
+  // Web NFC
+  // ---------------------------------------------------------
+
   const [webNfcSupported, setWebNfcSupported] =
     useState(false);
+
+  // ---------------------------------------------------------
+  // Local Agent
+  // ---------------------------------------------------------
 
   const [agentStatus, setAgentStatus] =
     useState<AgentStatus | null>(null);
@@ -49,27 +49,22 @@ export default function NFCPage() {
   const [checkingAgent, setCheckingAgent] =
     useState(false);
 
+  // ---------------------------------------------------------
+  // Card
+  // ---------------------------------------------------------
+
   const [profileUrl, setProfileUrl] =
     useState("");
 
   const [writing, setWriting] =
     useState(false);
 
-  const [readingCard, setReadingCard] =
-    useState(false);
-
   const [message, setMessage] =
     useState("");
 
-  const [cardUid, setCardUid] =
-    useState<string | null>(null);
-
-  const [storedUrl, setStoredUrl] =
-    useState<string | null>(null);
-
-  // =========================================================
-  // WEB NFC DETECTION
-  // =========================================================
+  // ---------------------------------------------------------
+  // Detect Web NFC
+  // ---------------------------------------------------------
 
   useEffect(() => {
     if ("NDEFReader" in window) {
@@ -77,31 +72,37 @@ export default function NFCPage() {
     }
   }, []);
 
-  // =========================================================
-  // GET / CREATE NFC CARD
-  // =========================================================
+  // ---------------------------------------------------------
+  // Get / create user's NFC card
+  // ---------------------------------------------------------
 
   useEffect(() => {
     const setupNfcCard = async () => {
-      if (!session?.user?.email) {
-        return;
-      }
+      if (!session?.user?.email) return;
 
       try {
-        const response = await fetch(
-          "/api/test-nfc",
-          {
+        const response =
+          await fetch("/api/test-nfc", {
             cache: "no-store",
-          }
-        );
+          });
 
-        const data = await response.json();
+        const data =
+          await response.json();
 
         if (
           response.ok &&
           data?.success &&
           data?.card?.token
         ) {
+          /*
+           * IMPORTANT:
+           *
+           * Always use the real production iLinq.Team
+           * domain for the NFC URL.
+           *
+           * Do not use localhost here.
+           */
+
           setProfileUrl(
             `https://ilinq.team/card/${data.card.token}`
           );
@@ -121,21 +122,22 @@ export default function NFCPage() {
     setupNfcCard();
   }, [session]);
 
-  // =========================================================
-  // CHECK LOCAL AGENT
-  // =========================================================
+  // ---------------------------------------------------------
+  // Check Local Agent
+  // ---------------------------------------------------------
 
   const checkLocalAgent = async () => {
     setCheckingAgent(true);
 
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8765/status",
-        {
-          method: "GET",
-          cache: "no-store",
-        }
-      );
+      const response =
+        await fetch(
+          "http://127.0.0.1:8765/status",
+          {
+            method: "GET",
+            cache: "no-store",
+          }
+        );
 
       if (!response.ok) {
         throw new Error(
@@ -143,14 +145,15 @@ export default function NFCPage() {
         );
       }
 
-      const data: AgentStatus =
+      const data =
         await response.json();
 
       setAgentStatus(data);
 
     } catch (error) {
+
       console.error(
-        "NFC Local Agent check failed:",
+        "NFC Local Agent error:",
         error
       );
 
@@ -166,113 +169,20 @@ export default function NFCPage() {
     }
   };
 
-  // =========================================================
-  // INITIAL LOCAL AGENT CHECK
-  // =========================================================
+  // ---------------------------------------------------------
+  // Automatically check Local Agent
+  // ---------------------------------------------------------
 
   useEffect(() => {
     checkLocalAgent();
   }, []);
 
-  // =========================================================
-  // READ CURRENT NFC CARD URL
-  // =========================================================
-
-  const readNfcCard = async () => {
-    setReadingCard(true);
-    setMessage("");
-    setCardUid(null);
-    setStoredUrl(null);
-
-    try {
-      const response = await fetch(
-        "http://127.0.0.1:8765/nfc/read-url",
-        {
-          method: "GET",
-          cache: "no-store",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          "Unable to communicate with the NFC Local Agent."
-        );
-      }
-
-      const data: NfcReadUrlResult =
-        await response.json();
-
-      if (!data.success) {
-        if (
-          data.message
-            ?.toLowerCase()
-            .includes("removed")
-        ) {
-          setMessage(
-            "⚠️ Please place an NFC card on the ACR122U reader."
-          );
-        } else {
-          setMessage(
-            `❌ ${
-              data.message ||
-              "Unable to read the NFC card."
-            }`
-          );
-        }
-
-        return;
-      }
-
-      if (!data.card_present) {
-        setMessage(
-          "⚠️ Please place an NFC card on the ACR122U reader."
-        );
-
-        return;
-      }
-
-      setCardUid(
-        data.uid || null
-      );
-
-      setStoredUrl(
-        data.url || null
-      );
-
-      if (data.url) {
-        setMessage(
-          "✅ NFC card read successfully."
-        );
-      } else {
-        setMessage(
-          "⚠️ Card detected, but no readable URL was found."
-        );
-      }
-
-    } catch (error) {
-      console.error(
-        "NFC card read error:",
-        error
-      );
-
-      setMessage(
-        `❌ ${
-          error instanceof Error
-            ? error.message
-            : "Failed to read NFC card."
-        }`
-      );
-
-    } finally {
-      setReadingCard(false);
-    }
-  };
-
-  // =========================================================
-  // WINDOWS / ACR122U WRITER
-  // =========================================================
+  // ---------------------------------------------------------
+  // Write using Windows ACR122U Local Agent
+  // ---------------------------------------------------------
 
   const writeWithLocalAgent = async () => {
+
     if (!profileUrl) {
       setMessage(
         "❌ NFC URL is not ready yet."
@@ -284,13 +194,19 @@ export default function NFCPage() {
     setMessage("");
 
     try {
-      const statusResponse = await fetch(
-        "http://127.0.0.1:8765/status",
-        {
-          method: "GET",
-          cache: "no-store",
-        }
-      );
+
+      /*
+       * First check that the Local Agent is available.
+       */
+
+      const statusResponse =
+        await fetch(
+          "http://127.0.0.1:8765/status",
+          {
+            method: "GET",
+            cache: "no-store",
+          }
+        );
 
       if (!statusResponse.ok) {
         throw new Error(
@@ -298,109 +214,58 @@ export default function NFCPage() {
         );
       }
 
-      const status: AgentStatus =
+      const status =
         await statusResponse.json();
 
       if (!status.reader_connected) {
-        setMessage(
-          "⚠️ ACR122U reader is not connected."
-        );
-        return;
-      }
-
-      const readResponse = await fetch(
-        "http://127.0.0.1:8765/nfc/read",
-        {
-          method: "GET",
-          cache: "no-store",
-        }
-      );
-
-      if (!readResponse.ok) {
         throw new Error(
-          "Unable to check the NFC card."
+          "ACR122U NFC reader was not detected."
         );
       }
 
-      const card: NfcReadResult =
-        await readResponse.json();
+      /*
+       * Write the real iLinq.Team card URL.
+       */
 
-      if (
-        !card.card_present ||
-        !card.uid
-      ) {
-        setMessage(
-          "⚠️ Please place an NFC card on the ACR122U reader and try again."
+      const response =
+        await fetch(
+          "http://127.0.0.1:8765/nfc/write",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+            body: JSON.stringify({
+              url: profileUrl,
+            }),
+          }
         );
-
-        return;
-      }
-
-      setMessage(
-        `🔄 Card detected (${card.uid}). Writing NFC card...`
-      );
-
-      const response = await fetch(
-        "http://127.0.0.1:8765/nfc/write",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            url: profileUrl,
-          }),
-        }
-      );
 
       const data: NfcWriteResult =
         await response.json();
 
       if (!data.success) {
-        const errorMessage =
+        throw new Error(
           data.message ||
-          "NFC card write failed.";
-
-        if (
-          errorMessage
-            .toLowerCase()
-            .includes("card") &&
-          errorMessage
-            .toLowerCase()
-            .includes("removed")
-        ) {
-          setMessage(
-            "⚠️ The NFC card was removed. Please place it back on the reader and try again."
-          );
-
-          return;
-        }
-
-        setMessage(
-          `❌ ${errorMessage}`
+            "NFC card write failed."
         );
-
-        return;
       }
 
       setMessage(
         `✅ NFC card written successfully. UID: ${
-          data.uid || card.uid
+          data.uid || "unknown"
         }`
       );
 
-      setCardUid(
-        data.uid || card.uid
-      );
-
-      setStoredUrl(
-        data.url || profileUrl
-      );
+      /*
+       * Refresh Local Agent status.
+       */
 
       await checkLocalAgent();
 
     } catch (error) {
+
       console.error(
         "Local NFC write error:",
         error
@@ -410,7 +275,7 @@ export default function NFCPage() {
         `❌ ${
           error instanceof Error
             ? error.message
-            : "Failed to communicate with the NFC reader."
+            : "Failed to write NFC card."
         }`
       );
 
@@ -419,11 +284,12 @@ export default function NFCPage() {
     }
   };
 
-  // =========================================================
-  // MOBILE WEB NFC WRITER
-  // =========================================================
+  // ---------------------------------------------------------
+  // Write using Mobile Web NFC
+  // ---------------------------------------------------------
 
   const writeWithWebNfc = async () => {
+
     if (!profileUrl) {
       setMessage(
         "❌ NFC URL is not ready yet."
@@ -435,6 +301,7 @@ export default function NFCPage() {
     setMessage("");
 
     try {
+
       // @ts-ignore
       const ndef = new NDEFReader();
 
@@ -452,6 +319,7 @@ export default function NFCPage() {
       );
 
     } catch (error) {
+
       console.error(
         "Web NFC write error:",
         error
@@ -466,25 +334,37 @@ export default function NFCPage() {
     }
   };
 
-  // =========================================================
-  // MAIN WRITE
-  // =========================================================
+  // ---------------------------------------------------------
+  // Main Write Button
+  // ---------------------------------------------------------
 
   const writeNFC = async () => {
+
+    /*
+     * If Web NFC is available, preserve the
+     * existing mobile behavior.
+     */
+
     if (webNfcSupported) {
       await writeWithWebNfc();
       return;
     }
 
+    /*
+     * Otherwise use Windows + ACR122U.
+     */
+
     await writeWithLocalAgent();
   };
 
-  // =========================================================
-  // COPY URL
-  // =========================================================
+  // ---------------------------------------------------------
+  // Copy URL
+  // ---------------------------------------------------------
 
   const copyUrl = async () => {
+
     try {
+
       await navigator.clipboard.writeText(
         profileUrl
       );
@@ -494,15 +374,16 @@ export default function NFCPage() {
       );
 
     } catch {
+
       setMessage(
         "❌ Failed to copy URL."
       );
     }
   };
 
-  // =========================================================
-  // LOCAL READER STATUS
-  // =========================================================
+  // ---------------------------------------------------------
+  // Determine desktop reader availability
+  // ---------------------------------------------------------
 
   const localReaderAvailable =
     Boolean(
@@ -510,16 +391,16 @@ export default function NFCPage() {
       agentStatus?.reader_connected
     );
 
-  // =========================================================
-  // UI
-  // =========================================================
+  // ---------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------
 
   return (
     <main className="min-h-screen bg-black text-white p-4 md:p-8">
 
       <div className="max-w-4xl mx-auto">
 
-        {/* HEADER */}
+        {/* Header */}
 
         <div className="mb-10">
 
@@ -528,13 +409,13 @@ export default function NFCPage() {
           </h1>
 
           <p className="text-gray-400 text-lg">
-            Write and read your digital profile
-            directly from NFC cards and tags.
+            Write your digital profile directly to NFC
+            cards and tags.
           </p>
 
         </div>
 
-        {/* COMPATIBILITY */}
+        {/* NFC Compatibility */}
 
         <div className="bg-[#081028] border border-white/10 rounded-3xl p-8 mb-8">
 
@@ -542,7 +423,7 @@ export default function NFCPage() {
             NFC Compatibility
           </h2>
 
-          {/* MOBILE */}
+          {/* Mobile */}
 
           <div className="mb-6">
 
@@ -567,7 +448,7 @@ export default function NFCPage() {
 
           </div>
 
-          {/* WINDOWS */}
+          {/* Windows */}
 
           <div>
 
@@ -618,72 +499,7 @@ export default function NFCPage() {
 
         </div>
 
-        {/* CARD READER */}
-
-        <div className="bg-[#081028] border border-white/10 rounded-3xl p-8 mb-8">
-
-          <h2 className="text-3xl font-bold mb-4">
-            Read NFC Card
-          </h2>
-
-          <p className="text-gray-400 mb-6">
-            Place an NFC card on the ACR122U
-            reader and read the information stored
-            on the card.
-          </p>
-
-          <button
-            onClick={readNfcCard}
-            disabled={
-              readingCard ||
-              !localReaderAvailable
-            }
-            className="bg-green-600 hover:bg-green-700 disabled:opacity-50 transition px-8 py-4 rounded-2xl font-semibold text-lg"
-          >
-            {readingCard
-              ? "Reading NFC Card..."
-              : "Read NFC Card"}
-          </button>
-
-          {(cardUid || storedUrl) && (
-
-            <div className="mt-6 space-y-4">
-
-              {cardUid && (
-
-                <div>
-                  <p className="text-gray-500 text-sm mb-1">
-                    Card UID
-                  </p>
-
-                  <div className="bg-black border border-white/10 rounded-xl p-4 font-mono break-all">
-                    {cardUid}
-                  </div>
-                </div>
-
-              )}
-
-              {storedUrl && (
-
-                <div>
-                  <p className="text-gray-500 text-sm mb-1">
-                    Stored URL
-                  </p>
-
-                  <div className="bg-black border border-white/10 rounded-xl p-4 break-all text-blue-400">
-                    {storedUrl}
-                  </div>
-                </div>
-
-              )}
-
-            </div>
-
-          )}
-
-        </div>
-
-        {/* WRITER */}
+        {/* NFC Writer */}
 
         <div className="bg-[#081028] border border-white/10 rounded-3xl p-8">
 
@@ -697,14 +513,16 @@ export default function NFCPage() {
             on Windows.
           </p>
 
-          {/* URL */}
+          {/* NFC URL */}
 
           <div className="bg-black border border-white/10 rounded-2xl p-4 mb-6 break-all text-sm text-gray-300">
+
             {profileUrl ||
               "Generating NFC token..."}
+
           </div>
 
-          {/* BUTTONS */}
+          {/* Buttons */}
 
           <div className="flex flex-wrap gap-4">
 
@@ -720,11 +538,13 @@ export default function NFCPage() {
               }
               className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 transition px-8 py-4 rounded-2xl font-semibold text-lg"
             >
+
               {writing
                 ? "Writing NFC..."
                 : webNfcSupported
                 ? "Write NFC Card"
                 : "Write NFC Card with ACR122U"}
+
             </button>
 
             <button
@@ -732,12 +552,14 @@ export default function NFCPage() {
               disabled={!profileUrl}
               className="bg-white/10 hover:bg-white/20 disabled:opacity-50 transition px-8 py-4 rounded-2xl font-semibold text-lg"
             >
+
               Copy NFC URL
+
             </button>
 
           </div>
 
-          {/* METHOD */}
+          {/* Method information */}
 
           <div className="mt-6 text-sm text-gray-500">
 
@@ -765,12 +587,14 @@ export default function NFCPage() {
 
           </div>
 
-          {/* MESSAGE */}
+          {/* Message */}
 
           {message && (
 
             <div className="mt-6 text-lg">
+
               {message}
+
             </div>
 
           )}
